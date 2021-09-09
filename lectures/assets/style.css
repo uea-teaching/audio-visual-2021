@@ -1,0 +1,60 @@
+.bright {
+  color: #00ff2a;
+}
+
+em {
+  font-style: italic;
+  color: #ff6ec7;
+}
+
+strong {
+  color: rgb(255, 169, 20);
+}
+
+code {
+  color: coral;
+  font: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+.columns {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.column {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+  font-size: 0.7em;
+}
+
+.reveal pre {
+  font-size: 0.65em;
+  overflow: hidden;
+}
+
+.column figure {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.column figure img {
+  width: 80%;
+}
+
+.column figcaption {
+  text-align: center;
+  font-size: 0.7em;
+}
+
+figcaption {
+  text-align: center;
+  font-size: 0.5em;
+}

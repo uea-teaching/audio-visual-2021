@@ -1,0 +1,15 @@
+# ignore all
+*
+
+# except for the following
+!README.md
+!.gitignore
+
+!lectures/
+!lectures/*.md
+!lectures/assets/
+!lectures/assets/*.css
+
+!scripts/
+!scripts/*.py
+
