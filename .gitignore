@@ -4,8 +4,10 @@
 # except for the following
 !README.md
 !.gitignore
+!Makefile
 
 !lectures/
+!lectures/Makefile
 !lectures/*.md
 !lectures/assets/
 !lectures/assets/*.css
