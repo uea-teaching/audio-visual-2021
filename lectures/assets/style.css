@@ -45,6 +45,10 @@ code {
   align-items: center;
 }
 
+.column p img {
+  margin: 0;
+}
+
 .column figure img {
   width: 80%;
 }
@@ -56,5 +60,14 @@ code {
 
 figcaption {
   text-align: center;
+  font-size: 0.5em;
+}
+
+blockquote {
+  font-size: 0.75em;
+  text-align: center;
+}
+
+cite {
   font-size: 0.5em;
 }
