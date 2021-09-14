@@ -231,9 +231,7 @@ Also on YouTube:
 ![F.Parke and K.Waters, Computer Facial Animation, A K Peters, 1996. 
 ](assets/img/visemes.png)
 
-#
-
-<h1 class="r-fit-text"> Coarticulation</h1>
+# Coarticulation {style="font-size:1.8em;"}
 
 ## Coarticulation {data-auto-animate="true"}
 
