@@ -22,9 +22,11 @@ SCI - 2.16a
 
 # Speech Production
 
+in a visual context
+
 ## Speech Production {data-auto-animate="true"}
 
-Speech can be regarded as a filtering process.
+Speech can be regarded as a _filtering_ process.
 
 ::: incremental
 
@@ -39,8 +41,8 @@ Speech can be regarded as a filtering process.
 
 ## Speech Production {data-auto-animate="true"}
 
-The filter response is determined by the vocal tract shape,
-which is dependent on the position of the speech articulators.
+The filter _response_ is determined by the vocal tract **shape**,
+which is dependent on the position of the speech **articulators**.
 
 ::: incremental
 
@@ -57,7 +59,95 @@ An MRI of the vocal tract.
 
 <cite> source: https://sail.usc.edu/span/gallery.html</cite>
 
+## {data-auto-animate="true" data-background-color="#DCDCDC"}
+
+![](assets/img/speech-prod-01.png)
+
+## {data-auto-animate="true" data-background-color="#DCDCDC"}
+
+![](assets/img/speech-prod-02.png)
+
+## {data-auto-animate="true" data-background-color="#DCDCDC"}
+
+![](assets/img/speech-prod-03.png)
+
+## {data-auto-animate="true" data-background-color="#DCDCDC"}
+
+![](assets/img/speech-prod-04.png)
+
+## {data-auto-animate="true" data-background-color="#DCDCDC"}
+
+![](assets/img/speech-prod-05.png)
+
+## Articulation {data-auto-animate="true"}
+
+The **place** of articulation describes _where_ a speech sound is formed.
+
+## Articulation {data-auto-animate="true"}
+
+The **manner** of articulation describes _how_ a speech sound is formed.
+
+## Articulation {data-auto-animate="true"}
+
+- Stop: a complete blockage is formed along the vocal-tract.
+- Nasal: airflow can exit through the nose (velum is lowered).
+- Fricative: a partial blockage is formed causing a turbulent airflow.
+- Approximant: a partial blockage, but insufficient enough to cause a fricative.
+- Lateral: airflow is blocked along the centre of the vocal-tract.
+
+**Note:** these manners of articulation are not mutually exclusive.
+
+## Consonants {data-auto-animate="true"}
+
+Consonants are characterised by the place and manner of articulation.
+
+## Consonants {data-auto-animate="true"}
+
+- _/p/_ is a voiceless bilabial stop (plosive).
+- _/m/_ is a voiced bilabial nasal.
+- _/f/_ is a voiceless labiodental fricative.
+- _/k/_ is a voiceless velar stop.
+- _/j/_ is voiced palatal lateral approximant.
+
+## Vowels {data-auto-animate="true"}
+
+For vowels the airflow is relatively unobstructed.
+
+## Vowels {data-auto-animate="true"}
+
+Vowels **cannot** be characterised by the place or manner of articulation.
+
+## Vowels {data-auto-animate="true"}
+
+Vowels **are** characterised by:
+
+- The degree of lip-rounding.
+- The front to back position of the high-point of the tongue.
+
+## Vowels {data-auto-animate="true"}
+
+Diphthongs are the _concatenation_ of two vowels.
+
 # Visual Speech
+
+Speech is about more than just sounds.
+
+::: notes
+The emphasis over the last few slides is this: speech is not confined to the audio domain...
+speech production can be (partially) observed, and those observations can support understanding...
+:::
+
+## Visual Speech {data-auto-animate="true"}
+
+- The formation of _some_ speech can be **seen**.
+- We all use visual speech to help disambiguate similar sounds.
+- In a noisy environment you tend to watch the person you are speaking with more closely.
+
+## Visual Speech {data-auto-animate="true"}
+
+Speech formation can be felt.
+
+Some deaf-blind people use the **Tadoma** method of communication.
 
 ## Visual Speech {data-auto-animate="true"}
 
@@ -154,6 +244,10 @@ Benjamin Franklin invented bi-focal spectacles to help better understand French!
 
 Visual speech can **alter** our perception of a sound.
 
+This is illustrated by the **McGurk** effect.
+
+<cite> McGurk & MacDonald, Hearing lips and seeing voices. 1976 </cite>
+
 ## McGurk Effect {data-auto-animate="true"}
 
 ::: columns
@@ -175,7 +269,7 @@ Visual speech can **alter** our perception of a sound.
 
 ## McGurk Effect {data-auto-animate="true"}
 
-Auditory "baa" with visual "gaa" is (usually) perceived as "daa".
+Auditory "baa" with visual "gaa" is often perceived as "daa".
 
 ::: incremental
 
@@ -333,3 +427,13 @@ The same phoneme in different contexts both sounds and **looks** different.
 
 :::::
 :::
+
+## Models of Coarticulation {data-auto-animate="true"}
+
+There is no definitive model of coarticulation.
+
+## Models of Coarticulation {data-auto-animate="true"}
+
+One is the "Look ahead" model.
+
+- Speech gestures begin as early as possible provided there are no constraints on the articulators.
