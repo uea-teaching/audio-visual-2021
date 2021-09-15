@@ -359,10 +359,9 @@ The articulator positions **do not** depend only on the current sound.
 
 The articulators never reach their _ideal_ target.
 
-They only move close enough to _approximate_ the required sound.
-
 ::: incremental
 
+- They only move close enough to _approximate_ the required sound.
 - What you see is a by-product of this.
 
 :::
@@ -432,8 +431,73 @@ The same phoneme in different contexts both sounds and **looks** different.
 
 There is no definitive model of coarticulation.
 
-## Models of Coarticulation {data-auto-animate="true"}
+## Look Ahead Model {data-auto-animate="true"}
 
 One is the "Look ahead" model.
 
-- Speech gestures begin as early as possible provided there are no constraints on the articulators.
+Speech gestures begin as early as possible provided there are no constraints on the articulators.
+
+## Look Ahead Model {data-auto-animate="true" data-background-color="#DCDCDC"}
+
+![Look Ahead Model](assets/img/look-ahead.png)
+
+## Look Ahead Model {data-auto-animate="true"}
+
+The look ahead model assumes lazy speech production and allows gradual transitions between speech targets.
+
+## Temporal Model {data-auto-animate="true"}
+
+An alternate model is the temporal model.
+
+The temporal model assumes that speech gestures begin at a fixed time
+prior to the onset of a sound.
+
+## Temporal Model {data-auto-animate="true" data-background-color="#DCDCDC"}
+
+![Temporal Model](assets/img/temporal.png)
+
+## Temporal Model {data-auto-animate="true"}
+
+The temporal model assumes that speech gestures are largely independent and that speech is the superposition of the gestures.
+
+## Hybrid Model {data-auto-animate="true"}
+
+There are also hybrid models:
+
+- Combine both the look ahead and temporal models.
+- Initial movement is gradual and starts early.
+- Later movement is more rapid, at a fixed time in advance of the pose.
+
+## Gestural Model {data-auto-animate="true"}
+
+- A phoneme is represented by a set of **dominance** functions for each articulator.
+- The function specifies how dominant an articulator is at different points in time during the articulation of a sound.
+- The dominance increases to a peak and then decreases over time.
+
+## Gestural Model {data-auto-animate="true" data-background-color="#DCDCDC"}
+
+![Gestural Model](assets/img/gestural.png)
+
+## Models of Coarticulation {data-auto-animate="true"}
+
+- Different coarticulation models exist because different studies use different experimental conditions and linguistic factors.
+- Each model might fit the particular conditions for a given experiment.
+- The lack of a formal definition of a viseme and a definitive model of coarticulation make recognition (and synthesis) of visual speech difficult!
+
+# Summary
+
+Speech is multi-modal in nature!
+
+## Summary {data-auto-animate="true"}
+
+A view of the articulation is useful for disambiguating similar sounds.
+
+To a limited extent we all _lip-read_ regardless of our awareness.
+
+## Summary {data-auto-animate="true"}
+
+Visual speech is poorly defined compared with acoustic speech.
+
+- A viseme is assumed to be the visual analogue of the phoneme.
+- Coarticulation means that visemes as lip shapes are not a good unit.
+- The same sound has many different visual appearances.
