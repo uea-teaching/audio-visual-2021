@@ -4,9 +4,11 @@ from skimage import data, io, filters, transform
 import matplotlib.pyplot as plt
 
 plt.style.use('classic')
-plt.rcParams['savefig.facecolor'] = '0.85'
+plt.rcParams['savefig.facecolor'] = '1.0'
 plt.rcParams['savefig.dpi'] = 100
 plt.rcParams['font.size'] = 14
+
+savekw = dict(bbox_inches='tight')
 
 # %%
 root = 'lectures/assets/plots1/'
@@ -100,7 +102,7 @@ def plot_value(img):
     ax.scatter([200, ], [150, ], color='r', marker='x', s=90, linewidth=2)
     ax.set_title(rf"$I(x=200, y=150)={i}$", fontsize=18)
     plot_image(ax, img)
-    fig.savefig(root + 'cam-coord.png', bbox_inches='tight')
+    fig.savefig(root + 'cam-coord.png', **savekw)
     plt.close(fig)
 
 
@@ -118,7 +120,7 @@ def plot_rgb(img):
         plot_image_no_ticks(ax[i + 1], img[..., i])
         ax[i + 1].set_title(title)
 
-    fig.savefig(root + 'astronaut-rgb.png', bbox_inches='tight')
+    fig.savefig(root + 'astronaut-rgb.png', **savekw)
     plt.close(fig)
 
 
@@ -136,7 +138,7 @@ def plot_resolutions(img, interpolation='none'):
         plot_image_no_ticks(ax[i], scaled, interpolation=interpolation)
         ax[i].set_title(f'{size[0]} X {size[1]}')
 
-    fig.savefig(root + f'sampling-{interpolation}.png', bbox_inches='tight')
+    fig.savefig(root + f'sampling-{interpolation}.png', **savekw)
     plt.close(fig)
 
 
@@ -157,7 +159,7 @@ def plot_levels(img):
         plot_image_no_ticks(ax[i], lev)
         ax[i].set_title(f'levels: {level}')
 
-    fig.savefig(root + 'levels.png', bbox_inches='tight')
+    fig.savefig(root + 'levels.png', **savekw)
     plt.close(fig)
 
 
@@ -178,18 +180,18 @@ def plot_tone_mapping(key):
     ax[1].set_title('input image')
     plot_image_no_ticks(ax[2], func(img))
     ax[2].set_title('output image')
-    fig.savefig(root + f'tone-{key}-00.png', bbox_inches='tight')
+    fig.savefig(root + f'tone-{key}-00.png', **savekw)
     plt.close(fig)
     fig, ax = plt.subplots(1, 1, figsize=(5, 5), tight_layout=True)
     plot_tone_curve(ax, x, func(x))
     ax.set_title(title, fontsize=18)
-    fig.savefig(root + f'tone-{key}-01.png', bbox_inches='tight')
+    fig.savefig(root + f'tone-{key}-01.png', **savekw)
     plt.close(fig)
     fig, ax = plt.subplots(1, 1, figsize=(5, 5), tight_layout=True)
     plot_tone_curve(ax, x, func(x))
     plot_in_out(ax, 127, func)
     ax.set_title(title, fontsize=18)
-    fig.savefig(root + f'tone-{key}-02.png', bbox_inches='tight')
+    fig.savefig(root + f'tone-{key}-02.png', **savekw)
     plt.close(fig)
 
 
@@ -220,7 +222,7 @@ def plot_gamma_curves():
     ax.set_xlabel('input intensity')
     ax.legend(fontsize=12, loc=2)
     ax.set_title('gamma curves')
-    fig.savefig(root + 'gamma-curves.png', bbox_inches='tight')
+    fig.savefig(root + 'gamma-curves.png', **savekw)
     plt.close(fig)
 
 
@@ -241,7 +243,7 @@ def plot_gamma_img(img):
         plot_image_no_ticks(ax[i + 1], img)
         ax[i + 1].set_title(title, fontsize=18)
 
-    fig.savefig(root + 'gamma.png', bbox_inches='tight')
+    fig.savefig(root + 'gamma.png', **savekw)
     plt.close(fig)
 
 
@@ -266,7 +268,7 @@ def plot_hist_image(img):
     asp = np.diff(ax[0].get_xlim())[0] / np.diff(ax[0].get_ylim())[0]
     ax[0].set_aspect(asp)
     ax[0].set_title('histogram')
-    fig.savefig(root + 'hist-01.png', bbox_inches='tight')
+    fig.savefig(root + 'hist-01.png', **savekw)
     plt.close(fig)
 
 
@@ -282,7 +284,7 @@ def plot_hist(img):
     ax.set_xlabel('intensity')
     ax.set_ylabel('frequency')
     ax.set_title('histogram')
-    fig.savefig(root + 'hist-02.png', bbox_inches='tight')
+    fig.savefig(root + 'hist-02.png', **savekw)
     plt.close(fig)
 
 
@@ -311,7 +313,7 @@ def plot_threshold_image(img, t):
     ax[0].plot([t, t], ax[0].get_ylim(), 'r--', label=f'$t={t}$')
     ax[0].legend(fontsize=12, loc=1)
     ax[0].set_title('histogram')
-    fig.savefig(root + 'threshold-01.png', bbox_inches='tight')
+    fig.savefig(root + 'threshold-01.png', **savekw)
     plt.close(fig)
 
 
