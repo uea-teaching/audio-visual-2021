@@ -157,9 +157,7 @@ How do we represent images on a computer?
 :::::
 :::
 
-## Greyscale Images {data-auto-animate="true"}
-
-### **Caveat**
+## **Caveat**
 
 - Data coordinates have the origin at the _lower_ left.
 - The origin is at the _top_ left corner for images.
@@ -210,7 +208,7 @@ Colour images can be defined as a _set_ of functions:
 alpha is also possible for greyscale images.
 :::
 
-# Sampling and Quantisation
+# Sampling and Quantisation {style="font-size:1.8em;"}
 
 ## Sampling and Quantisation
 
