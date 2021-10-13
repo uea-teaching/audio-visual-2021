@@ -41,11 +41,11 @@ Learn the parametric model from training data, and use to estimate the probabili
 
 ## Acoustic Speech Recognition
 
-![](assets/img2/speech-recognition-01.png)
+![](assets/img3/speech-recognition-01.png)
 
 ## Visual Speech Recognition
 
-![](assets/img2/speech-recognition-02.png)
+![](assets/img3/speech-recognition-02.png)
 
 ::: notes
 Probability of a word sequence W given an visual observation V
@@ -75,7 +75,7 @@ An investigation of HMM classifier combination strategies for improved audio-vis
 
 ## Late Integration
 
-![](assets/img2/speech-recognition-03.png)
+![](assets/img3/speech-recognition-03.png)
 
 ::: notes
 Late Integration
@@ -89,7 +89,7 @@ Visual features often need interpolation to align with the acoustic features.
 
 ## Early Integration
 
-![](assets/img2/speech-recognition-04.png)
+![](assets/img3/speech-recognition-04.png)
 
 ::: notes
 Early Integration
@@ -117,7 +117,7 @@ Typical features include:
 ::: columns
 
 ::::: column
-![](assets/img2/roi-01.jpg)
+![](assets/img3/roi-01.jpg)
 :::::
 
 ::::: column
@@ -131,7 +131,7 @@ For any form of visual feature extraction, some form of localisation is required
 ::: columns
 
 ::::: column
-![](assets/img2/roi-02.jpg)
+![](assets/img3/roi-02.jpg)
 :::::
 
 ::::: column
@@ -145,7 +145,7 @@ Where in the image is the face?
 ::: columns
 
 ::::: column
-![](assets/img2/roi-03.jpg)
+![](assets/img3/roi-03.jpg)
 :::::
 
 ::::: column
@@ -159,7 +159,7 @@ Where are the facial features of interest?
 ::: columns
 
 ::::: column
-![](assets/img2/roi-04.jpg)
+![](assets/img3/roi-04.jpg)
 :::::
 
 ::::: column
