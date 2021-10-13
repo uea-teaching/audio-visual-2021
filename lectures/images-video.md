@@ -2,16 +2,8 @@
 title: Image and Video
 subtitle: Audiovisual Processing CMP-6026A
 author: Dr. David Greenwood
-institution: University of East Anglia
 date: \today
-section-titles: false
 ---
-
-# Dr David Greenwood
-
-david.greenwood@uea.ac.uk
-
-SCI - 2.16a
 
 # Content
 
@@ -35,7 +27,7 @@ and preceded by far less useful solutions.
 ::: columns
 ::::: column
 
-![Eadweard Muybridge](assets/muybridge.jpg)
+![Eadweard Muybridge](assets/img1/muybridge.jpg)
 
 :::::
 ::::: {.column width=60%}
@@ -49,7 +41,7 @@ Proved a galloping horse lifts all four hooves off the ground at one point in it
 
 ---
 
-![Sallie Gardner - public domain image](assets/horse.jpg)
+![Sallie Gardner - public domain image](assets/img1/horse.jpg)
 
 ::: notes
 Muybridge used a series of photographs to illustrate the horse's motion. He triggered the camera by a series of trip wires.
@@ -59,13 +51,13 @@ Muybridge used a series of photographs to illustrate the horse's motion. He trig
 
 Perhaps the earliest movie?
 
-![horse animation](assets/horse.gif)
+![horse animation](assets/img1/horse.gif)
 
 ---
 
 Efficiently describe complex information...
 
-![Times Square - CC BY-NC-SA](assets/times-square.jpg){width=80%}
+![Times Square - CC BY-NC-SA](assets/img1/times-square.jpg){width=80%}
 
 ::: notes
 image from wikipedia - CC BY-NC-SA
@@ -77,7 +69,7 @@ image from wikipedia - CC BY-NC-SA
 ::: columns
 ::::: column
 
-![Map of the Internet - Halcyon Maps](assets/internet-2021.jpg)
+![Map of the Internet - Halcyon Maps](assets/img1/internet-2021.jpg)
 
 :::::
 ::::: {.column width=40%}
@@ -93,19 +85,19 @@ Image data can contain data other than photographs.
 
 ## Processing Images {data-auto-animate="true"}
 
-![image enhancement and restoration](assets/restoration.jpg)
+![image enhancement and restoration](assets/img1/restoration.jpg)
 
 ## Processing Images {data-auto-animate="true"}
 
-![image compression for transmission and storage](assets/compression.jpg)
+![image compression for transmission and storage](assets/img1/compression.jpg)
 
 ## Processing Images {data-auto-animate="true"}
 
-![forgery detection](assets/forgery.jpg)
+![forgery detection](assets/img1/forgery.jpg)
 
 ## Processing Images {data-auto-animate="true"}
 
-![image understanding, classification and recognition](assets/comp-vision.jpg)
+![image understanding, classification and recognition](assets/img1/comp-vision.jpg)
 
 ::: notes
 semantic segmentation, classification and localisation, object detection, instance segmentation.
@@ -274,7 +266,7 @@ Digital Photography
 ::: columns
 ::::: column
 
-![The Camera](assets/camera.svg)
+![The Camera](assets/img1/camera.svg)
 
 :::::
 ::::: {.column width=60%}
@@ -292,7 +284,7 @@ Digital Photography
 ::: columns
 ::::: column
 
-![The Camera](assets/camera.svg)
+![The Camera](assets/img1/camera.svg)
 
 :::::
 ::::: {.column width=60%}
@@ -310,7 +302,7 @@ Digital Photography
 ::: columns
 ::::: column
 
-![Bayer Filter](assets/bayer.png)
+![Bayer Filter](assets/img1/bayer.png)
 
 :::::
 ::::: {.column width=60%}
@@ -328,7 +320,7 @@ Digital Photography
 ::: columns
 ::::: column
 
-![Bayer Filter](assets/bayer-filter.png)
+![Bayer Filter](assets/img1/bayer-filter.png)
 
 :::::
 ::::: {.column width=60%}
@@ -346,7 +338,7 @@ Digital Photography
 ::: columns
 ::::: column
 
-![linear interpolation](assets/bayer-interp.svg)
+![linear interpolation](assets/img1/bayer-interp.svg)
 
 :::::
 ::::: column
@@ -363,12 +355,12 @@ Digital Photography
 ::: columns
 ::::: column
 
-![Bayer pattern](assets/bayer-eye-01.jpg)
+![Bayer pattern](assets/img1/bayer-eye-01.jpg)
 
 :::::
 ::::: column
 
-![after interpolation](assets/bayer-eye-02.jpg)
+![after interpolation](assets/img1/bayer-eye-02.jpg)
 
 :::::
 :::
@@ -382,7 +374,7 @@ http://www.red.com/learn/red-101/bayer-sensor-strategy
 ::: columns
 ::::: column
 
-![bayer pattern](assets/bayer-pattern.png)
+![bayer pattern](assets/img1/bayer-pattern.png)
 
 :::::
 ::::: {.column width=65%}
@@ -405,7 +397,7 @@ frequency in audio waveforms)
 ::: columns
 ::::: column
 
-![receptor response](assets/spectrum.svg)
+![receptor response](assets/img1/spectrum.svg)
 
 :::::
 ::::: column
@@ -424,7 +416,7 @@ Visible spectrum and receptor response for "normal" vision.
 ::: columns
 ::::: column
 
-![receptor response](assets/spectrum.svg)
+![receptor response](assets/img1/spectrum.svg)
 
 :::::
 ::::: column
@@ -759,7 +751,7 @@ The rate at which images are captured - or displayed.
 
 ## Interlaced Scan {data-auto-animate="true"}
 
-![interlaced video is not good for computer vision](assets/interlaced.jpg)
+![interlaced video is not good for computer vision](assets/img1/interlaced.jpg)
 
 # Summary
 
