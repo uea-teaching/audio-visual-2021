@@ -2,16 +2,8 @@
 title: Visual Speech
 subtitle: Audiovisual Processing CMP-6026A
 author: Dr. David Greenwood
-institution: University of East Anglia
 date: \today
-section-titles: false
 ---
-
-# Dr David Greenwood
-
-david.greenwood@uea.ac.uk
-
-SCI - 2.16a
 
 # Content
 
@@ -61,23 +53,23 @@ An MRI of the vocal tract.
 
 ## {data-auto-animate="true" data-background-color="#DCDCDC"}
 
-![](assets/img/speech-prod-01.png)
+![](assets/img2/speech-prod-01.png)
 
 ## {data-auto-animate="true" data-background-color="#DCDCDC"}
 
-![](assets/img/speech-prod-02.png)
+![](assets/img2/speech-prod-02.png)
 
 ## {data-auto-animate="true" data-background-color="#DCDCDC"}
 
-![](assets/img/speech-prod-03.png)
+![](assets/img2/speech-prod-03.png)
 
 ## {data-auto-animate="true" data-background-color="#DCDCDC"}
 
-![](assets/img/speech-prod-04.png)
+![](assets/img2/speech-prod-04.png)
 
 ## {data-auto-animate="true" data-background-color="#DCDCDC"}
 
-![](assets/img/speech-prod-05.png)
+![](assets/img2/speech-prod-05.png)
 
 ## Articulation {data-auto-animate="true"}
 
@@ -89,11 +81,19 @@ The **manner** of articulation describes _how_ a speech sound is formed.
 
 ## Articulation {data-auto-animate="true"}
 
-- Stop: a complete blockage is formed along the vocal-tract.
-- Nasal: airflow can exit through the nose (velum is lowered).
-- Fricative: a partial blockage is formed causing a turbulent airflow.
-- Approximant: a partial blockage, but insufficient enough to cause a fricative.
-- Lateral: airflow is blocked along the centre of the vocal-tract.
+- Stop
+  - a complete blockage is formed along the vocal-tract.
+- Nasal
+  - airflow can exit through the nose (velum is lowered).
+- Fricative
+  - a partial blockage is formed causing a turbulent airflow.
+
+## Articulation {data-auto-animate="true"}
+
+- Approximant
+  - a partial blockage, but insufficient enough to cause a fricative.
+- Lateral
+  - airflow is blocked along the centre of the vocal-tract.
 
 **Note:** these manners of articulation are not mutually exclusive.
 
@@ -219,7 +219,7 @@ Vision can improve understanding of hard-to-understand utterances.
 
 ::: columns
 ::::: column
-![Benjamin Franklin](assets/benfranklin.jpg)
+![Benjamin Franklin](assets/img2/benfranklin.jpg)
 :::::
 ::::: column
 Benjamin Franklin invented bi-focal spectacles to help better understand French!
@@ -323,9 +323,15 @@ Also on YouTube:
 ## Visemes {data-auto-animate="true"}
 
 ![F.Parke and K.Waters, Computer Facial Animation, A K Peters, 1996. 
-](assets/img/visemes.png)
+](assets/img2/visemes.png)
 
-# Coarticulation {style="font-size:1.8em;"}
+#
+
+::: r-fit-text
+
+Coarticulation
+
+:::
 
 ## Coarticulation {data-auto-animate="true"}
 
@@ -397,11 +403,11 @@ The same phoneme in different contexts both sounds and **looks** different.
 :::::
 ::::: {.column width=16%}
 
-![](assets/img/k-phone-0.jpg)
-![](assets/img/k-phone-1.jpg)
-![](assets/img/k-phone-2.jpg)
-![](assets/img/k-phone-3.jpg)
-![](assets/img/k-phone-4.jpg)
+![](assets/img2/k-phone-0.jpg)
+![](assets/img2/k-phone-1.jpg)
+![](assets/img2/k-phone-2.jpg)
+![](assets/img2/k-phone-3.jpg)
+![](assets/img2/k-phone-4.jpg)
 
 :::::
 :::
@@ -418,11 +424,11 @@ The same phoneme in different contexts both sounds and **looks** different.
 :::::
 ::::: {.column width=16%}
 
-![](assets/img/t-phone-0.jpg)
-![](assets/img/t-phone-1.jpg)
-![](assets/img/t-phone-2.jpg)
-![](assets/img/t-phone-3.jpg)
-![](assets/img/t-phone-4.jpg)
+![](assets/img2/t-phone-0.jpg)
+![](assets/img2/t-phone-1.jpg)
+![](assets/img2/t-phone-2.jpg)
+![](assets/img2/t-phone-3.jpg)
+![](assets/img2/t-phone-4.jpg)
 
 :::::
 :::
@@ -439,7 +445,7 @@ Speech gestures begin as early as possible provided there are no constraints on 
 
 ## Look Ahead Model {data-auto-animate="true" data-background-color="#DCDCDC"}
 
-![Look Ahead Model](assets/img/look-ahead.png)
+![Look Ahead Model](assets/img2/look-ahead.png)
 
 ## Look Ahead Model {data-auto-animate="true"}
 
@@ -454,7 +460,7 @@ prior to the onset of a sound.
 
 ## Temporal Model {data-auto-animate="true" data-background-color="#DCDCDC"}
 
-![Temporal Model](assets/img/temporal.png)
+![Temporal Model](assets/img2/temporal.png)
 
 ## Temporal Model {data-auto-animate="true"}
 
@@ -476,7 +482,7 @@ There are also hybrid models:
 
 ## Gestural Model {data-auto-animate="true" data-background-color="#DCDCDC"}
 
-![Gestural Model](assets/img/gestural.png)
+![Gestural Model](assets/img2/gestural.png)
 
 ## Models of Coarticulation {data-auto-animate="true"}
 
