@@ -70,7 +70,8 @@ Has been shown to offer better performance than early integration.
 Not straightforward to weight output probabilities.
 
 <cite> 
-An investigation of HMM classifier combination strategies for improved audio-visual speech recognition. Lucey et al. 2001
+An investigation of HMM classifier combination strategies for improved audio-visual speech recognition.</br>
+Lucey et al. 2001
 </cite>
 
 ## Late Integration
@@ -85,7 +86,7 @@ Late Integration
 
 Concatenate the acoustic and visual models to form a single model.
 
-Visual features often need interpolation to align with the acoustic features.
+Visual features often need **interpolation** to align with the acoustic features.
 
 ## Early Integration
 
@@ -412,3 +413,151 @@ Semi-automated approaches are generally more robust.
 
 - They might need significant effort to reliably construct the model.
 - But priors can be imposed on the expected shape.
+
+# Point Distribution Models
+
+## Point Distribution Models {data-auto-animate="true"}
+
+A _generative_ statistical model of the variation of the shape of an object.
+
+## Point Distribution Models {data-auto-animate="true"}
+
+Use **Principal Component Analysis (PCA)** to model the variation in the coordinates of a set of _landmark_ points.
+
+The PDM can represent complex shapes with just a few parameters.
+
+## Point Distribution Models {data-auto-animate="true"}
+
+You can use an _Active Shape Model (ASM) _ or _Active Appearance Model (AAM)_ to automatically locate the landmarks (facial tracking).
+
+This model **requires training**.
+
+## Point Distribution Models {data-auto-animate="true"}
+
+::: columns
+::::: column
+![](assets/img3/aj_sample_05.jpg)
+:::::
+::::: column
+
+A **shape** is represented by a set of **landmarks** located along the shape boundary.
+
+:::::
+:::
+
+## Point Distribution Models {data-auto-animate="true"}
+
+::: columns
+::::: column
+![](assets/img3/aj_sample_05.jpg)
+:::::
+::::: column
+
+- The landmarks must be easy to locate from one image to another.
+- T-junctions, points of high curvature, corners etc. form good candidates.
+- Include evenly spaced intermediate points along the boundary.
+
+:::::
+:::
+
+## Point Distribution Models {data-auto-animate="true"}
+
+::: columns
+::::: column
+![](assets/img3/aj_sample_05.jpg)
+:::::
+::::: column
+
+I provide a tool to annotate landmarks here:
+[https://github.com/davegreenwood/face-landmark-tool](https://github.com/davegreenwood/face-landmark-tool)
+
+:::::
+:::
+
+## Point Distribution Models {data-auto-animate="true"}
+
+![](assets/img3/comb-lm.jpg)
+
+Manually hand label a selection of images from a training set.
+
+All examples _must_ have the **same number** of landmarks and be labelled in the **same order**.
+
+## Point Distribution Models {data-auto-animate="true"}
+
+![](assets/img3/comb-lm.jpg)
+
+Sufficient images must be labelled to capture the expected range of variation.
+
+- Capture large facial expressions, wide mouths, etc.
+- Typically need 20 - 30 images per person.
+
+## Point Distribution Models {data-auto-animate="true"}
+
+A shape is the concatenation of the $x$ and $y$ coordinates of the landmarks:
+
+$$X = \{x_1, x_2, \dots, x_n, y_1, y_2, \dots, y_n\}^T $$
+
+The consistency in the labelling ensures the elements of these vectors have the same meaning.
+
+## Point Distribution Models
+
+::: columns
+::::: column
+![](assets/img3/multi-lm.png)
+:::::
+::::: column
+
+The coordinates describe the shape in the image coordinate frame.
+
+The same shape at different locations results in a different shape vector.
+
+:::::
+:::
+
+## Point Distribution Models
+
+::: columns
+::::: column
+![](assets/img3/multi-lm.png)
+:::::
+::::: column
+
+We need to normalise shapes for translation, scale and rotation.
+This can be done using **Procrustes analysis**.
+
+:::::
+:::
+
+## _Aside:_ Procrustes analysis
+
+::: columns
+::::: column
+![captured landmarks](assets/img3/multi-lm.png)
+:::::
+::::: column
+![aligned landmarks](assets/img3/multi-lm-aligned.png)
+:::::
+:::
+
+## Point Distribution Models
+
+Given the aligned shapes, compute a model that describes the variation in shape.
+
+A linear model of the variation can be found using **Principal Components Analysis (PCA)**.
+
+## Point Distribution Models
+
+The model is in the form:
+
+$$x = \bar x + P_sb_s$$
+
+where $x$ is a shape, $\bar x$ is the _mean_ shape, the matrix $P_s$ describes
+the variation in shape, and $b_s$ are the **parameters** that represent a shape instance.
+
+## _Aside:_ Principal Component Analysis (PCA)
+
+Reveals the internal structure of the data in a way that best _explains the variance_ in the data.
+
+Used for dimensionality reduction.
+
+Reduces data down into its basic components, stripping away any unnecessary parts.
