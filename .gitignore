@@ -18,6 +18,8 @@
 !lectures/assets/img*/*.gif
 !lectures/assets/plots*/
 !lectures/assets/plots*/*.png
+!lectures/assets/mov
+!lectures/assets/mov/*.mp4
 
 !scripts/
 !scripts/*.py
