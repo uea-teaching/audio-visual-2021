@@ -575,3 +575,88 @@ the variation in shape, and $\mathbf{b}_{s}$ are the **parameters** that represe
 - Visualise the data by plotting one measure against the other.
 
 :::
+
+---
+
+![](assets/plots2/pca_01.png)
+
+## _Aside:_ Principal Component Analysis (PCA)
+
+The objective of PCA is to capture as much of the variation in as few dimensions as possible.
+
+Find line of "best fit" through the data, then line of "next best fit" which is _orthogonal_ to the first...
+
+Repeat for however many dimensions your data has
+
+---
+
+![](assets/plots2/pca_02.png)
+
+---
+
+![](assets/plots2/pca_03.png)
+
+## _Aside:_ Principal Component Analysis (PCA)
+
+Since the dimensions must be orthogonal, all we have done is rotate the axes to better align with the data.
+
+In doing this:
+
+- P1 captures most of the meaningful variation
+- P2 seems to capture the noise in the measurements
+
+The original data can be approximated as some distance along P1 from the centre of the data cloud.
+
+---
+
+![](assets/plots2/pca_04.png)
+
+---
+
+![](assets/plots2/pca_05.png)
+
+---
+
+![](assets/plots2/pca_06.png)
+
+---
+
+![](assets/plots2/pca_07.png)
+
+## _Aside:_ Principal Component Analysis (PCA)
+
+To project a data point onto a new axis:
+
+$$\mathbf{b}_{s}  = \mathbf{P}_{s}^{T}  (x - \overline x )$$
+
+## _Aside:_ Principal Component Analysis (PCA)
+
+To reconstruct the data point from the features:
+
+$$x \approx \overline x + \mathbf{P}_{s} \mathbf{b}_{s}$$
+
+This is only an approximation since the data are truncated to lie on just the principal component(s).
+
+## _Aside:_ Principal Component Analysis (PCA)
+
+Note, in the previous example we have moved from a 2D problem to 1D so the representation is more compact.
+
+Staying within the limits of the data means new examples can be generated — this is a **generative** model.
+
+## _Aside:_ Principal Component Analysis (PCA) {data-auto-animate="true"}
+
+Algorithm:
+
+- Compute the mean of the data and subtract.
+- Compute the covariance matrix.
+- Compute the eigenvectors and eigenvalues of the covariance matrix and sort into descending order of eigenvalue.
+
+## _Aside:_ Principal Component Analysis (PCA) {data-auto-animate="true"}
+
+- Eigenvectors are the principal components.
+- Eigenvalues are the variance explained by each principal component.
+- We typically retain the number of eigenvectors that describe 95% of the total variation in the data.
+
+## _Aside:_ Principal Component Analysis (PCA) {data-auto-animate="true"}
+
+Matlab has implementations of both PCA and of Eigenvector/Eigenvalue decomposition.
