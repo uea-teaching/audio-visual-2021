@@ -27,8 +27,6 @@ Lets just remind ourselves about the acoustic speech recognition process...
 
 An elegant way to compute this is using hidden Markov models.
 
-## Acoustic Speech Recognition
-
 $$ P(W | Y) = \frac{P(Y | W) P(W)}{P(Y) } $$
 
 ::: notes
@@ -173,16 +171,18 @@ MATLAB has an implementation of the Viola Jones face tracker.
 
 ## Shape Features for Recognition
 
-- Shape features _might_ include:
-  - Articulatory-based features, such as mouth height and width
-  - Point distribution model (and related features)
-  - Fourier descriptors
+Shape features _might_ include:
+
+- Articulatory-based features, such as mouth height and width
+- Point distribution model (and related features)
+- Fourier descriptors
 
 ## Shape Features for Recognition
 
-- There is a trade-off between ease of extraction and the amount of information extracted.
-  - Sparse point sets are easier to locate, but capture less information
-  - Denser point sets are information rich, but require more a sophisticated capture process
+There is a trade-off between ease of extraction and the amount of information extracted.
+
+- Sparse point sets are easier to locate, but capture less information
+- Denser point sets are information rich, but require more a sophisticated capture process
 
 ## Representing Shapes
 
@@ -293,7 +293,7 @@ Which colour-space should be used?
 :::::
 ::::: column
 
-$$I = [\frac{r}{r+b+g} \frac{g}{r+b+g} \frac{b}{r+b+g}]$$
+$$I = \left[\frac{r}{r+b+g} \frac{g}{r+b+g} \frac{b}{r+b+g}\right]$$
 
 - A colour is represented by its proportion of red, green and blue, not the intensity of each.
 - Reduces distortions caused by lights and shadows in an image.
@@ -549,15 +549,29 @@ A linear model of the variation can be found using **Principal Components Analys
 
 The model is in the form:
 
-$$x = \bar x + P_sb_s$$
+$$x = \overline x + \mathbf{P}_{s} \mathbf{b}_{s}$$
 
-where $x$ is a shape, $\bar x$ is the _mean_ shape, the matrix $P_s$ describes
-the variation in shape, and $b_s$ are the **parameters** that represent a shape instance.
+where $x$ is a shape, $\overline x$ is the _mean_ shape, the matrix $\mathbf{P}_{s}$ describes
+the variation in shape, and $\mathbf{b}_{s}$ are the **parameters** that represent a shape instance.
 
 ## _Aside:_ Principal Component Analysis (PCA)
 
-Reveals the internal structure of the data in a way that best _explains the variance_ in the data.
+::: incremental
 
-Used for dimensionality reduction.
+- Reveals the internal structure of the data in a way that best _explains the variance_ in the data.
+- Used for dimensionality reduction.
+- Reduces data down into its basic components, stripping away any unnecessary parts.
 
-Reduces data down into its basic components, stripping away any unnecessary parts.
+:::
+
+## _Aside:_ Principal Component Analysis (PCA)
+
+::: incremental
+
+- Assume we have 2-dimensional measurements.
+  e.g. the height and foot size for a number of people
+- We expect the measurements to be correlated to some degree.
+  e.g. taller people tend to have larger feet
+- Visualise the data by plotting one measure against the other.
+
+:::
