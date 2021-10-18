@@ -3,15 +3,12 @@ import numpy as np
 from skimage import data, io, filters, transform
 import matplotlib.pyplot as plt
 
-plt.style.use('classic')
-plt.rcParams['savefig.facecolor'] = '1.0'
-plt.rcParams['savefig.dpi'] = 100
-plt.rcParams['font.size'] = 14
+plt.style.use('fivethirtyeight')
 
 savekw = dict(bbox_inches='tight')
 
 # %%
-root = 'lectures/assets/plots1/'
+root = '../lectures/assets/plots1/'
 cameraman = io.imread(root + 'cameraman.png')
 astronaut = io.imread(root + 'astronaut.png')
 
@@ -38,11 +35,11 @@ def plot_image(ax, img, interpolation='antialiased'):
 
 
 def plot_tone_curve(ax, x, y):
-    lim = [0, 255]
+    lim, tick = [0, 255], [0, 128, 255]
     ax.plot(x, x, '--k', label='original')
     ax.plot(x, y, label='mapped')
-    ax.set_xticks(lim)
-    ax.set_yticks(lim)
+    ax.set_xticks(tick)
+    ax.set_yticks(tick)
     ax.set_xlim(lim)
     ax.set_ylim(lim)
     ax.axes.set_aspect('equal')

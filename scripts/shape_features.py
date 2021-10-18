@@ -4,10 +4,7 @@ import numpy as np
 from skimage import data, io, filters, transform, feature
 import matplotlib.pyplot as plt
 
-plt.style.use('classic')
-plt.rcParams['savefig.facecolor'] = '1.0'
-plt.rcParams['savefig.dpi'] = 100
-plt.rcParams['font.size'] = 14
+plt.style.use('fivethirtyeight')
 
 savekw = dict(bbox_inches='tight')
 
