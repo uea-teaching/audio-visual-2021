@@ -1,18 +1,28 @@
-.bright {
+/* .bright {
   color: #00ff2a;
+} */
+
+.reveal .slides {
+  text-align: left;
+}
+
+.reveal .slides img {
+  display: block;
+  margin: auto;
+}
+
+.reveal .slides video {
+  display: block;
+  margin: auto;
 }
 
 em {
-  font-style: italic;
-  color: #ff6ec7;
-}
-
-strong {
-  color: rgb(255, 169, 20);
+  font-style: oblique;
+  font-weight: 900;
+  /* color: #ff6ec7; */
 }
 
 code {
-  color: coral;
   font: 'Courier New', monospace;
   font-size: 0.9em;
 }
