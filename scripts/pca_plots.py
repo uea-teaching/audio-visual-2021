@@ -25,7 +25,7 @@ ax.set_xlabel('Height (ft)')
 ax.set_ylabel('foot size')
 ax.set_ylabel('Foot Size')
 ax.set_title('Height and Foot Size')
-fig.savefig(root + 'height_footsize_01.png', **savekw)
+fig.savefig(root + 'pca_01.png', **savekw)
 
 # %%
 
@@ -42,7 +42,7 @@ ax.set_aspect('equal')
 ax.set_xlabel('Height')
 ax.set_ylabel('Foot Size')
 ax.set_title('Height and Foot Size - Normalised')
-fig.savefig(root + 'height_footsize_02.png', **savekw)
+fig.savefig(root + 'pca_02.png', **savekw)
 
 # %% DO PCA
 
@@ -66,7 +66,7 @@ ax.set_title('Height and Foot Size - Normalised')
 ax.plot([0, pc1[0]], [0, pc1[1]], 'r-', lw=2)
 ax.plot([0, pc2[0]], [0, pc2[1]], 'g-', lw=2)
 ax.legend(['P1', 'P2'], loc='upper left')
-fig.savefig(root + 'height_footsize_03.png', **savekw)
+fig.savefig(root + 'pca_03.png', **savekw)
 
 # %% ROTATE Data
 
@@ -92,7 +92,7 @@ ax.plot([0, rp1[0]], [0, rp1[1]], 'r-', lw=2)
 ax.plot([0, rp2[0]], [0, rp2[1]], 'g-', lw=2)
 ax.legend(['P1', 'P2'], loc='upper left')
 ax.set_title('Rotated Data')
-fig.savefig(root + 'height_footsize_04.png', **savekw)
+fig.savefig(root + 'pca_04.png', **savekw)
 
 # %%
 
@@ -108,7 +108,7 @@ ax.scatter(rX[:, 0], rX[:, 1])
 ax.plot([-3, 3], [0, 0], 'r-', lw=2)
 ax.legend(['P1', ], loc='upper left')
 ax.set_title('First Principal Component')
-fig.savefig(root + 'height_footsize_05.png', **savekw)
+fig.savefig(root + 'pca_05.png', **savekw)
 
 # %%
 
@@ -123,7 +123,7 @@ ax.scatter(pX[:, 0], pX[:, 1])
 ax.plot([-3, 3], [0, 0], 'r-', lw=2)
 ax.legend(['P1', ], loc='upper left')
 ax.set_title('Projected Data')
-fig.savefig(root + 'height_footsize_06.png', **savekw)
+fig.savefig(root + 'pca_06.png', **savekw)
 
 # %%
 
@@ -138,4 +138,4 @@ ax.plot([-3, 3], [0, 0], 'r-', lw=2)
 ax.scatter(pX[:, 0], pX[:, 1], c='k')
 ax.legend(['P1', ], loc='upper left')
 ax.set_title('Parameter Values')
-fig.savefig(root + 'height_footsize_07.png', **savekw)
+fig.savefig(root + 'pca_07.png', **savekw)
