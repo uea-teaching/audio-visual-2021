@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 plt.style.use('fivethirtyeight')
 
-savekw = dict(bbox_inches='tight')
+savekw = dict(bbox_inches='tight', dpi=160)
 root = '../lectures/assets/plots2/'
 
 
@@ -14,8 +14,8 @@ root = '../lectures/assets/plots2/'
 
 # Some fake data:
 np.random.seed(42)
-fs = np.linspace(3, 12, 100) + np.random.randn(100) * 0.5
-ht = np.linspace(3.5, 6, 100) + np.random.randn(100) * 0.5
+fs = np.linspace(3, 12, 100) + np.random.randn(100) * 0.2
+ht = np.linspace(3.5, 6, 100) + np.random.randn(100) * 0.2
 
 fig, ax = plt.subplots(1, 1, figsize=(8, 6))
 ax.scatter(ht, fs)
@@ -38,6 +38,8 @@ ht /= ht.std()
 fig, ax = plt.subplots(1, 1, figsize=(8, 6))
 ax.scatter(ht, fs)
 ax.grid(True)
+ax.set_xlim([-2.9, 2.9])
+ax.set_ylim([-1.9, 1.9])
 ax.set_aspect('equal')
 ax.set_xlabel('Height')
 ax.set_ylabel('Foot Size')
@@ -59,6 +61,8 @@ fig, ax = plt.subplots(1, 1, figsize=(8, 6))
 ax.scatter(ht, fs)
 ax.grid(True)
 ax.set_aspect('equal')
+ax.set_xlim([-2.9, 2.9])
+ax.set_ylim([-1.9, 1.9])
 ax.set_xlabel('Height')
 ax.set_ylabel('Foot Size')
 ax.set_title('Height and Foot Size - Normalised')
@@ -84,8 +88,8 @@ fig, ax = plt.subplots(1, 1, figsize=(8, 6))
 ax.set_aspect('equal')
 ax.set_xticks([])
 ax.set_yticks([])
-ax.set_xlim([-3, 3])
-ax.set_ylim([-2, 2])
+ax.set_xlim([-2.9, 2.9])
+ax.set_ylim([-1.9, 1.9])
 ax.grid(False)
 ax.scatter(rX[:, 0], rX[:, 1])
 ax.plot([0, rp1[0]], [0, rp1[1]], 'r-', lw=2)
@@ -102,8 +106,8 @@ ax.set_aspect('equal')
 ax.set_xticks([])
 ax.set_yticks([])
 ax.grid(False)
-ax.set_xlim([-3, 3])
-ax.set_ylim([-2, 2])
+ax.set_xlim([-2.9, 2.9])
+ax.set_ylim([-1.9, 1.9])
 ax.scatter(rX[:, 0], rX[:, 1])
 ax.plot([-3, 3], [0, 0], 'r-', lw=2)
 ax.legend(['P1', ], loc='upper left')
@@ -117,8 +121,8 @@ ax.set_aspect('equal')
 ax.set_xticks([])
 ax.set_yticks([])
 ax.grid(False)
-ax.set_xlim([-3, 3])
-ax.set_ylim([-2, 2])
+ax.set_xlim([-2.9, 2.9])
+ax.set_ylim([-1.9, 1.9])
 ax.scatter(pX[:, 0], pX[:, 1])
 ax.plot([-3, 3], [0, 0], 'r-', lw=2)
 ax.legend(['P1', ], loc='upper left')
