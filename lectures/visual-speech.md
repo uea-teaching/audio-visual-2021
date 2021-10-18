@@ -45,11 +45,11 @@ which is dependent on the position of the speech **articulators**.
 
 ---
 
-An MRI of the vocal tract.
+![An MRI of the vocal tract.](assets/mov/mri.mp4)
 
-<video controls src="assets/mov/mri.mp4" width="40%"></video>
-
-<cite> source: https://sail.usc.edu/span/gallery.html</cite>
+::: notes
+source: https://sail.usc.edu/span/gallery.html
+:::
 
 ## {data-auto-animate="true" data-background-color="#DCDCDC"}
 
@@ -153,18 +153,10 @@ Some deaf-blind people use the **Tadoma** method of communication.
 
 ::: columns
 ::::: column
-
-<video controls width="400px"
-data-src="assets/mov/Bog-AV-noise-m18dB-SNR-mask.mp4">
-</video>
-
+![](assets/mov/Bog-AV-noise-m18dB-SNR-mask.mp4)
 :::::
 ::::: column
-
-<video controls width="400px"
-data-src="assets/mov/Dog-AV-noise-m18dB-SNR-mask.mp4">
-</video>
-
+![](assets/mov/Dog-AV-noise-m18dB-SNR-mask.mp4)
 :::::
 :::
 
@@ -174,18 +166,10 @@ Can you discriminate between "dog" and "bog", in noisy audio?
 
 ::: columns
 ::::: column
-
-<video controls width="400px"
-data-src="assets/mov/Bog-AV-noise-m18dB-SNR.mp4">
-</video>
-
+![](assets/mov/Bog-AV-noise-m18dB-SNR.mp4)
 :::::
 ::::: column
-
-<video controls width="400px"
-data-src="assets/mov/Dog-AV-noise-m18dB-SNR.mp4">
-</video>
-
+![](assets/mov/Dog-AV-noise-m18dB-SNR.mp4)
 :::::
 :::
 
