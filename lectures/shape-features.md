@@ -578,7 +578,7 @@ the variation in shape, and $\mathbf{b}_{s}$ are the **parameters** that represe
 
 ---
 
-![](assets/plots2/pca_01.png)
+![](assets/plots2/pca_01.png){width=85%}
 
 ## _Aside:_ Principal Component Analysis (PCA)
 
@@ -590,11 +590,11 @@ Repeat for however many dimensions your data has
 
 ---
 
-![](assets/plots2/pca_02.png)
+![](assets/plots2/pca_02.png){width=85%}
 
 ---
 
-![](assets/plots2/pca_03.png)
+![](assets/plots2/pca_03.png){width=85%}
 
 ## _Aside:_ Principal Component Analysis (PCA)
 
@@ -609,19 +609,19 @@ The original data can be approximated as some distance along P1 from the centre 
 
 ---
 
-![](assets/plots2/pca_04.png)
+![](assets/plots2/pca_04.png){width=85%}
 
 ---
 
-![](assets/plots2/pca_05.png)
+![](assets/plots2/pca_05.png){width=85%}
 
 ---
 
-![](assets/plots2/pca_06.png)
+![](assets/plots2/pca_06.png){width=85%}
 
 ---
 
-![](assets/plots2/pca_07.png)
+![](assets/plots2/pca_07.png){width=85%}
 
 ## _Aside:_ Principal Component Analysis (PCA)
 
@@ -660,3 +660,82 @@ Algorithm:
 ## _Aside:_ Principal Component Analysis (PCA) {data-auto-animate="true"}
 
 Matlab has implementations of both PCA and of Eigenvector/Eigenvalue decomposition.
+
+## Point Distribution Models
+
+For modelling shapes, an n-point shape is represented as a 2n element vector:
+
+$$X = \{x_1, x_2, \dots, x_n, y_1, y_2, \dots, y_n \}^{T}$$
+
+Can be thought of as a single point in a $\mathbb{R}^{2n}$ space.
+
+## Point Distribution Models
+
+PCA can be applied to the $\mathbb{R}^{2n}$ data, rotating the $2n$ axes to best fit to the data cloud in $\mathbb{R}^{2n}$ space.
+
+We retain only the meaningful variation - often resulting in considerable compression.
+
+## Point Distribution Models
+
+![](assets/plots2/pca_mouth.png)
+
+::: notes
+Here, the original data is 20 x 2D points.
+We can express the mouth shapes with only 3 values.
+:::
+
+## Fitting a PDM
+
+Given a PDM, and a new image, how do we fit the PDM to the facial pose in the new image?
+
+- Sample the pixels around each landmark in the training set, and look for the region in the image that best matches the sample.
+
+- Refine the fit by forcing the shape to lie within the model space.
+
+- More efficient if provided an approximate starting point.
+
+- Further reading: [Active Shape Models](http://personalpages.manchester.ac.uk/staff/timothy.f.cootes/papers/asm_overview.pdf)
+
+::: notes
+
+There is a lot to model-fitting and optimisation.
+Too much to cover in one slide...
+Gradient descent is a good start.
+Creating an Active Appearance Model (AAM) would be great.
+
+:::
+
+# Fourier Descriptors of Shape
+
+## Fourier Descriptors
+
+The lip boundary provides a closed contour.
+
+- Normalise the length to $2 \pi$ units.
+- Measure the distance from the centroid to the contour at regular intervals to calculate a **Centroid Contour Distance Curve**.
+- The curve is _periodic_ with period $2 \pi$, and it is real, continuous.
+
+## Fourier Descriptors
+
+![](assets/plots2/fourier_descriptors.gif)
+
+## Fourier Descriptors
+
+The curve can be decomposed into a **Fourier** series (refer back to the audio processing slides).
+
+## Fourier Descriptors
+
+- The coefficients of the series provide the visual features
+- This requires an accurate and complete estimate of the lip-contour.
+- The coefficients do not have direct physical meaning.
+
+::: notes
+you could get the lip contour from tracking or thresholding.
+:::
+
+# Summary
+
+- Visual Features
+- Image segmentation
+- Point distribution models and PCA
+- Fourier descriptors
