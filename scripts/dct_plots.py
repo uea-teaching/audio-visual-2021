@@ -46,8 +46,9 @@ fig.savefig(root + 'basis_vectors_1d.png', **savekw)
 
 # %%
 
-rect = patches.Rectangle((90, 60), 8, 8, **rectkw)
-block = cameraman[60:68, 90:98]
+x, y, w, h = 120, 55, 8, 8
+rect = patches.Rectangle((x, y), w, h, **rectkw)
+block = cameraman[y:h+y, x:w+x]
 
 fig, ax = plt.subplots(1, 2, figsize=(9, 6))
 ax[0].grid(False)
@@ -62,7 +63,7 @@ fig.savefig(root + 'cameraman_block.png', **savekw)
 
 # %%
 
-fig, ax = plt.subplots(8, 2, figsize=(12, 7), sharex=True, sharey=True)
+fig, ax = plt.subplots(8, 2, figsize=(10, 6.5), sharex=True, sharey=True)
 x = np.arange(8)
 for k in range(8):
     _dct = dct(block[k, :])
@@ -84,7 +85,7 @@ fig.savefig(root + 'dct_8x8_block.png', **savekw)
 
 # %%
 
-fig, ax = plt.subplots(1, 2, figsize=(12, 2), sharey=True)
+fig, ax = plt.subplots(1, 2, figsize=(10, 2), sharey=True)
 ax[0].plot(block[3, :])
 ax[0].set_title('Pixel Intensities')
 ax[0].set_xlabel('sample index')
@@ -123,27 +124,31 @@ fig.savefig(root + 'dct_2d_block.png', **savekw)
 
 # plot values
 
-fig, ax = plt.subplots(1, figsize=(10, 10))
+fig, ax = plt.subplots(1, figsize=(7, 7))
 ax.pcolormesh(np.ones([8, 8]), cmap='gray', vmin=0, vmax=1,
               edgecolors='k', linewidth=1)
 ax.set_axis_off()
 ax.set_ylim(8, 0)
+ax.set_aspect('equal')
 
 for i in range(8):
     for j in range(8):
         s = f"{_dctn[i, j]:0.0f}"
         ax.text(j + 0.05, i + 0.5, f'{s:^5}', va='center', fontsize=22)
+fig.tight_layout(pad=0.2)
+fig.savefig(root + 'dct_2d_values.png', **savekw)
 
 # %%
 
 poly = patches.Polygon([[0, 8], [0, 0], [8, 0]],
                        edgecolor='none', facecolor=(0, 0.7, 0, 0.5))
 
-fig, ax = plt.subplots(1, figsize=(10, 10))
+fig, ax = plt.subplots(1, figsize=(7, 7))
 ax.pcolormesh(np.ones([8, 8]), cmap='gray', vmin=0, vmax=1,
               edgecolors='k', linewidth=1)
 ax.set_axis_off()
 ax.set_ylim(8, 0)
+ax.set_aspect('equal')
 
 for i in range(8):
     for j in range(8):
@@ -151,17 +156,21 @@ for i in range(8):
         ax.text(j + 0.05, i + 0.5, f'{s:^5}', va='center', fontsize=22)
 
 ax.add_patch(poly)
+fig.tight_layout(pad=0.2)
+fig.savefig(root + 'dct_2d_values_high.png', **savekw)
+
 
 # %%
 
 poly = patches.Polygon([[0, 8], [8, 8], [8, 0]],
                        edgecolor='none', facecolor=(0.7, 0, 0, 0.4))
 
-fig, ax = plt.subplots(1, figsize=(10, 10))
+fig, ax = plt.subplots(1, figsize=(7, 7))
 ax.pcolormesh(np.ones([8, 8]), cmap='gray', vmin=0, vmax=1,
               edgecolors='k', linewidth=1)
 ax.set_axis_off()
 ax.set_ylim(8, 0)
+ax.set_aspect('equal')
 
 for i in range(8):
     for j in range(8):
@@ -170,4 +179,5 @@ for i in range(8):
 
 ax.add_patch(poly)
 
-# %%
+fig.tight_layout(pad=0.2)
+fig.savefig(root + 'dct_2d_values_low.png', **savekw)
