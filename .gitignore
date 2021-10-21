@@ -18,6 +18,7 @@
 !lectures/assets/img*/*.gif
 !lectures/assets/plots*/
 !lectures/assets/plots*/*.png
+!lectures/assets/plots*/*.gif
 !lectures/assets/mov
 !lectures/assets/mov/*.mp4
 
