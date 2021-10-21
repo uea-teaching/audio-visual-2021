@@ -3,7 +3,7 @@
 import numpy as np
 from sklearn.decomposition import PCA
 from skimage import data, io, filters, transform, feature
-from scipy.fftpack import dct
+from scipy.fftpack import dct, dctn, idctn
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
@@ -98,5 +98,76 @@ ax[1].set_xlabel('result index')
 
 fig.tight_layout(pad=0.2)
 fig.savefig(root + 'block_row3.png', **savekw)
+
+# %%
+
+# 2D DCT
+
+_dctn = dctn(block, norm='ortho')
+
+fig, ax = plt.subplots(1, 2, figsize=(10, 5), sharey=True)
+ax[0].pcolormesh(block, cmap='gray', vmin=0, vmax=255,
+                 edgecolors='w', linewidth=1)
+ax[0].set_aspect('equal')
+ax[0].set_ylim(8, 0)
+ax[0].set_title('8 x 8 block')
+ax[1].pcolormesh(_dctn, cmap='plasma', edgecolors='w', linewidth=1)
+ax[1].set_aspect('equal')
+ax[1].set_ylim(8, 0)
+ax[1].set_title('DCT Coefficients')
+fig.tight_layout(pad=0.2)
+fig.savefig(root + 'dct_2d_block.png', **savekw)
+
+
+# %%
+
+# plot values
+
+fig, ax = plt.subplots(1, figsize=(10, 10))
+ax.pcolormesh(np.ones([8, 8]), cmap='gray', vmin=0, vmax=1,
+              edgecolors='k', linewidth=1)
+ax.set_axis_off()
+ax.set_ylim(8, 0)
+
+for i in range(8):
+    for j in range(8):
+        s = f"{_dctn[i, j]:0.0f}"
+        ax.text(j + 0.05, i + 0.5, f'{s:^5}', va='center', fontsize=22)
+
+# %%
+
+poly = patches.Polygon([[0, 8], [0, 0], [8, 0]],
+                       edgecolor='none', facecolor=(0, 0.7, 0, 0.5))
+
+fig, ax = plt.subplots(1, figsize=(10, 10))
+ax.pcolormesh(np.ones([8, 8]), cmap='gray', vmin=0, vmax=1,
+              edgecolors='k', linewidth=1)
+ax.set_axis_off()
+ax.set_ylim(8, 0)
+
+for i in range(8):
+    for j in range(8):
+        s = f"{_dctn[i, j]:0.0f}"
+        ax.text(j + 0.05, i + 0.5, f'{s:^5}', va='center', fontsize=22)
+
+ax.add_patch(poly)
+
+# %%
+
+poly = patches.Polygon([[0, 8], [8, 8], [8, 0]],
+                       edgecolor='none', facecolor=(0.7, 0, 0, 0.4))
+
+fig, ax = plt.subplots(1, figsize=(10, 10))
+ax.pcolormesh(np.ones([8, 8]), cmap='gray', vmin=0, vmax=1,
+              edgecolors='k', linewidth=1)
+ax.set_axis_off()
+ax.set_ylim(8, 0)
+
+for i in range(8):
+    for j in range(8):
+        s = f"{_dctn[i, j]:0.0f}"
+        ax.text(j + 0.05, i + 0.5, f'{s:^5}', va='center', fontsize=22)
+
+ax.add_patch(poly)
 
 # %%
