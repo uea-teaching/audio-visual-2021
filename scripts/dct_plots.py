@@ -1,8 +1,10 @@
 # %%
 
+import re
 import numpy as np
 from sklearn.decomposition import PCA
 from skimage import data, io, filters, transform, feature
+from skimage.color import rgb2gray
 from scipy.fftpack import dct, dctn, idctn
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
@@ -134,8 +136,7 @@ ax.set_aspect('equal')
 for i in range(8):
     for j in range(8):
         s = f"{_dctn[i, j]:0.0f}"
-        ax.text(j + 0.05, i + 0.5, f'{s:^5}', va='center', fontsize=22)
-fig.tight_layout(pad=0.2)
+        ax.text(j, i + 0.5, f'{s:^5}', va='center', fontsize=20)
 fig.savefig(root + 'dct_2d_values.png', **savekw)
 
 # %%
@@ -153,10 +154,9 @@ ax.set_aspect('equal')
 for i in range(8):
     for j in range(8):
         s = f"{_dctn[i, j]:0.0f}"
-        ax.text(j + 0.05, i + 0.5, f'{s:^5}', va='center', fontsize=22)
+        ax.text(j, i + 0.5, f'{s:^5}', va='center', fontsize=20)
 
 ax.add_patch(poly)
-fig.tight_layout(pad=0.2)
 fig.savefig(root + 'dct_2d_values_high.png', **savekw)
 
 
@@ -175,9 +175,49 @@ ax.set_aspect('equal')
 for i in range(8):
     for j in range(8):
         s = f"{_dctn[i, j]:0.0f}"
-        ax.text(j + 0.05, i + 0.5, f'{s:^5}', va='center', fontsize=22)
+        ax.text(j, i + 0.5, f'{s:^5}', va='center', fontsize=20)
 
 ax.add_patch(poly)
 
-fig.tight_layout(pad=0.2)
 fig.savefig(root + 'dct_2d_values_low.png', **savekw)
+
+# %%
+
+mouth_160 = io.imread('../lectures/assets/img4/recG001_160x160.png')
+mouth_40 = transform.resize(mouth_160, (20, 20))
+mouth_40_gs = rgb2gray(mouth_40)
+
+# %%
+
+fig, ax = plt.subplots(1, 3,  figsize=(10, 4))
+ax[0].imshow(mouth_160, interpolation='none')
+ax[0].set_title('original')
+ax[0].grid(False)
+ax[1].imshow(mouth_40, interpolation='none')
+ax[1].set_title('resized')
+ax[1].grid(False)
+ax[2].imshow(mouth_40_gs, cmap='gray', interpolation='none')
+ax[2].set_title('grayscale')
+ax[2].grid(False)
+
+fig.savefig(root + 'resize_mouth.png', **savekw)
+
+# %%
+
+mouth_dct = dctn(mouth_40_gs, norm='ortho')
+rebuild_dct = np.zeros_like(mouth_dct)
+rebuild_dct[:5, :5] = mouth_dct[:5, :5]
+mouth_restored = idctn(rebuild_dct, norm='ortho')
+
+fig, ax = plt.subplots(1, 3,  figsize=(10, 4), sharey=True)
+ax[0].imshow(mouth_40_gs, cmap='gray', interpolation='none')
+ax[0].set_title('grayscale')
+ax[0].grid(False)
+ax[1].imshow(mouth_dct, cmap='coolwarm', interpolation='none')
+ax[1].set_title('DCT coefficients')
+ax[1].grid(False)
+ax[2].imshow(mouth_restored, cmap='gray', interpolation='none')
+ax[2].set_title('restored')
+ax[2].grid(False)
+
+fig.savefig(root + 'restored_mouth.png', **savekw)
