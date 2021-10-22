@@ -290,6 +290,7 @@ Which colour-space should be used?
 ::: columns
 ::::: column
 ![Normalised RGB](assets/plots2/norm-rgb.png)
+
 :::::
 ::::: column
 
@@ -329,20 +330,26 @@ $$\begin{bmatrix} \mu_{r} \\ \mu_{g} \\ \mu_{b} \end{bmatrix} = \mu_{c}$$
 :::::
 :::
 
-## Image Segmentation
+## Image Segmentation {data-auto-animate="true"}
 
-Find the distance between each pixel in the image, $~I_{i, j}$, and the mean lip pixel colour $~\mu_{c}$.
+Find the Euclidean distance between each pixel in the image, $~I_{i, j}$, and the mean lip pixel colour $\mu_{c}$.
 
-$$D_{i, j} = \sqrt{\sum{(I_{i, j} -  \mu_{c})^2}} $$
+$$D_{i, j} = \sqrt{\sum{(I_{i, j} -  \mu_{c})^2}}$$
 
-## Image Segmentation
-
+::: notes
 The Euclidean distance between colour at row i, column j and the mean lip colour.
+:::
 
-$$D_{i, j} = \sqrt{\sum{(I_{i, j} -  \mu_{c})^2}} $$
+## Image Segmentation {data-auto-animate="true"}
+
+$$D_{i, j} = \sqrt{\sum{(I_{i, j} -  \mu_{c})^2}}$$
 
 A better distance metric might consider the variance of the lip pixels rather
 than just the mean, e.g. _Mahalanobis_ distance.
+
+::: notes
+The Euclidean distance between colour at row i, column j and the mean lip colour.
+:::
 
 ## Image Segmentation
 
@@ -562,6 +569,10 @@ the variation in shape, and $\mathbf{b}_{s}$ are the **parameters** that represe
 - Used for dimensionality reduction.
 - Reduces data down into its basic components, stripping away any unnecessary parts.
 
+:::
+
+::: notes
+PCA was invented in 1901 by Karl Pearson, as an analogue of the principal axis theorem in mechanics;
 :::
 
 ## _Aside:_ Principal Component Analysis (PCA)
