@@ -8,7 +8,7 @@ date: \today
 # Content
 
 - DCT Features
-- Eigen Faces
+- Eigenfaces
 - Appearance Models
 - Visual Feature Efficacy
 
@@ -70,7 +70,7 @@ MATLAB has the dct function
 
 $$Y_k = cos \left[ \frac{\pi k (2n + 1)}{2N} \right]$$
 
-$$n = 1, 2, \dots, N-1$$
+$$n = 0, 1, 2, \dots, N-1$$
 
 :::::
 :::
@@ -198,10 +198,110 @@ If we want to reconstruct the image using the inverse DCT, we can set the low va
 :::::
 :::
 
+## DCT for 2D Signals
+
+::: columns
+::::: column
+
+![](assets/plots2/dct_2d_values_zeroed.png)
+
+:::::
+::::: column
+
+Here you can see we have zeroed the lower right triangle.
+
+You should decide empirically how many coefficients to retain.
+Often, many fewer than half produce good results.
+
+:::::
+:::
+
+## DCT Features {data-auto-animate="true"}
+
+One approach for modelling the appearance of the face:
+
+::: incremental
+
+- Convert the image to greyscale.
+- Crop the image to contain only the region of interest (the mouth).
+- Normalise the size of the image to some default size (the images need the same number of pixels in each frame).
+- Either resize the cropped regions, or better, use a constant clipping box.
+
+:::
+
+## DCT Features {data-auto-animate="true"}
+
+One approach for modelling the appearance of the face:
+
+::: incremental
+
+- Segment the region into n x n pixel blocks.
+- Experiment with $1 \leq n \leq 8$.
+- Apply a 2D Discrete Cosine Transform (DCT) to each block.
+- Extract coefficients that encode low frequency information.
+
+:::
+
 ## 2D DCT case study
 
 ![](assets/plots2/resize_mouth.png)
 
+A region of interest is cropped, resized and converted to greyscale.
+
 ## 2D DCT case study
 
 ![](assets/plots2/restored_mouth.png)
+
+From the greyscale image, we can extract the DCT coefficients.
+We retain only the low frequency coefficients, and show a reconstruction of the image.
+
+## 2D DCT case study
+
+![](assets/plots2/restored_compare.png)
+
+Perceptual evaluations of the reconstruction are informative, but your experiments should determine how useful the features are for recognising speech.
+
+# Eigenfaces
+
+## Eigenfaces {data-auto-animate="true"}
+
+::: incremental
+
+- Crop the images to contain only the region of interest.
+- Normalise the size of the image.
+- Images need the **same number** of pixels in each frame.
+- Resize the images, or better, use a constant clipping box.
+
+:::
+
+## Eigenfaces {data-auto-animate="true"}
+
+::: incremental
+
+- Apply **PCA** to the size-normalised images.
+- When applied to face images, referred to as **Eigenfaces**.
+- This was the basis of an early face recognition system. (Turk and Pentland, 1990).
+
+:::
+
+## Eigenfaces {data-auto-animate="true"}
+
+![Training data is the Olivetti Faces corpus.](assets/plots2/eigen_faces_data.png)
+
+## Eigenfaces {data-auto-animate="true"}
+
+Recall, to reconstruct using PCA:
+
+$$\mathbf{x} \approx \mathbf{\overline x} + \mathbf{P} \mathbf{b}$$
+
+## Eigenfaces {data-auto-animate="true"}
+
+![mean face](assets/plots2/eigen_faces_mean.png){width=50%}
+
+## Eigenfaces {data-auto-animate="true"}
+
+![The **Eigenfaces** are the principal components of the data](assets/plots2/eigen_faces_components.png)
+
+## Eigenfaces {data-auto-animate="true"}
+
+![Example reconstruction.](assets/plots2/eigen_reconstruct.gif)
