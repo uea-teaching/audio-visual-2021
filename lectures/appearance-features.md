@@ -296,6 +296,12 @@ $$\mathbf{x} \approx \mathbf{\overline x} + \mathbf{P} \mathbf{b}$$
 
 ## Eigenfaces {data-auto-animate="true"}
 
+A human face can be approximated
+from the mean shape plus a linear combination
+of the eigenfaces.
+
+## Eigenfaces {data-auto-animate="true"}
+
 ![mean face](assets/plots2/eigen_faces_mean.png){width=50%}
 
 ## Eigenfaces {data-auto-animate="true"}
