@@ -682,7 +682,8 @@ Can be thought of as a single point in a $\mathbb{R}^{2n}$ space.
 
 ## Point Distribution Models
 
-PCA can be applied to the $\mathbb{R}^{2n}$ data, rotating the $2n$ axes to best fit to the data cloud in $\mathbb{R}^{2n}$ space.
+PCA can be applied to the $\mathbb{R}^{2n}$ data, rotating the $2n$ axes to
+best fit to the data cloud in $\mathbb{R}^{2n}$ space.
 
 We retain only the meaningful variation - often resulting in considerable compression.
 
@@ -699,7 +700,8 @@ We can express the mouth shapes with only 3 values.
 
 Given a PDM, and a new image, how do we fit the PDM to the facial pose in the new image?
 
-- Sample the pixels around each landmark in the training set, and look for the region in the image that best matches the sample.
+- Sample the pixels around each landmark in the training set, and look for the
+  region in the image that best matches the sample.
 
 - Refine the fit by forcing the shape to lie within the model space.
 
@@ -723,7 +725,8 @@ Creating an Active Appearance Model (AAM) would be great.
 The lip boundary provides a closed contour.
 
 - Normalise the length to $2 \pi$ units.
-- Measure the distance from the centroid to the contour at regular intervals to calculate a **Centroid Contour Distance Curve**.
+- Measure the distance from the centroid to the contour at regular intervals
+  to calculate a **Centroid Contour Distance Curve**.
 - The curve is _periodic_ with period $2 \pi$, and it is real, continuous.
 
 ## Fourier Descriptors
