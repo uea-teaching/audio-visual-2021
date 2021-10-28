@@ -143,6 +143,3 @@ def plot_w_h_threshold():
 
 
 plot_w_h_threshold()
-# %%
-
-# %%
