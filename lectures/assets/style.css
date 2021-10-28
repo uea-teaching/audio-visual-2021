@@ -17,9 +17,12 @@
 }
 
 em {
-  font-style: oblique;
-  font-weight: 900;
-  /* color: #ff6ec7; */
+  font-style: italic;
+  color: #ff6ec7;
+}
+
+strong {
+  color: rgb(255, 169, 20);
 }
 
 code {
