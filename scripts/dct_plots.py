@@ -17,9 +17,18 @@ root = '../lectures/assets/plots2/'
 
 cameraman = io.imread('../lectures/assets/plots1/cameraman.png')
 
+
+def zero_out(dct_coeffs, tri_len):
+    mask = np.zeros_like(dct_coeffs)
+    for i in range(tri_len):
+        for j in range(tri_len - i):
+            mask[i, j] = 1
+    return dct_coeffs * mask
+
 # %%
 
 # plot 8 point basis vectors
+
 
 N = 8
 fig, ax = plt.subplots(N, 1, figsize=(8, N+2), sharex=True)
@@ -183,6 +192,29 @@ fig.savefig(root + 'dct_2d_values_low.png', **savekw)
 
 # %%
 
+poly = patches.Polygon([[0, 8], [8, 8], [8, 0]],
+                       edgecolor='none', facecolor=(0.7, 0, 0, 0.4))
+
+values = zero_out(_dctn, 7)
+fig, ax = plt.subplots(1, figsize=(7, 7))
+ax.pcolormesh(np.ones([8, 8]), cmap='gray', vmin=0, vmax=1,
+              edgecolors='k', linewidth=1)
+ax.set_axis_off()
+ax.set_ylim(8, 0)
+ax.set_aspect('equal')
+
+for i in range(8):
+    for j in range(8):
+        s = f"{values[i, j]:0.0f}"
+        ax.text(j, i + 0.5, f'{s:^5}', va='center', fontsize=20)
+
+ax.add_patch(poly)
+
+fig.savefig(root + 'dct_2d_values_zeroed.png', **savekw)
+
+
+# %%
+
 mouth_160 = io.imread('../lectures/assets/img4/recG001_160x160.png')
 mouth_40 = transform.resize(mouth_160, (20, 20))
 mouth_40_gs = rgb2gray(mouth_40)
@@ -204,9 +236,9 @@ fig.savefig(root + 'resize_mouth.png', **savekw)
 
 # %%
 
+f = 11
 mouth_dct = dctn(mouth_40_gs, norm='ortho')
-rebuild_dct = np.zeros_like(mouth_dct)
-rebuild_dct[:5, :5] = mouth_dct[:5, :5]
+rebuild_dct = zero_out(mouth_dct, f)
 mouth_restored = idctn(rebuild_dct, norm='ortho')
 
 fig, ax = plt.subplots(1, 3,  figsize=(10, 4), sharey=True)
@@ -217,7 +249,20 @@ ax[1].imshow(mouth_dct, cmap='coolwarm', interpolation='none')
 ax[1].set_title('DCT coefficients')
 ax[1].grid(False)
 ax[2].imshow(mouth_restored, cmap='gray', interpolation='none')
-ax[2].set_title('restored')
+ax[2].set_title(f'{f*(f-1)//2:0d} coefficients')
 ax[2].grid(False)
 
 fig.savefig(root + 'restored_mouth.png', **savekw)
+
+# %%
+
+fig, ax = plt.subplots(1, 3,  figsize=(10, 4), sharey=True)
+for i, k in enumerate([5, 10, 15]):
+    img = idctn(zero_out(mouth_dct, k), norm='ortho')
+    ax[i].imshow(img, cmap='gray', interpolation='none')
+    ax[i].set_title(f'{k*(k-1)//2:0d} coefficients')
+    ax[i].grid(False)
+
+fig.savefig(root + 'restored_compare.png', **savekw)
+
+# %%
