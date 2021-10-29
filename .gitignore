@@ -6,6 +6,12 @@
 !.gitignore
 !Makefile
 
+!labs/
+!labs/Makefile
+!labs/*.md
+!labs/*.jpg
+!labs/*.png
+
 !lectures/
 !lectures/Makefile
 !lectures/*.md
