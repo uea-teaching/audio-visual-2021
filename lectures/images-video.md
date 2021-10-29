@@ -1,5 +1,5 @@
 ---
-title: Image and Video
+title: Images and Video
 subtitle: Audiovisual Processing CMP-6026A
 author: Dr. David Greenwood
 date: \today
