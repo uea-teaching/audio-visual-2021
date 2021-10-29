@@ -310,4 +310,4 @@ of the eigenfaces.
 
 ## Eigenfaces {data-auto-animate="true"}
 
-![Example reconstruction.](assets/plots2/eigen_reconstruct.gif)
+![Example reconstruction.](assets/plots2/eigen_reconstruct.gif){width=90%}
