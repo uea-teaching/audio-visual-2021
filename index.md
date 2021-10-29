@@ -1,0 +1,30 @@
+# Audiovisual Processing CMP-6026A - 2021
+
+Learning material for Audiovisual Processing CMP-6026A
+
+The only requirement to view the slides is a web browser - with javascript enabled.
+
+For very low bandwidth users, you can view the raw text files
+by navigating [here](https://github.com/uea-teaching/audio-visual-2021).
+
+## Viewing the slides
+
+Move through the slides with the arrow keys, toggle "o" to get an overview.
+
+Some slides have additional notes. Press "s" to view speaker notes.
+
+## Lectures
+
+Lectures are available as online html or printable pdf.
+
+- Images and Video: [online](lectures/images-video.html)
+  or printable [pdf](lectures/images-video.bmr.pdf).
+
+- Visual Speech: [online](lectures/visual-speech.html)
+  or printable [pdf](lectures/visual-speech.bmr.pdf).
+
+## Labs
+
+Labs are usually a pdf file, or a zip file if additional resources are provided.
+
+- Images and Video [labsheet](labs/01-images-video.lab.pdf).

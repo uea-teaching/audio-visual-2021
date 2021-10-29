@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Dr. David Greenwood">
+  <title>Visual Speech</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reset.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/theme/black.css" id="theme">
+  <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.2.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Visual Speech</h1>
+  <p class="subtitle">Audiovisual Processing CMP-6026A</p>
+  <p class="author">Dr. David Greenwood</p>
+</section>
+
+<section id="content" class="title-slide slide level1">
+<h1>Content</h1>
+<ul>
+<li>Speech Production</li>
+<li>Visual Speech</li>
+<li>Visemes</li>
+<li>Coarticulation</li>
+</ul>
+</section>
+
+<section>
+<section id="speech-production" class="title-slide slide level1">
+<h1>Speech Production</h1>
+<p>in a visual context</p>
+</section>
+<section id="speech-production-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Speech Production</h2>
+<p>Speech can be regarded as a <em>filtering</em> process.</p>
+<div>
+<ul>
+<li class="fragment">Air is expelled from the lungs.
+<ul>
+<li class="fragment">the excitation signal</li>
+</ul></li>
+<li class="fragment">This air is forced through the vocal tract.
+<ul>
+<li class="fragment">the filter</li>
+</ul></li>
+<li class="fragment">The air exits via the nose and mouth.
+<ul>
+<li class="fragment">the filtered signal</li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="speech-production-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Speech Production</h2>
+<p>The filter <em>response</em> is determined by the vocal tract <strong>shape</strong>, which is dependent on the position of the speech <strong>articulators</strong>.</p>
+<div>
+<ul>
+<li class="fragment">The filter is non-stationary since the response changes over time.</li>
+<li class="fragment">Speech is time-varying in nature.</li>
+</ul>
+</div>
+</section>
+<section class="slide level2">
+
+<figure>
+<video data-src="assets/mov/mri.mp4" controls=""><a href="assets/mov/mri.mp4">An MRI of the vocal tract.</a></video><figcaption aria-hidden="true">An MRI of the vocal tract.</figcaption>
+</figure>
+<aside class="notes">
+<p>source: https://sail.usc.edu/span/gallery.html</p>
+</aside>
+</section>
+<section id="section" class="slide level2" data-auto-animate="true" data-background-color="#DCDCDC">
+<h2 data-auto-animate="true" data-background-color="#DCDCDC"></h2>
+<p><img data-src="assets/img2/speech-prod-01.png" /></p>
+</section>
+<section id="section-1" class="slide level2" data-auto-animate="true" data-background-color="#DCDCDC">
+<h2 data-auto-animate="true" data-background-color="#DCDCDC"></h2>
+<p><img data-src="assets/img2/speech-prod-02.png" /></p>
+</section>
+<section id="section-2" class="slide level2" data-auto-animate="true" data-background-color="#DCDCDC">
+<h2 data-auto-animate="true" data-background-color="#DCDCDC"></h2>
+<p><img data-src="assets/img2/speech-prod-03.png" /></p>
+</section>
+<section id="section-3" class="slide level2" data-auto-animate="true" data-background-color="#DCDCDC">
+<h2 data-auto-animate="true" data-background-color="#DCDCDC"></h2>
+<p><img data-src="assets/img2/speech-prod-04.png" /></p>
+</section>
+<section id="section-4" class="slide level2" data-auto-animate="true" data-background-color="#DCDCDC">
+<h2 data-auto-animate="true" data-background-color="#DCDCDC"></h2>
+<p><img data-src="assets/img2/speech-prod-05.png" /></p>
+</section>
+<section id="articulation" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Articulation</h2>
+<p>The <strong>place</strong> of articulation describes <em>where</em> a speech sound is formed.</p>
+</section>
+<section id="articulation-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Articulation</h2>
+<p>The <strong>manner</strong> of articulation describes <em>how</em> a speech sound is formed.</p>
+</section>
+<section id="articulation-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Articulation</h2>
+<ul>
+<li>Stop
+<ul>
+<li>a complete blockage is formed along the vocal-tract.</li>
+</ul></li>
+<li>Nasal
+<ul>
+<li>airflow can exit through the nose (velum is lowered).</li>
+</ul></li>
+<li>Fricative
+<ul>
+<li>a partial blockage is formed causing a turbulent airflow.</li>
+</ul></li>
+</ul>
+</section>
+<section id="articulation-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Articulation</h2>
+<ul>
+<li>Approximant
+<ul>
+<li>a partial blockage, but insufficient enough to cause a fricative.</li>
+</ul></li>
+<li>Lateral
+<ul>
+<li>airflow is blocked along the centre of the vocal-tract.</li>
+</ul></li>
+</ul>
+<p><strong>Note:</strong> these manners of articulation are not mutually exclusive.</p>
+</section>
+<section id="consonants" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Consonants</h2>
+<p>Consonants are characterised by the place and manner of articulation.</p>
+</section>
+<section id="consonants-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Consonants</h2>
+<ul>
+<li><em>/p/</em> is a voiceless bilabial stop (plosive).</li>
+<li><em>/m/</em> is a voiced bilabial nasal.</li>
+<li><em>/f/</em> is a voiceless labiodental fricative.</li>
+<li><em>/k/</em> is a voiceless velar stop.</li>
+<li><em>/j/</em> is voiced palatal lateral approximant.</li>
+</ul>
+</section>
+<section id="vowels" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Vowels</h2>
+<p>For vowels the airflow is relatively unobstructed.</p>
+</section>
+<section id="vowels-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Vowels</h2>
+<p>Vowels <strong>cannot</strong> be characterised by the place or manner of articulation.</p>
+</section>
+<section id="vowels-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Vowels</h2>
+<p>Vowels <strong>are</strong> characterised by:</p>
+<ul>
+<li>The degree of lip-rounding.</li>
+<li>The front to back position of the high-point of the tongue.</li>
+</ul>
+</section>
+<section id="vowels-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Vowels</h2>
+<p>Diphthongs are the <em>concatenation</em> of two vowels.</p>
+</section></section>
+<section>
+<section id="visual-speech" class="title-slide slide level1">
+<h1>Visual Speech</h1>
+<p>Speech is about more than just sounds.</p>
+<aside class="notes">
+<p>The emphasis over the last few slides is this: speech is not confined to the audio domain… speech production can be (partially) observed, and those observations can support understanding…</p>
+</aside>
+</section>
+<section id="visual-speech-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Visual Speech</h2>
+<ul>
+<li>The formation of <em>some</em> speech can be <strong>seen</strong>.</li>
+<li>We all use visual speech to help disambiguate similar sounds.</li>
+<li>In a noisy environment you tend to watch the person you are speaking with more closely.</li>
+</ul>
+</section>
+<section id="visual-speech-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Visual Speech</h2>
+<p>Speech formation can be felt.</p>
+<p>Some deaf-blind people use the <strong>Tadoma</strong> method of communication.</p>
+</section>
+<section id="visual-speech-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Visual Speech</h2>
+<div class="columns">
+<div class="column">
+<p><video data-src="assets/mov/Bog-AV-noise-m18dB-SNR-mask.mp4" controls=""><a href="assets/mov/Bog-AV-noise-m18dB-SNR-mask.mp4">Video</a></video></p>
+</div><div class="column">
+<p><video data-src="assets/mov/Dog-AV-noise-m18dB-SNR-mask.mp4" controls=""><a href="assets/mov/Dog-AV-noise-m18dB-SNR-mask.mp4">Video</a></video></p>
+</div>
+</div>
+<p>Can you discriminate between “dog” and “bog”, in noisy audio?</p>
+</section>
+<section id="visual-speech-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Visual Speech</h2>
+<div class="columns">
+<div class="column">
+<p><video data-src="assets/mov/Bog-AV-noise-m18dB-SNR.mp4" controls=""><a href="assets/mov/Bog-AV-noise-m18dB-SNR.mp4">Video</a></video></p>
+</div><div class="column">
+<p><video data-src="assets/mov/Dog-AV-noise-m18dB-SNR.mp4" controls=""><a href="assets/mov/Dog-AV-noise-m18dB-SNR.mp4">Video</a></video></p>
+</div>
+</div>
+<p>Can you discriminate between “dog” and “bog”, when the articulators are visible?</p>
+</section>
+<section id="visual-speech-5" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Visual Speech</h2>
+<p>Audiovisual speech is <em>complementary</em> in nature.</p>
+<div>
+<ul>
+<li class="fragment"><p>Sounds that <strong>sound</strong> similar often look different</p>
+<p>eg. /b/, /d/, /m/, /n/, /f/, /s/</p></li>
+<li class="fragment"><p>The formation of sounds that <strong>look</strong> the same sound different</p>
+<p>eg. /f/, /v/, /s/, /t/, /b/, /p/</p></li>
+</ul>
+</div>
+</section>
+<section id="visual-speech-6" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Visual Speech</h2>
+<p>Visual information provides an effective improvement of <span class="math inline">\(\approx 11 dB\)</span> in signal-to-noise ratio.</p>
+</section>
+<section id="visual-speech-7" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Visual Speech</h2>
+<p>Vision can improve understanding of hard-to-understand utterances.</p>
+</section>
+<section id="visual-speech-8" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Visual Speech</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/img2/benfranklin.jpg" alt="Benjamin Franklin" /><figcaption aria-hidden="true">Benjamin Franklin</figcaption>
+</figure>
+</div><div class="column">
+<p>Benjamin Franklin invented bi-focal spectacles to help better understand French!</p>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<blockquote>
+<p>“… since my being in France, the glasses that serve me best at table to see what I eat, not being the best to see the faces of those on the other side of the table who speak to me;</p>
+<p>… and when one’s ears are not well accustomed to the sounds of a language, a sight of the movements in the features of him that speaks helps to explain…</p>
+<p>so that I understand French better by the help of my spectacles.”</p>
+<p>– <cite>Benjamin Franklin, in 1785</cite></p>
+</blockquote>
+</section>
+<section id="mcgurk-effect" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">McGurk Effect</h2>
+<p>Visual speech can <strong>alter</strong> our perception of a sound.</p>
+<p>This is illustrated by the <strong>McGurk</strong> effect.</p>
+<p><cite> McGurk &amp; MacDonald, Hearing lips and seeing voices. 1976 </cite></p>
+</section>
+<section id="mcgurk-effect-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">McGurk Effect</h2>
+<div class="columns">
+<div class="column">
+<video controls loop width="340px" data-src="assets/mov/bagada.mp4">
+</video>
+</div><div class="column">
+<ul>
+<li class="fragment">you hear “baa” …</li>
+<li class="fragment">you see “gaa” …</li>
+<li class="fragment">you perceive “daa” …</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="mcgurk-effect-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">McGurk Effect</h2>
+<p>Auditory “baa” with visual “gaa” is often perceived as “daa”.</p>
+<div>
+<ul>
+<li class="fragment">What is perceived is neither seen nor heard!</li>
+<li class="fragment">happens even when the viewer is aware of the effect</li>
+<li class="fragment">The effect persists across age, gender and language.</li>
+</ul>
+</div>
+</section>
+<section id="mcgurk-effect-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">McGurk Effect</h2>
+<video controls loop data-src="assets/mov/McGurkEffect.mp4">
+</video>
+<p>“baa” or “faa”?</p>
+</section>
+<section id="mcgurk-effect-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">McGurk Effect</h2>
+<video controls loop data-src="assets/mov/bill-pail-mayo.mp4">
+</video>
+<p>“Bill”, “pail”, “mayo”?</p>
+</section>
+<section id="mcgurk-effect-5" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">McGurk Effect</h2>
+<p>Also on YouTube:</p>
+<ul>
+<li>https://youtu.be/KiuO_Z2_AD4</li>
+<li>https://youtu.be/xlXaNJR-1Oo</li>
+<li>https://youtu.be/G-lN8vWm3m0</li>
+</ul>
+</section></section>
+<section>
+<section id="visemes" class="title-slide slide level1">
+<h1>Visemes</h1>
+
+</section>
+<section id="visemes-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Visemes</h2>
+<ul>
+<li>The basic building block of auditory speech is the <strong>phoneme</strong>.</li>
+<li>The closest visual equivalent is the <strong>viseme</strong> (visual phoneme).</li>
+</ul>
+</section>
+<section id="visemes-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Visemes</h2>
+<ul>
+<li>The mapping from phonemes to visemes is <strong>many-to-one</strong>.</li>
+<li>Many phonemes map to the same viseme.</li>
+</ul>
+</section>
+<section id="visemes-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Visemes</h2>
+<ul>
+<li>Visemes are usually derived using <em>subjective</em> experiments.</li>
+<li>Viewers are asked to identify the consonant in isolated nonsense words.</li>
+</ul>
+</section>
+<section id="visemes-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Visemes</h2>
+<figure>
+<img data-src="assets/img2/visemes.png" alt="F.Parke and K.Waters, Computer Facial Animation, A K Peters, 1996." /><figcaption aria-hidden="true">F.Parke and K.Waters, Computer Facial Animation, A K Peters, 1996.</figcaption>
+</figure>
+</section></section>
+<section>
+<section id="section-5" class="title-slide slide level1">
+<h1></h1>
+<div class="r-fit-text">
+<p>Coarticulation</p>
+</div>
+</section>
+<section id="coarticulation" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Coarticulation</h2>
+<p>Phonemes are abstract representations of sound.</p>
+</section>
+<section id="coarticulation-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Coarticulation</h2>
+<ul>
+<li>We could think of speech as being a string of phonemes.</li>
+<li>Each has an idealised articulator configuration</li>
+<li>Speech is produced by smoothly varying from one vocal tract configuration to the next.</li>
+</ul>
+</section>
+<section id="coarticulation-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Coarticulation</h2>
+<div class="r-fit-text">
+<p>WRONG!!</p>
+</div>
+</section>
+<section id="coarticulation-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Coarticulation</h2>
+<p>The articulator positions <strong>do not</strong> depend only on the current sound.</p>
+<div>
+<ul>
+<li class="fragment">Neighbouring sounds influence each other.</li>
+</ul>
+</div>
+</section>
+<section id="coarticulation-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Coarticulation</h2>
+<p>The articulators never reach their <em>ideal</em> target.</p>
+<div>
+<ul>
+<li class="fragment">They only move close enough to <em>approximate</em> the required sound.</li>
+<li class="fragment">What you see is a by-product of this.</li>
+</ul>
+</div>
+</section>
+<section id="coarticulation-5" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Coarticulation</h2>
+<p>This is known as <strong>coarticulation</strong>.</p>
+</section>
+<section id="coarticulation-6" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Coarticulation</h2>
+<p>There are two forms of coarticulation:</p>
+<ul>
+<li>anticipatory coarticulation</li>
+<li>perseverative coarticulation</li>
+</ul>
+<aside class="notes">
+<p>perseverative is also known as carry-over coarticulation</p>
+</aside>
+</section>
+<section id="coarticulation-7" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Coarticulation</h2>
+<p>The same phoneme in different contexts both sounds and <strong>looks</strong> different.</p>
+</section>
+<section id="k" class="slide level2">
+<h2>/k/</h2>
+<div class="columns">
+<div class="column">
+<video controls width="400px" data-src="assets/mov/k-k-k-ken-small-cropped.mp4">
+</video>
+</div><div class="column" style="width:16%;">
+<p><img data-src="assets/img2/k-phone-0.jpg" /> <img data-src="assets/img2/k-phone-1.jpg" /> <img data-src="assets/img2/k-phone-2.jpg" /> <img data-src="assets/img2/k-phone-3.jpg" /> <img data-src="assets/img2/k-phone-4.jpg" /></p>
+</div>
+</div>
+</section>
+<section id="t" class="slide level2">
+<h2>/t/</h2>
+<div class="columns">
+<div class="column">
+<video controls width="400px" data-src="assets/mov/t-t-t-ken-small-cropped.mp4">
+</video>
+</div><div class="column" style="width:16%;">
+<p><img data-src="assets/img2/t-phone-0.jpg" /> <img data-src="assets/img2/t-phone-1.jpg" /> <img data-src="assets/img2/t-phone-2.jpg" /> <img data-src="assets/img2/t-phone-3.jpg" /> <img data-src="assets/img2/t-phone-4.jpg" /></p>
+</div>
+</div>
+</section>
+<section id="models-of-coarticulation" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Models of Coarticulation</h2>
+<p>There is no definitive model of coarticulation.</p>
+</section>
+<section id="look-ahead-model" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Look Ahead Model</h2>
+<p>One is the “Look ahead” model.</p>
+<p>Speech gestures begin as early as possible provided there are no constraints on the articulators.</p>
+</section>
+<section id="look-ahead-model-1" class="slide level2" data-auto-animate="true" data-background-color="#DCDCDC">
+<h2 data-auto-animate="true" data-background-color="#DCDCDC">Look Ahead Model</h2>
+<figure>
+<img data-src="assets/img2/look-ahead.png" alt="Look Ahead Model" /><figcaption aria-hidden="true">Look Ahead Model</figcaption>
+</figure>
+</section>
+<section id="look-ahead-model-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Look Ahead Model</h2>
+<p>The look ahead model assumes lazy speech production and allows gradual transitions between speech targets.</p>
+</section>
+<section id="temporal-model" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Temporal Model</h2>
+<p>An alternate model is the temporal model.</p>
+<p>The temporal model assumes that speech gestures begin at a fixed time prior to the onset of a sound.</p>
+</section>
+<section id="temporal-model-1" class="slide level2" data-auto-animate="true" data-background-color="#DCDCDC">
+<h2 data-auto-animate="true" data-background-color="#DCDCDC">Temporal Model</h2>
+<figure>
+<img data-src="assets/img2/temporal.png" alt="Temporal Model" /><figcaption aria-hidden="true">Temporal Model</figcaption>
+</figure>
+</section>
+<section id="temporal-model-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Temporal Model</h2>
+<p>The temporal model assumes that speech gestures are largely independent and that speech is the superposition of the gestures.</p>
+</section>
+<section id="hybrid-model" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Hybrid Model</h2>
+<p>There are also hybrid models:</p>
+<ul>
+<li>Combine both the look ahead and temporal models.</li>
+<li>Initial movement is gradual and starts early.</li>
+<li>Later movement is more rapid, at a fixed time in advance of the pose.</li>
+</ul>
+</section>
+<section id="gestural-model" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Gestural Model</h2>
+<ul>
+<li>A phoneme is represented by a set of <strong>dominance</strong> functions for each articulator.</li>
+<li>The function specifies how dominant an articulator is at different points in time during the articulation of a sound.</li>
+<li>The dominance increases to a peak and then decreases over time.</li>
+</ul>
+</section>
+<section id="gestural-model-1" class="slide level2" data-auto-animate="true" data-background-color="#DCDCDC">
+<h2 data-auto-animate="true" data-background-color="#DCDCDC">Gestural Model</h2>
+<figure>
+<img data-src="assets/img2/gestural.png" alt="Gestural Model" /><figcaption aria-hidden="true">Gestural Model</figcaption>
+</figure>
+</section>
+<section id="models-of-coarticulation-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Models of Coarticulation</h2>
+<ul>
+<li>Different coarticulation models exist because different studies use different experimental conditions and linguistic factors.</li>
+<li>Each model might fit the particular conditions for a given experiment.</li>
+<li>The lack of a formal definition of a viseme and a definitive model of coarticulation make recognition (and synthesis) of visual speech difficult!</li>
+</ul>
+</section></section>
+<section>
+<section id="summary" class="title-slide slide level1">
+<h1>Summary</h1>
+<p>Speech is multi-modal in nature!</p>
+</section>
+<section id="summary-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Summary</h2>
+<p>A view of the articulation is useful for disambiguating similar sounds.</p>
+<p>To a limited extent we all <em>lip-read</em> regardless of our awareness.</p>
+</section>
+<section id="summary-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Summary</h2>
+<p>Visual speech is poorly defined compared with acoustic speech.</p>
+<ul>
+<li>A viseme is assumed to be the visual analogue of the phoneme.</li>
+<li>Coarticulation means that visemes as lip shapes are not a good unit.</li>
+<li>The same sound has many different visual appearances.</li>
+</ul>
+</section></section>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/reveal.js@^4/dist/reveal.js"></script>
+
+  // reveal.js plugins
+  <script src="https://unpkg.com/reveal.js@^4/plugin/notes/notes.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/search/search.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/zoom/zoom.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/math/math.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/highlight/highlight.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+        // Display a presentation progress bar
+        progress: true,
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+        // Push each slide change to the browser history
+        history: true,
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+        // Enable the slide overview mode
+        overview: true,
+        // Vertical centering of slides
+        center: true,
+        // Enables touch navigation on devices with touch input
+        touch: true,
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+        // Turns fragments on and off globally
+        fragments: true,
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+        // Global override for autoplaying embedded media (video/audio/iframe)
+        // - null: Media will only autoplay if data-autoplay is present
+        // - true: All media will autoplay, regardless of individual setting
+        // - false: No media will autoplay, regardless of individual setting
+        autoPlayMedia: null,
+        // Global override for preloading lazy-loaded iframes
+        // - null: Iframes with data-src AND data-preload will be loaded when within
+        //   the viewDistance, iframes with only data-src will be loaded when visible
+        // - true: All iframes with data-src will be loaded when within the viewDistance
+        // - false: All iframes with data-src will be loaded only when visible
+        preloadIframes: null,
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+        // Transition style
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+        // Transition speed
+        transitionSpeed: 'default', // default/fast/slow
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'fade', // none/fade/slide/convex/concave/zoom
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+        // Factor of the display size that should remain empty around the content
+        margin: 0.2,
+        // The display mode that will be used to show slides
+        display: 'block',
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [
+          RevealMath,
+          RevealHighlight,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>

@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Dr. David Greenwood">
+  <title>Images and Video</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reset.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/theme/black.css" id="theme">
+  <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.2.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Images and Video</h1>
+  <p class="subtitle">Audiovisual Processing CMP-6026A</p>
+  <p class="author">Dr. David Greenwood</p>
+</section>
+
+<section id="content" class="title-slide slide level1">
+<h1>Content</h1>
+<ul>
+<li>Introducing Images</li>
+<li>Sampling and Quantisation</li>
+<li>Image Capture</li>
+<li>Controlling and Analysing Images</li>
+<li>Video</li>
+</ul>
+</section>
+
+<section>
+<section id="images" class="title-slide slide level1">
+<h1>Images</h1>
+<p>Arguably the most important scientific instrument to date, practical photography with a camera arrived in 1839.</p>
+<p>Simultaneously claimed by Louis Daguerre and William Henry Fox Talbot, and preceded by far less useful solutions.</p>
+</section>
+<section class="slide level2">
+
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/img1/muybridge.jpg" alt="Eadweard Muybridge" /><figcaption aria-hidden="true">Eadweard Muybridge</figcaption>
+</figure>
+</div><div class="column" style="width:60%;">
+<h3 id="eadweard-muybridge-1830-1904">Eadweard Muybridge 1830-1904</h3>
+<p>Proved a galloping horse lifts all four hooves off the ground at one point in its sequence of motion.</p>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<figure>
+<img data-src="assets/img1/horse.jpg" alt="Sallie Gardner - public domain image" /><figcaption aria-hidden="true">Sallie Gardner - public domain image</figcaption>
+</figure>
+<aside class="notes">
+<p>Muybridge used a series of photographs to illustrate the horse’s motion. He triggered the camera by a series of trip wires.</p>
+</aside>
+</section>
+<section class="slide level2">
+
+<p>Perhaps the earliest movie?</p>
+<figure>
+<img data-src="assets/img1/horse.gif" alt="horse animation" /><figcaption aria-hidden="true">horse animation</figcaption>
+</figure>
+</section>
+<section class="slide level2">
+
+<p>Efficiently describe complex information…</p>
+<figure>
+<img data-src="assets/img1/times-square.jpg" style="width:80.0%" alt="Times Square - CC BY-NC-SA" /><figcaption aria-hidden="true">Times Square - CC BY-NC-SA</figcaption>
+</figure>
+<aside class="notes">
+<p>image from wikipedia - CC BY-NC-SA <a href="https://en.wikipedia.org/wiki/Times_Square#/media/File:New_york_times_square-terabass.jpg">link</a></p>
+</aside>
+</section>
+<section class="slide level2">
+
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/img1/internet-2021.jpg" alt="Map of the Internet - Halcyon Maps" /><figcaption aria-hidden="true">Map of the Internet - Halcyon Maps</figcaption>
+</figure>
+</div><div class="column" style="width:40%;">
+<h3 id="map-of-the-internet">Map of the Internet</h3>
+<p>Image data can contain data other than photographs.</p>
+<p><a href="https://www.halcyonmaps.com/#/map-of-the-internet-2021">A map of the Internet in 2021</a></p>
+</div>
+</div>
+</section>
+<section id="processing-images" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Processing Images</h2>
+<figure>
+<img data-src="assets/img1/restoration.jpg" alt="image enhancement and restoration" /><figcaption aria-hidden="true">image enhancement and restoration</figcaption>
+</figure>
+</section>
+<section id="processing-images-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Processing Images</h2>
+<figure>
+<img data-src="assets/img1/compression.jpg" alt="image compression for transmission and storage" /><figcaption aria-hidden="true">image compression for transmission and storage</figcaption>
+</figure>
+</section>
+<section id="processing-images-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Processing Images</h2>
+<figure>
+<img data-src="assets/img1/forgery.jpg" alt="forgery detection" /><figcaption aria-hidden="true">forgery detection</figcaption>
+</figure>
+</section>
+<section id="processing-images-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Processing Images</h2>
+<figure>
+<img data-src="assets/img1/comp-vision.jpg" alt="image understanding, classification and recognition" /><figcaption aria-hidden="true">image understanding, classification and recognition</figcaption>
+</figure>
+<aside class="notes">
+<p>semantic segmentation, classification and localisation, object detection, instance segmentation.</p>
+</aside>
+</section>
+<section id="processing-images-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Processing Images</h2>
+<ul>
+<li>Image enhancement or restoration</li>
+<li>Transmission or storage</li>
+<li>Evidence</li>
+<li>Image understanding or recognition</li>
+</ul>
+</section>
+<section id="digital-images" class="slide level2">
+<h2>Digital Images</h2>
+<p>How do we represent images on a computer?</p>
+</section>
+<section id="greyscale-images" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Greyscale Images</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/plots1/cameraman.png" alt="Cameraman - MIT" /><figcaption aria-hidden="true">Cameraman - MIT</figcaption>
+</figure>
+</div><div class="column" style="width:60%;">
+<ul>
+<li>2D <em>matrix</em> of intensity values</li>
+<li>Each value is a single <em>pixel</em></li>
+<li>0 to 255 for 8 bit images</li>
+<li>0 is black, 255 is white</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="greyscale-images-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Greyscale Images</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/plots1/cam-coord.png" alt="coordinates and intensity" /><figcaption aria-hidden="true">coordinates and intensity</figcaption>
+</figure>
+</div><div class="column" style="width:60%;">
+<ul>
+<li>Can be defined as a function <span class="math inline">\(I(x, y)\)</span></li>
+<li><span class="math inline">\(x, y\)</span> are the <em>coordinates</em> of the pixel</li>
+<li><span class="math inline">\(I(x, y)\)</span> is the <em>intensity</em> of the pixel</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="caveat" class="slide level2">
+<h2><strong>Caveat</strong></h2>
+<ul>
+<li>Data coordinates have the origin at the <em>lower</em> left.</li>
+<li>The origin is at the <em>top</em> left corner for images.</li>
+<li>Indexing 2D matrices is row, column order.</li>
+</ul>
+</section>
+<section id="colour-images" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Colour Images</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/plots1/astronaut.png" alt="Astronaut Eileen Collins - NASA" /><figcaption aria-hidden="true">Astronaut Eileen Collins - NASA</figcaption>
+</figure>
+</div><div class="column" style="width:60%;">
+<ul>
+<li>3D <em>matrix</em> of intensity values</li>
+<li>Height x Width x Channels</li>
+<li>Each triple value is a single pixel</li>
+<li>(0, 0, 0) is black</li>
+<li>(255, 255, 255) is white</li>
+</ul>
+</div>
+</div>
+<aside class="notes">
+<p>The astonaut’s name is Eileen Collins.</p>
+</aside>
+</section>
+<section id="colour-images-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Colour Images</h2>
+<p>Colour images can be defined as a <em>set</em> of functions:</p>
+<ul>
+<li><span class="math inline">\(R(x, y)\)</span> for red</li>
+<li><span class="math inline">\(G(x, y)\)</span> for green</li>
+<li><span class="math inline">\(B(x, y)\)</span> for blue</li>
+</ul>
+</section>
+<section id="colour-images-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Colour Images</h2>
+<figure>
+<img data-src="assets/plots1/astronaut-rgb.png" alt="RGB colour image" /><figcaption aria-hidden="true">RGB colour image</figcaption>
+</figure>
+</section>
+<section id="colour-images-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Colour Images</h2>
+<ul>
+<li>Can also allow a definition of transparency.</li>
+<li>Often referred to as <em>alpha</em>.</li>
+<li>Still a 3D matrix, but with 4 channels.</li>
+</ul>
+<aside class="notes">
+<p>alpha is also possible for greyscale images.</p>
+</aside>
+</section></section>
+<section>
+<section id="sampling-and-quantisation" class="title-slide slide level1" style="font-size:1.8em;">
+<h1 style="font-size:1.8em;">Sampling and Quantisation</h1>
+
+</section>
+<section id="sampling-and-quantisation-1" class="slide level2">
+<h2>Sampling and Quantisation</h2>
+<p>In order to become suitable for digital processing, an image function <span class="math inline">\(f(x,y)\)</span> must be digitized both spatially and in amplitude.</p>
+</section>
+<section id="sampling" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Sampling</h2>
+<p>To digitise an image we discretise it by sampling spatially on a regular grid.</p>
+</section>
+<section id="sampling-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Sampling</h2>
+<p>The number of samples determines the <strong>resolution</strong> of the image.</p>
+</section>
+<section id="sampling-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Sampling</h2>
+<p>A <strong>pixel</strong> (picture element) at <span class="math inline">\((x,y)\)</span> is the image intensity at the grid point indexed by the integer coordinate <span class="math inline">\((x,y)\)</span>.</p>
+</section>
+<section id="sampling-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Sampling</h2>
+<figure>
+<img data-src="assets/plots1/sampling-none.png" alt="Sampling" /><figcaption aria-hidden="true">Sampling</figcaption>
+</figure>
+<p>We can sample the image at various resolutions.</p>
+</section>
+<section id="sampling-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Sampling</h2>
+<figure>
+<img data-src="assets/plots1/sampling-bicubic.png" alt="bicubic interpolation" /><figcaption aria-hidden="true">bicubic interpolation</figcaption>
+</figure>
+<p><strong>NOTE:</strong> Here we use bi-cubic interpolation to display the images.</p>
+</section>
+<section id="sampling-5" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Sampling</h2>
+<p>You have already encountered sampling in the context of audio.</p>
+<p>In audio the real signal is in the <em>time</em> domain.</p>
+<p>For images, the real signal is in the <em>spatial</em> domain.</p>
+</section>
+<section id="quantisation" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Quantisation</h2>
+<h4 id="definition">Definition</h4>
+<p>Transform a real-valued sampled image to one that takes a finite number of distinct values.</p>
+</section>
+<section id="quantisation-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Quantisation</h2>
+<p>A pixel is usually represented by 8 bits, representing 256-levels.</p>
+<ul>
+<li>In grayscale 0-255 represent black to white.</li>
+<li>More or fewer bits can be used for a larger or greater range of values.</li>
+</ul>
+</section>
+<section id="quantisation-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Quantisation</h2>
+<figure>
+<img data-src="assets/plots1/levels.png" alt="Quantisation" /><figcaption aria-hidden="true">Quantisation</figcaption>
+</figure>
+</section></section>
+<section>
+<section id="image-capture" class="title-slide slide level1">
+<h1>Image Capture</h1>
+<p>Digital Photography</p>
+</section>
+<section id="the-camera" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">The Camera</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/img1/camera.svg" alt="The Camera" /><figcaption aria-hidden="true">The Camera</figcaption>
+</figure>
+</div><div class="column" style="width:60%;">
+<ul>
+<li>The <strong>shutter</strong> opens briefly.</li>
+<li>Light enters via the <strong>aperture</strong>.</li>
+<li>The <strong>lens</strong> focuses the rays.</li>
+<li>An image is formed on the <strong>sensor</strong>.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="the-camera-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">The Camera</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/img1/camera.svg" alt="The Camera" /><figcaption aria-hidden="true">The Camera</figcaption>
+</figure>
+</div><div class="column" style="width:60%;">
+<ul>
+<li>The sensor comprises millions of <strong>photo-sites</strong>.</li>
+<li>The photo-sites collect photons.</li>
+<li>Sites only measure <strong>brightness</strong>.</li>
+<li>How do we determine color?</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="bayer-filters" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Bayer Filters</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/img1/bayer.png" alt="Bayer Filter" /><figcaption aria-hidden="true">Bayer Filter</figcaption>
+</figure>
+</div><div class="column" style="width:60%;">
+<ul>
+<li>Assign each photo-site a filter.</li>
+<li>Red filter <em>allows</em> red light.</li>
+<li>Red filter <em>blocks</em> blue-green.</li>
+<li>We can separate the intensities of red, blue and green.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="bayer-filters-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Bayer Filters</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/img1/bayer-filter.png" alt="Bayer Filter" /><figcaption aria-hidden="true">Bayer Filter</figcaption>
+</figure>
+</div><div class="column" style="width:60%;">
+<ul>
+<li>Filtering results in missing values.</li>
+<li>Missing values must be <em>interpolated</em>.</li>
+<li>Manufacturers have their own algorithms.</li>
+<li>Simplest method is linear interpolation.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="bayer-interpolation" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Bayer Interpolation</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/img1/bayer-interp.svg" alt="linear interpolation" /><figcaption aria-hidden="true">linear interpolation</figcaption>
+</figure>
+</div><div class="column">
+<ul>
+<li><span class="math inline">\(a = (r_1 + r_2 + r_3 + r_4) / 4\)</span></li>
+<li><span class="math inline">\(b = (r_2 + r_4) / 2\)</span></li>
+<li><span class="math inline">\(a = (r_3 + r_4) / 2\)</span></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="bayer-interpolation-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Bayer Interpolation</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/img1/bayer-eye-01.jpg" alt="Bayer pattern" /><figcaption aria-hidden="true">Bayer pattern</figcaption>
+</figure>
+</div><div class="column">
+<figure>
+<img data-src="assets/img1/bayer-eye-02.jpg" alt="after interpolation" /><figcaption aria-hidden="true">after interpolation</figcaption>
+</figure>
+</div>
+</div>
+<aside class="notes">
+<p>http://www.red.com/learn/red-101/bayer-sensor-strategy</p>
+</aside>
+</section>
+<section id="colour-perception" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Colour Perception</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/img1/bayer-pattern.png" alt="bayer pattern" /><figcaption aria-hidden="true">bayer pattern</figcaption>
+</figure>
+</div><div class="column" style="width:65%;">
+<ul>
+<li>Twice as many green pixels.</li>
+<li>Less noise than uniform distribution.</li>
+<li>Humans are more sensitive to green.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="colour-perception-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Colour Perception</h2>
+<p>Colour is not a physical phenomenon - it is how humans perceive light of different wavelengths (analogous to perception of frequency in audio waveforms)</p>
+</section>
+<section id="colour-perception-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Colour Perception</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/img1/spectrum.svg" alt="receptor response" /><figcaption aria-hidden="true">receptor response</figcaption>
+</figure>
+</div><div class="column">
+<p>Visible spectrum and receptor response for “normal” vision.</p>
+<ul>
+<li>S: Short cone response</li>
+<li>M: Medium cone response</li>
+<li>L: Long cone response</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="colour-perception-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Colour Perception</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/img1/spectrum.svg" alt="receptor response" /><figcaption aria-hidden="true">receptor response</figcaption>
+</figure>
+</div><div class="column">
+<p>Wavelengths perceived as green trigger both M and L cone cells in the eye.</p>
+<p>Abnormalities in the cone response leads to colour blindness.</p>
+</div>
+</div>
+</section></section>
+<section>
+<section id="controlling-and-analysing-colour" class="title-slide slide level1">
+<h1>Controlling and Analysing Colour</h1>
+
+</section>
+<section id="exposure" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Exposure</h2>
+<p>Exposure controls the <em>brightness</em> of an image.</p>
+</section>
+<section id="pre-image-capture" class="slide level2">
+<h2>Pre-image capture</h2>
+<p>Adjust shutter speed and aperture size to control the amount of light reaching the image sensor.</p>
+</section>
+<section id="post-image-capture" class="slide level2">
+<h2>Post-image capture</h2>
+<p>Adjust with a <em>tone</em> curve; a mapping from input to output pixel intensity.</p>
+</section>
+<section id="tone-curves" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Tone Curves</h2>
+<p>As a linear function</p>
+<h3 id="iprime-iw-b"><span class="math inline">\(I^{\prime} = Iw + b\)</span></h3>
+</section>
+<section id="tone-curves-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Tone Curves</h2>
+<p>As a linear function</p>
+<h3 id="iprime-iw-b-1"><span class="math inline">\(I^{\prime} = Iw + b\)</span></h3>
+<h3 id="caution"><strong>Caution</strong></h3>
+<p>Beware of implicit type conversion in your code.</p>
+</section>
+<section id="linear-tone-curves" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Linear Tone Curves</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/plots1/tone-t1-01.png" alt="linear tone curve" /><figcaption aria-hidden="true">linear tone curve</figcaption>
+</figure>
+</div><div class="column" style="width:60%;">
+<p><span class="math display">\[f(I) = I\]</span></p>
+</div>
+</div>
+</section>
+<section id="linear-tone-curves-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Linear Tone Curves</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/plots1/tone-t1-02.png" alt="linear tone curve" /><figcaption aria-hidden="true">linear tone curve</figcaption>
+</figure>
+</div><div class="column" style="width:60%;">
+<p><span class="math display">\[f(I) = I\]</span></p>
+<ul>
+<li>Output intensity is the same as input intensity</li>
+<li>No change is made to the image</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="linear-tone-curves-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Linear Tone Curves</h2>
+<figure>
+<img data-src="assets/plots1/tone-t1-00.png" style="width:100.0%" alt="linear tone curve f(I) = I" /><figcaption aria-hidden="true">linear tone curve <span class="math inline">\(f(I) = I\)</span></figcaption>
+</figure>
+</section>
+<section id="linear-tone-curves-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Linear Tone Curves</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/plots1/tone-t2-01.png" alt="linear tone curve" /><figcaption aria-hidden="true">linear tone curve</figcaption>
+</figure>
+</div><div class="column" style="width:60%;">
+<p><span class="math display">\[f(I) = I \times 0.7\]</span></p>
+</div>
+</div>
+</section>
+<section id="linear-tone-curves-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Linear Tone Curves</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/plots1/tone-t2-02.png" alt="linear tone curve" /><figcaption aria-hidden="true">linear tone curve</figcaption>
+</figure>
+</div><div class="column" style="width:60%;">
+<p><span class="math display">\[f(I) = I \times 0.7\]</span></p>
+<ul>
+<li>Output intensity is less than input intensity</li>
+<li>The image appears darker</li>
+<li>Higher input values are effected more than lower input values</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="linear-tone-curves-5" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Linear Tone Curves</h2>
+<figure>
+<img data-src="assets/plots1/tone-t2-00.png" style="width:100.0%" alt="linear tone curve f(I) = I \times 0.7" /><figcaption aria-hidden="true">linear tone curve <span class="math inline">\(f(I) = I \times 0.7\)</span></figcaption>
+</figure>
+</section>
+<section id="linear-tone-curves-6" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Linear Tone Curves</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/plots1/tone-t3-01.png" alt="linear tone curve" /><figcaption aria-hidden="true">linear tone curve</figcaption>
+</figure>
+</div><div class="column" style="width:60%;">
+<p><span class="math display">\[f(I) = I \times 0.5 + 90\]</span></p>
+</div>
+</div>
+</section>
+<section id="linear-tone-curves-7" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Linear Tone Curves</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/plots1/tone-t3-02.png" alt="linear tone curve" /><figcaption aria-hidden="true">linear tone curve</figcaption>
+</figure>
+</div><div class="column" style="width:60%;">
+<p><span class="math display">\[f(I) = I \times 0.5 + 90\]</span></p>
+<ul>
+<li>Low input values are increased.</li>
+<li>High input values are decreased.</li>
+<li>The image appears to have <em>lower</em> contrast.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="linear-tone-curves-8" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Linear Tone Curves</h2>
+<figure>
+<img data-src="assets/plots1/tone-t3-00.png" style="width:100.0%" alt="linear tone curve f(I) = I \times 0.5 + 90" /><figcaption aria-hidden="true">linear tone curve <span class="math inline">\(f(I) = I \times 0.5 + 90\)</span></figcaption>
+</figure>
+</section>
+<section id="linear-tone-curves-9" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Linear Tone Curves</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/plots1/tone-t4-01.png" alt="linear tone curve" /><figcaption aria-hidden="true">linear tone curve</figcaption>
+</figure>
+</div><div class="column" style="width:60%;">
+<p><span class="math display">\[f(I) = I \times 1.6 - 90\]</span></p>
+</div>
+</div>
+</section>
+<section id="linear-tone-curves-10" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Linear Tone Curves</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/plots1/tone-t4-02.png" alt="linear tone curve" /><figcaption aria-hidden="true">linear tone curve</figcaption>
+</figure>
+</div><div class="column" style="width:60%;">
+<p><span class="math display">\[f(I) = I \times 1.6 - 90\]</span></p>
+<ul>
+<li>High input values are increased.</li>
+<li>Low input values are decreased.</li>
+<li>The image appears to have <em>higher</em> contrast.</li>
+<li>Some input values are <em>clipped</em>.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="linear-tone-curves-11" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Linear Tone Curves</h2>
+<figure>
+<img data-src="assets/plots1/tone-t4-00.png" style="width:100.0%" alt="linear tone curve f(I) = I \times 1.6 - 90" /><figcaption aria-hidden="true">linear tone curve <span class="math inline">\(f(I) = I \times 1.6 - 90\)</span></figcaption>
+</figure>
+</section>
+<section id="gamma-correction" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Gamma Correction</h2>
+<p>Our eyes perceive brightness on a <strong>logarithmic</strong> scale.</p>
+<p>Similar to how we perceive loudness in audio.</p>
+</section>
+<section id="gamma-correction-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Gamma Correction</h2>
+<p>We have more cells that see in dim light than those that see in bright light.</p>
+<p>We are more <em>sensitive</em> to low light changes.</p>
+</section>
+<section id="gamma-correction-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Gamma Correction</h2>
+<p>Cameras measure light on a <strong>linear</strong> scale.</p>
+</section>
+<section id="gamma-correction-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Gamma Correction</h2>
+<p>Tone curves can be used to adjust images so that they more closely match human perception of a scene.</p>
+</section>
+<section id="iprime-255-times-fraci255frac1gamma" class="slide level2">
+<h2><span class="math display">\[I^{\prime} = 255 \times \frac{I}{255}^{\frac{1}{\gamma}}\]</span></h2>
+</section>
+<section id="gamma-correction-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Gamma Correction</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/plots1/gamma-curves.png" alt="gamma curves" /><figcaption aria-hidden="true">gamma curves</figcaption>
+</figure>
+</div><div class="column" style="width:60%;">
+<p><span class="math display">\[I^{\prime} = 255 \times \frac{I}{255}^{\frac{1}{\gamma}}\]</span></p>
+<ul>
+<li>End points are unchanged.</li>
+<li>If <span class="math inline">\(\gamma = 1\)</span>, image is unchanged.</li>
+<li>If <span class="math inline">\(\gamma &gt; 1\)</span>, image appears lighter.</li>
+<li>If <span class="math inline">\(\gamma &lt; 1\)</span>, image appears darker.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="gamma-correction-5" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Gamma Correction</h2>
+<figure>
+<img data-src="assets/plots1/gamma.png" style="width:100.0%" alt="gamma correction" /><figcaption aria-hidden="true">gamma correction</figcaption>
+</figure>
+</section>
+<section id="histograms" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Histograms</h2>
+<p>A histogram is an approximate representation of the distribution of numerical data.</p>
+</section>
+<section id="histograms-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Histograms</h2>
+<p>We want to show the frequency, or count, of the values in an image.</p>
+</section>
+<section id="histograms-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Histograms</h2>
+<figure>
+<img data-src="assets/plots1/hist-01.png" style="width:100.0%" alt="histogram" /><figcaption aria-hidden="true">histogram</figcaption>
+</figure>
+</section>
+<section id="histograms-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Histograms</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/plots1/hist-02.png" alt="histogram" /><figcaption aria-hidden="true">histogram</figcaption>
+</figure>
+</div><div class="column" style="width:60%;">
+<ul>
+<li>Notice the large cluster of values 5 to 25.</li>
+<li>Probably the coat?</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="histograms-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Histograms</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/plots1/hist-02.png" alt="histogram" /><figcaption aria-hidden="true">histogram</figcaption>
+</figure>
+</div><div class="column" style="width:60%;">
+<ul>
+<li>Notice the central values.</li>
+<li>100 to 150 could be grass?</li>
+<li>150 to 200 could be sky?</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="thresholding" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Thresholding</h2>
+<p><strong>Thresholding</strong> is the simplest method of segmenting images.</p>
+</section>
+<section id="thresholding-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Thresholding</h2>
+<p>If we wanted to separate the coat from the sky, we could use a threshold.</p>
+</section>
+<section id="thresholding-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Thresholding</h2>
+<p>By observing the histogram we could separate all pixels above or below a value.</p>
+</section>
+<section id="thresholding-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Thresholding</h2>
+<p><span class="math display">\[I_{t} = I &gt; t\]</span></p>
+</section>
+<section id="thresholding-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Thresholding</h2>
+<figure>
+<img data-src="assets/plots1/threshold-01.png" alt="threshold image, t=75" /><figcaption aria-hidden="true">threshold image, <span class="math inline">\(t=75\)</span></figcaption>
+</figure>
+</section></section>
+<section>
+<section id="video" class="title-slide slide level1">
+<h1>Video</h1>
+<p>We can consider video as a sequence of consecutive images.</p>
+</section>
+<section id="frame-rate-fps" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Frame Rate (fps)</h2>
+<p>The rate at which images are captured - or displayed.</p>
+</section>
+<section id="frame-rate-fps-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Frame Rate (fps)</h2>
+<ul>
+<li>24 fps common for the film industry.</li>
+<li>25 fps common for the European television industry.</li>
+<li>29.97 fps common for the American television industry.</li>
+<li>90 fps common for the virtual reality headsets.</li>
+</ul>
+</section>
+<section id="progressive-scan" class="slide level2">
+<h2>Progressive Scan</h2>
+<ul>
+<li>All lines of each frame are drawn in sequence.</li>
+<li>The whole image is drawn at before transmission.</li>
+</ul>
+</section>
+<section id="interlaced-scan" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Interlaced Scan</h2>
+<ul>
+<li>Odd and even lines are broadcast on alternating frames.</li>
+<li>display device interleaves fields.</li>
+<li>Eye fooled into believing image is being updated, so less apparent flicker.</li>
+<li>Many unpleasant artefacts introduced as a result of interlacing.</li>
+</ul>
+</section>
+<section id="interlaced-scan-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Interlaced Scan</h2>
+<figure>
+<img data-src="assets/img1/interlaced.jpg" alt="interlaced video is not good for computer vision" /><figcaption aria-hidden="true">interlaced video is not good for computer vision</figcaption>
+</figure>
+</section></section>
+<section id="summary" class="title-slide slide level1">
+<h1>Summary</h1>
+<ul>
+<li>Introducing images</li>
+<li>Image Sampling and Quantisation</li>
+<li>Image Capture</li>
+<li>Controlling and Analysing Images</li>
+<li>Video</li>
+</ul>
+</section>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/reveal.js@^4/dist/reveal.js"></script>
+
+  // reveal.js plugins
+  <script src="https://unpkg.com/reveal.js@^4/plugin/notes/notes.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/search/search.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/zoom/zoom.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/math/math.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/highlight/highlight.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+        // Display a presentation progress bar
+        progress: true,
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+        // Push each slide change to the browser history
+        history: true,
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+        // Enable the slide overview mode
+        overview: true,
+        // Vertical centering of slides
+        center: true,
+        // Enables touch navigation on devices with touch input
+        touch: true,
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+        // Turns fragments on and off globally
+        fragments: true,
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+        // Global override for autoplaying embedded media (video/audio/iframe)
+        // - null: Media will only autoplay if data-autoplay is present
+        // - true: All media will autoplay, regardless of individual setting
+        // - false: No media will autoplay, regardless of individual setting
+        autoPlayMedia: null,
+        // Global override for preloading lazy-loaded iframes
+        // - null: Iframes with data-src AND data-preload will be loaded when within
+        //   the viewDistance, iframes with only data-src will be loaded when visible
+        // - true: All iframes with data-src will be loaded when within the viewDistance
+        // - false: All iframes with data-src will be loaded only when visible
+        preloadIframes: null,
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+        // Transition style
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+        // Transition speed
+        transitionSpeed: 'default', // default/fast/slow
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'fade', // none/fade/slide/convex/concave/zoom
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+        // Factor of the display size that should remain empty around the content
+        margin: 0.2,
+        // The display mode that will be used to show slides
+        display: 'block',
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [
+          RevealMath,
+          RevealHighlight,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>
