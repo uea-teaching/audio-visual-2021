@@ -22,7 +22,7 @@ There is also a Makefile in the root of this repo if you already have Docker ins
 ## Lectures
 
 - Image and Video
-- Speech Production
+- Visual Speech
 
 - Lip Reading with Shape Features
 - Lip Reading with Appearance Features
