@@ -182,7 +182,7 @@ Shape features _might_ include:
 There is a trade-off between ease of extraction and the amount of information extracted.
 
 - Sparse point sets are easier to locate, but capture less information
-- Denser point sets are information rich, but require more a sophisticated capture process
+- Denser point sets are information rich, but require a more sophisticated capture process
 
 ## Representing Shapes
 
