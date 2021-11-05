@@ -32,3 +32,4 @@
 !scripts/*.py
 !scripts/*.sh
 !scripts/*.json
+!scripts/*.npz
