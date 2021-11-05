@@ -115,12 +115,10 @@ warps = [warped_face(img, lmk) for img, lmk in zip(images, lmks)]
 
 # %%
 
-fig, ax = plt.subplots(1, 2, figsize=(10, 6))
+fig, ax = plt.subplots(1, 2, figsize=(10, 6), sharey=True)
 ax[0].imshow(images[0])
 ax[0].plot(lmks[0, :, 0], lmks[0, :, 1], 'o')
-ax[0].grid(False)
-ax[0].set_xticks([])
-ax[0].set_yticks([])
+ax[0].set_ylabel("pixels")
 ax[0].set_title("Landmarks")
 
 for i, k in enumerate(tri):
@@ -129,20 +127,18 @@ for i, k in enumerate(tri):
     t = np.concatenate([t, t[:1]])
     ax[1].plot(t[:, 0], t[:, 1], '-o')
 
-ax[1].grid(False)
-ax[1].set_xticks([])
-ax[1].set_yticks([])
-ax[1].set_ylim(600, -50)
+ax[1].set_xlabel("pixels")
+ax[1].set_ylim(600, 0)
 ax[1].set_aspect('equal')
-ax[1].set_title("Triangulated Shape")
+ax[1].set_title("Triangles")
 plt.tight_layout()
-
+fig.suptitle("Triangulation of Shape", fontsize=24, y=1.02)
 fig.savefig(save_root + "triangulate_lmks.png", **savekw)
 
 
 # %%
 
-fig, ax = plt.subplots(1, figsize=(10, 10))
+fig, ax = plt.subplots(1, figsize=(10, 6))
 for i in tidx:
     t = pos[tri[i]]
     c = np.mean(t, axis=0)
@@ -161,11 +157,8 @@ fig.savefig(save_root + "mouth_triangulation.png", **savekw)
 
 # %%
 
-idx = 0
-
-
 def shape_norm(idx):
-    fig = plt.figure(figsize=(10, 8))
+    fig = plt.figure(figsize=(10, 7))
     gs = gridspec.GridSpec(ncols=2, nrows=1, figure=fig,
                            width_ratios=[1, 400/350.])
 
@@ -184,12 +177,12 @@ def shape_norm(idx):
     ax2.set_yticks([])
     ax2.set_title("Normalised Appearance")
     fig.tight_layout()
-    fig.suptitle("Shape Normalisation - Image {}".format(idx),
-                 fontsize=24, y=0.9)
-    plt.close(fig)
+    fig.suptitle("Shape Normalisation - {}".format(idx + 1),
+                 fontsize=24, y=0.96)
+    # plt.close(fig)
     return fig
 
 
 for i in range(4):
     fig = shape_norm(i)
-    fig.savefig(save_root + "shape_norm_{}.png".format(i), **savekw)
+    fig.savefig(save_root + "shape_norm_{}.png".format(i + 1), **savekw)
