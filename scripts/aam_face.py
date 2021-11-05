@@ -7,6 +7,12 @@ import skimage.transform as tf
 import dlib
 import os
 
+import matplotlib.patches as patches
+import matplotlib.gridspec as gridspec
+
+plt.style.use('fivethirtyeight')
+savekw = dict(bbox_inches='tight', dpi=160)
+
 MODEL = os.path.expanduser(
     "~/.dg/dlib/shape_predictor_68_face_landmarks_GTX.dat")
 DETECTOR = dlib.get_frontal_face_detector()
@@ -21,6 +27,8 @@ pos = np.load('dlib68_tris.npz')['landmarks']
 
 
 root = "../lectures/assets/img4/"
+save_root = "../lectures/assets/plots2/"
+
 images = [(plt.imread(f) * 255).astype(np.uint8) for f in
           [root + "ken_00.png", root + "ken_01.png",
            root + "ken_02.png", root + "ken_03.png"]]
@@ -46,7 +54,7 @@ def landmarks(img):
 
 
 def pad_image(img):
-    print(img.shape, img.dtype)
+    # print(img.shape, img.dtype)
     h, w = img.shape[:2]
     out = np.zeros([max(h, 512), max(w, 512), 3], dtype=img.dtype)
     out[:h, :w, :] = img
@@ -66,79 +74,11 @@ def get_poly(b):
     return np.array([b[:, 1], b[:, 0]]).T
 
 
-def plot_shape(ax, pos, tri):
-    ax.triplot(pos[:, 0], pos[:, 1], tri)
+def plot_shape(ax, pos, tri, lw=2, color='k'):
+    ax.triplot(pos[:, 0], pos[:, 1], tri, lw=lw, color=color)
     ax.set_xlim(0, 512)
     ax.set_ylim(512, 0)
     ax.set_aspect('equal')
-
-
-# %%
-
-lmks = np.array([landmarks(img) for img in images])
-
-# %%
-
-fig, ax = plt.subplots(figsize=(10, 10))
-plot_shape(ax, pos, tri)
-
-
-# %%
-
-
-mean_shape = lmks.mean(axis=0)
-
-fig, ax = plt.subplots(1, 1, figsize=(10, 10))
-ax.imshow(images[0])
-ax.plot(lmks[0, :, 0], lmks[0, :, 1], 'o')
-ax.plot(mean_shape[:, 0], mean_shape[:, 1], 'o')
-
-# %%
-
-fig, ax = plt.subplots(1, 1, figsize=(10, 10))
-for i, k in enumerate(tri):
-    t = pos[k] * (1, -1)
-    c = np.mean(t, axis=0)
-    t = np.concatenate([t, t[:1]])
-    ax.plot(t[:, 0], t[:, 1], '-o')
-    ax.text(c[0], c[1], str(i), fontdict={'size': 10})
-
-
-# %%
-
-fig, ax = plt.subplots(1, 1, figsize=(10, 10))
-for i in tidx:
-    t = pos[tri[i]] * (1, -1)
-    c = np.mean(t, axis=0)
-    t = np.concatenate([t, t[:1]])
-    ax.plot(t[:, 0], t[:, 1], '-o')
-    ax.text(c[0], c[1], str(i), fontdict={'size': 12})
-    ax.set_aspect('equal')
-
-
-fig, ax = plt.subplots(1, 1, figsize=(10, 10))
-for i in tidx:
-    t = lmks[0][tri[i]] * (1, -1)
-    c = np.mean(t, axis=0)
-    t = np.concatenate([t, t[:1]])
-    ax.plot(t[:, 0], t[:, 1], '-o')
-    ax.text(c[0], c[1], str(i), fontdict={'size': 12})
-    ax.set_aspect('equal')
-
-
-# %%
-
-# plot images with landmarks
-img = images[0]
-h, w = img.shape[:2]
-fig, ax = plt.subplots(1, 2, figsize=(12, 10))
-ax[0].imshow(img)
-plot_shape(ax[0], lmks[0], tri[tidx])
-ax[0].set_ylim(h-1, 0)
-ax[0].set_xlim(0, w-1)
-plot_shape(ax[1], pos, tri[tidx])
-
-# %%
 
 
 def warped_face(img, lmk):
@@ -166,6 +106,90 @@ def warped_face(img, lmk):
     return np.concatenate([out_image, out_mask[..., None]], axis=-1)
 
 
-plt.imshow(warped_face(images[0], lmks[0]))
+# %%
+
+# processing
+lmks = np.array([landmarks(img) for img in images])
+warps = [warped_face(img, lmk) for img, lmk in zip(images, lmks)]
+
 
 # %%
+
+fig, ax = plt.subplots(1, 2, figsize=(10, 6))
+ax[0].imshow(images[0])
+ax[0].plot(lmks[0, :, 0], lmks[0, :, 1], 'o')
+ax[0].grid(False)
+ax[0].set_xticks([])
+ax[0].set_yticks([])
+ax[0].set_title("Landmarks")
+
+for i, k in enumerate(tri):
+    t = pos[k]
+    c = np.mean(t, axis=0)
+    t = np.concatenate([t, t[:1]])
+    ax[1].plot(t[:, 0], t[:, 1], '-o')
+
+ax[1].grid(False)
+ax[1].set_xticks([])
+ax[1].set_yticks([])
+ax[1].set_ylim(600, -50)
+ax[1].set_aspect('equal')
+ax[1].set_title("Triangulated Shape")
+plt.tight_layout()
+
+fig.savefig(save_root + "triangulate_lmks.png", **savekw)
+
+
+# %%
+
+fig, ax = plt.subplots(1, figsize=(10, 10))
+for i in tidx:
+    t = pos[tri[i]]
+    c = np.mean(t, axis=0)
+    t = np.concatenate([t, t[:1]])
+    ax.plot(t[:, 0], t[:, 1], '-o')
+    ax.text(c[0], c[1], str(i), fontdict={'size': 12})
+    ax.set_xlabel("pixels")
+    ax.set_ylabel("pixels")
+    ax.set_ylim(550, 200)
+    ax.set_aspect('equal')
+    ax.set_title("Triangulated Mouth Shape")
+
+plt.tight_layout()
+fig.savefig(save_root + "mouth_triangulation.png", **savekw)
+
+
+# %%
+
+idx = 0
+
+
+def shape_norm(idx):
+    fig = plt.figure(figsize=(10, 8))
+    gs = gridspec.GridSpec(ncols=2, nrows=1, figure=fig,
+                           width_ratios=[1, 400/350.])
+
+    ax1 = fig.add_subplot(gs[0, 0])
+    ax2 = fig.add_subplot(gs[0, 1])
+
+    ax1.imshow(images[idx])
+    ax1.triplot(lmks[idx][:, 0], lmks[idx][:, 1], tri[tidx], lw=1, color='r')
+    ax1.set_xlabel("pixels")
+    ax1.set_ylabel("pixels")
+
+    ax2.imshow(warps[idx])
+    ax2.set_xlim([0, 512])
+    ax2.set_ylim([550, 200])
+    ax2.set_xticks([])
+    ax2.set_yticks([])
+    ax2.set_title("Normalised Appearance")
+    fig.tight_layout()
+    fig.suptitle("Shape Normalisation - Image {}".format(idx),
+                 fontsize=24, y=0.9)
+    plt.close(fig)
+    return fig
+
+
+for i in range(4):
+    fig = shape_norm(i)
+    fig.savefig(save_root + "shape_norm_{}.png".format(i), **savekw)
