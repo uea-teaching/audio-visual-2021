@@ -37,8 +37,8 @@ images = [(plt.imread(f) * 255).astype(np.uint8) for f in
            root + "ken_02.png", root + "ken_03.png"]]
 
 tidx = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 13, 14, 20, 22, 23,
-        24, 29, 30, 34, 36, 57, 58, 59, 60, 61, 64, 65,
-        66, 67, 68, 69, 70, 74, 75, 86, 87, 88, 89, 90,
+        24, 29, 30, 34, 35, 36, 57, 58, 59, 60, 61, 64, 65,
+        66, 67, 68, 69, 70, 73, 74, 75, 86, 87, 88, 89, 90,
         91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 103, 104, 105, 106]
 
 # %%
@@ -75,7 +75,7 @@ for i, k in enumerate(tri):
     t = np.concatenate([t, t[:1]])
     ax.plot(t[:, 0], t[:, 1], '-o')
     ax.text(c[0], c[1], str(i), fontdict={'size': 10})
-fig.savefig('dlib68_tris.png', dpi=300)
+
 
 # %%
 
@@ -87,7 +87,15 @@ for i in tidx:
     ax.plot(t[:, 0], t[:, 1], '-o')
     ax.text(c[0], c[1], str(i), fontdict={'size': 12})
     ax.set_aspect('equal')
-fig.savefig('dlib68_tris_idx.png', dpi=300)
+
+fig, ax = plt.subplots(1, 1, figsize=(10, 10))
+for i in tidx:
+    t = landmarks[0][tri[i]] * (1, -1)
+    c = np.mean(t, axis=0)
+    t = np.concatenate([t, t[:1]])
+    ax.plot(t[:, 0], t[:, 1], '-o')
+    ax.text(c[0], c[1], str(i), fontdict={'size': 12})
+    ax.set_aspect('equal')
 
 # %%
 
@@ -104,15 +112,50 @@ plot_shape(ax[1], pos, tri[tidx])
 # %%
 
 
+def pad_image(img):
+    print(img.shape, img.dtype)
+    h, w = img.shape[:2]
+    out = np.zeros([max(h, 512), max(w, 512), 3], dtype=img.dtype)
+    out[:h, :w, :] = img
+    return out
+
+
+out_image = np.zeros([512, 512, 3])
+in_image = pad_image(images[0])
+
+
 def inverse_transform(a, b):
-    row = np.array((0, 0, 1))[..., None]
-    print(a.shape, b.shape, row.shape)
-    A = np.concatenate([a, row], 1)
-    B = np.concatenate([b, row], 1)
-    return np.linalg.inv(A@B)
+    """find M when M@A=B, return A, B, M"""
+    row = np.array((1, 1, 1))[..., None]
+    A = np.hstack([a, row]).T
+    B = np.hstack([b, row]).T
+    M = np.linalg.inv(B @ np.linalg.inv(A))
+    return M
 
 
-D = inverse_transform(landmarks[0, tri[0], :],  pos[tri[0]])
-tform = tf.AffineTransform(matrix=D)
+def get_poly(b):
+    return np.array([b[:, 1], b[:, 0]]).T
 
+
+for i in tidx:
+    a, b = landmarks[0, tri[i], :],  pos[tri[i]]
+    poly = get_poly(b)
+    M = inverse_transform(a, b)
+    warped = tf.warp(in_image, M, clip=False, mode="constant", cval=0)
+    wmask = skimage.draw.polygon2mask(warped.shape[:2], poly)
+    omask = skimage.draw.polygon2mask(out_image.shape[:2], poly)
+    s1, s2 = omask.sum(), wmask.sum()
+    if s1 != s2:
+        print("mask mismatch", i, s1, s2)
+        continue
+    out_image[omask] = warped[wmask]
+
+    # break
+
+plt.imshow(out_image)
+
+
+# %%
+
+# %%
 # %%
