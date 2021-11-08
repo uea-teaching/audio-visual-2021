@@ -11,6 +11,7 @@
 !labs/
 !labs/*.jpg
 !labs/*.png
+!labs/*.pdf
 
 !lectures/
 !lectures/assets/
