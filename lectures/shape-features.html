@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Dr. David Greenwood">
+  <title>Shape Features</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reset.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/theme/black.css" id="theme">
+  <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.2.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Shape Features</h1>
+  <p class="subtitle">Audiovisual Processing CMP-6026A</p>
+  <p class="author">Dr. David Greenwood</p>
+</section>
+
+<section id="content" class="title-slide slide level1">
+<h1>Content</h1>
+<ul>
+<li>Speech recognition models</li>
+<li>Visual Features</li>
+<li>Image segmentation</li>
+<li>Point distribution models</li>
+<li>Fourier descriptors</li>
+</ul>
+</section>
+
+<section>
+<section id="speech-recognition-models" class="title-slide slide level1">
+<h1>Speech Recognition Models</h1>
+
+</section>
+<section id="acoustic-speech-recognition" class="slide level2">
+<h2>Acoustic Speech Recognition</h2>
+<p>The task of a speech recogniser is to determine the most likely word sequence given a new sequence of (acoustic) feature vectors.</p>
+<aside class="notes">
+<p>Lets just remind ourselves about the acoustic speech recognition process…</p>
+</aside>
+</section>
+<section id="acoustic-speech-recognition-1" class="slide level2">
+<h2>Acoustic Speech Recognition</h2>
+<p>An elegant way to compute this is using hidden Markov models.</p>
+<p><span class="math display">\[ P(W | Y) = \frac{P(Y | W) P(W)}{P(Y) } \]</span></p>
+<aside class="notes">
+<p>Probability of a word sequence W given an acoustic observation Y</p>
+</aside>
+</section>
+<section id="acoustic-speech-recognition-2" class="slide level2">
+<h2>Acoustic Speech Recognition</h2>
+<p>Learn the parametric model from training data, and use to estimate the probabilities.</p>
+</section>
+<section id="acoustic-speech-recognition-3" class="slide level2">
+<h2>Acoustic Speech Recognition</h2>
+<p><img data-src="assets/img3/speech-recognition-01.png" /></p>
+</section>
+<section id="visual-speech-recognition" class="slide level2">
+<h2>Visual Speech Recognition</h2>
+<p><img data-src="assets/img3/speech-recognition-02.png" /></p>
+<aside class="notes">
+<p>Probability of a word sequence W given an visual observation V</p>
+</aside>
+</section>
+<section id="audio-visual-speech-recognition" class="slide level2">
+<h2>Audio-Visual Speech Recognition</h2>
+<p>Combine two modalities using:</p>
+<ul>
+<li>Late Integration</li>
+<li>Early Integration</li>
+</ul>
+</section>
+<section id="late-integration" class="slide level2">
+<h2>Late Integration</h2>
+<p>Late integration builds two separate models and weights their probabilities to provide the recognised word sequence.</p>
+</section>
+<section id="late-integration-1" class="slide level2">
+<h2>Late Integration</h2>
+<p>Has been shown to offer better performance than early integration.</p>
+<p>Not straightforward to weight output probabilities.</p>
+<p><cite> An investigation of HMM classifier combination strategies for improved audio-visual speech recognition.</br> Lucey et al. 2001 </cite></p>
+</section>
+<section id="late-integration-2" class="slide level2">
+<h2>Late Integration</h2>
+<p><img data-src="assets/img3/speech-recognition-03.png" /></p>
+<aside class="notes">
+<p>Late Integration</p>
+</aside>
+</section>
+<section id="early-integration" class="slide level2">
+<h2>Early Integration</h2>
+<p>Concatenate the acoustic and visual models to form a single model.</p>
+<p>Visual features often need <strong>interpolation</strong> to align with the acoustic features.</p>
+</section>
+<section id="early-integration-1" class="slide level2">
+<h2>Early Integration</h2>
+<p><img data-src="assets/img3/speech-recognition-04.png" /></p>
+<aside class="notes">
+<p>Early Integration</p>
+</aside>
+</section></section>
+<section>
+<section id="visual-features" class="title-slide slide level1">
+<h1>Visual Features</h1>
+
+</section>
+<section id="visual-features-1" class="slide level2">
+<h2>Visual Features</h2>
+<p>MFCCs are the standard features used in acoustic speech recognition.</p>
+<ul>
+<li>What is the equivalent for visual speech?</li>
+<li>In short: there is little agreement!</li>
+</ul>
+</section>
+<section id="visual-features-2" class="slide level2">
+<h2>Visual Features</h2>
+<p>Typical features include:</p>
+<ul>
+<li>Shape-based features</li>
+<li>Appearance-based features</li>
+<li>Hybrid features</li>
+</ul>
+</section>
+<section id="region-of-interest-roi" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Region of Interest (ROI)</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/img3/roi-01.jpg" /></p>
+</div><div class="column">
+<p>For any form of visual feature extraction, some form of localisation is required.</p>
+</div>
+</div>
+</section>
+<section id="region-of-interest-roi-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Region of Interest (ROI)</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/img3/roi-02.jpg" /></p>
+</div><div class="column">
+<p>Where in the image is the face?</p>
+</div>
+</div>
+</section>
+<section id="region-of-interest-roi-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Region of Interest (ROI)</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/img3/roi-03.jpg" /></p>
+</div><div class="column">
+<p>Where are the facial features of interest?</p>
+</div>
+</div>
+</section>
+<section id="region-of-interest-roi-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Region of Interest (ROI)</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/img3/roi-04.jpg" /></p>
+</div><div class="column">
+<p>MATLAB has an implementation of the Viola Jones face tracker.</p>
+</div>
+</div>
+</section></section>
+<section>
+<section id="shape-features" class="title-slide slide level1">
+<h1>Shape Features</h1>
+
+</section>
+<section id="shape-features-for-recognition" class="slide level2">
+<h2>Shape Features for Recognition</h2>
+<p>Shape features <em>might</em> include:</p>
+<ul>
+<li>Articulatory-based features, such as mouth height and width</li>
+<li>Point distribution model (and related features)</li>
+<li>Fourier descriptors</li>
+</ul>
+</section>
+<section id="shape-features-for-recognition-1" class="slide level2">
+<h2>Shape Features for Recognition</h2>
+<p>There is a trade-off between ease of extraction and the amount of information extracted.</p>
+<ul>
+<li>Sparse point sets are easier to locate, but capture less information</li>
+<li>Denser point sets are information rich, but require a more sophisticated capture process</li>
+</ul>
+</section>
+<section id="representing-shapes" class="slide level2">
+<h2>Representing Shapes</h2>
+<p>We need a method for describing specific shapes in images.</p>
+</section>
+<section id="representing-shapes-1" class="slide level2">
+<h2>Representing Shapes</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/plots2/cameraman-canny.png" /></p>
+</div><div class="column">
+<p>An edge detector will locate edges in an image.</p>
+</div>
+</div>
+</section>
+<section id="representing-shapes-2" class="slide level2">
+<h2>Representing Shapes</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/plots2/cameraman-canny.png" /></p>
+</div><div class="column">
+<p>Which belong to the object of interest?</p>
+<p>How are these allowed to vary as the object deforms?</p>
+</div>
+</div>
+</section>
+<section id="representing-shapes-3" class="slide level2">
+<h2>Representing Shapes</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/plots2/cameraman-canny.png" /></p>
+</div><div class="column">
+<h3 id="idea">Idea</h3>
+<p>Can we represent shapes using the image coordinates of the edge pixels?</p>
+</div>
+</div>
+</section>
+<section id="representing-shapes-4" class="slide level2">
+<h2>Representing Shapes</h2>
+<p>We could, but the same shape in two locations will have different coordinates.</p>
+<p>The coordinates describe the shape in the image coordinate frame, so they encode the shape <strong>and the location</strong> of the shape.</p>
+</section>
+<section id="representing-shapes-5" class="slide level2">
+<h2>Representing Shapes</h2>
+<p>We are not interested in <strong>where</strong> the shape is — just the shape itself.</p>
+<ul>
+<li>A lip-reading system might use the shape of the lips to recognise speech, but it should not matter where in the image the lips are.</li>
+</ul>
+</section>
+<section id="representing-shapes-6" class="slide level2">
+<h2>Representing Shapes</h2>
+<p>The primary problem is how to segment the lips from the background to extract a representation of the shape that is independent of image location.</p>
+<p>A pre-processing stage of feature extraction identifies the region of the image that corresponds to the mouth.</p>
+<p>This results in a binary mask, which is 1 if a pixel represents the mouth and 0 otherwise.</p>
+</section></section>
+<section>
+<section id="image-segmentation" class="title-slide slide level1">
+<h1>Image Segmentation</h1>
+<p>The goal of image segmentation is to classify each pixel as being either foreground or background.</p>
+<aside class="notes">
+<p>mouth is foreground for us</p>
+</aside>
+</section>
+<section id="image-segmentation-1" class="slide level2">
+<h2>Image Segmentation</h2>
+<p>We require three things:</p>
+<ol type="1">
+<li>A property that we can measure from the image pixels (e.g. colour).</li>
+<li>A distance measure that defines how close two pixels are given that property.</li>
+<li>A classifier that can discriminate one class from another using that distance.</li>
+</ol>
+</section>
+<section id="image-segmentation-2" class="slide level2">
+<h2>Image Segmentation</h2>
+<div class="columns">
+<div class="column">
+<p>Which colour-space should be used?</p>
+</div><div class="column">
+<figure>
+<img data-src="assets/plots2/barry-rgb.png" alt="RGB" /><figcaption aria-hidden="true">RGB</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="image-segmentation-3" class="slide level2">
+<h2>Image Segmentation</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/plots2/norm-rgb.png" alt="Normalised RGB" /><figcaption aria-hidden="true">Normalised RGB</figcaption>
+</figure>
+</div><div class="column">
+<figure>
+<img data-src="assets/plots2/barry-rgb.png" alt="RGB" /><figcaption aria-hidden="true">RGB</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="image-segmentation-4" class="slide level2">
+<h2>Image Segmentation</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/plots2/norm-rgb.png" alt="Normalised RGB" /><figcaption aria-hidden="true">Normalised RGB</figcaption>
+</figure>
+</div><div class="column">
+<p><span class="math display">\[I = \left[\frac{r}{r+b+g} \frac{g}{r+b+g} \frac{b}{r+b+g}\right]\]</span></p>
+<ul>
+<li>A colour is represented by its proportion of red, green and blue, not the intensity of each.</li>
+<li>Reduces distortions caused by lights and shadows in an image.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="image-segmentation-5" class="slide level2">
+<h2>Image Segmentation</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/plots2/norm-rgb-rect.png" alt="Normalised RGB" /><figcaption aria-hidden="true">Normalised RGB</figcaption>
+</figure>
+</div><div class="column">
+<p>What colour do we want to segment out?</p>
+</div>
+</div>
+</section>
+<section id="image-segmentation-6" class="slide level2">
+<h2>Image Segmentation</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/plots2/norm-rgb-rect.png" alt="Normalised RGB" /><figcaption aria-hidden="true">Normalised RGB</figcaption>
+</figure>
+</div><div class="column">
+<p>Find the mean colour of a lip pixel:</p>
+<p><span class="math display">\[\begin{bmatrix} \mu_{r} \\ \mu_{g} \\ \mu_{b} \end{bmatrix} = \mu_{c}\]</span></p>
+</div>
+</div>
+</section>
+<section id="image-segmentation-7" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Image Segmentation</h2>
+<p>Find the Euclidean distance between each pixel in the image, <span class="math inline">\(~I_{i, j}\)</span>, and the mean lip pixel colour <span class="math inline">\(\mu_{c}\)</span>.</p>
+<p><span class="math display">\[D_{i, j} = \sqrt{\sum{(I_{i, j} -  \mu_{c})^2}}\]</span></p>
+<aside class="notes">
+<p>The Euclidean distance between colour at row i, column j and the mean lip colour.</p>
+</aside>
+</section>
+<section id="image-segmentation-8" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Image Segmentation</h2>
+<p><span class="math display">\[D_{i, j} = \sqrt{\sum{(I_{i, j} -  \mu_{c})^2}}\]</span></p>
+<p>A better distance metric might consider the variance of the lip pixels rather than just the mean, e.g. <em>Mahalanobis</em> distance.</p>
+<aside class="notes">
+<p>The Euclidean distance between colour at row i, column j and the mean lip colour.</p>
+</aside>
+</section>
+<section id="image-segmentation-9" class="slide level2">
+<h2>Image Segmentation</h2>
+<p>Threshold the distance to segment lips from the background.</p>
+<p><span class="math display">\[T_{i, j} = \begin{cases}1 ~ if ~ D_{i, j} &lt; \tau \\ 0 ~ otherwise \end{cases}\]</span></p>
+</section>
+<section id="image-segmentation-10" class="slide level2">
+<h2>Image Segmentation</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/plots2/norm-rgb.png" alt="Normalised RGB" /><figcaption aria-hidden="true">Normalised RGB</figcaption>
+</figure>
+</div><div class="column">
+<figure>
+<img data-src="assets/plots2/norm-rgb-threshold.png" alt="Threshold Image" /><figcaption aria-hidden="true">Threshold Image</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="image-segmentation-11" class="slide level2">
+<h2>Image Segmentation</h2>
+<ul>
+<li><p>This approach assumes that there is nothing in the image that is the same colour as the lips, otherwise there is nothing to tell these regions apart.</p></li>
+<li><p>Often do other pre-processing (e.g. Viola-Jones face detector) first.</p></li>
+</ul>
+</section>
+<section id="image-segmentation-12" class="slide level2">
+<h2>Image Segmentation</h2>
+<ul>
+<li>Need to set the threshold, which itself is not trivial.</li>
+<li>If the threshold is too low, lip pixels will be missing.</li>
+<li>If the threshold is too high, background will be accepted as foreground.</li>
+</ul>
+</section>
+<section id="image-segmentation-13" class="slide level2">
+<h2>Image Segmentation</h2>
+<p>The matte will still contain spurious pixels, which might need cleaning up using <strong>morphological</strong> filtering.</p>
+</section>
+<section id="image-segmentation-14" class="slide level2">
+<h2>Image Segmentation</h2>
+<ul>
+<li>From the resultant binary mask, the relevant features still need to be extracted.
+<ul>
+<li>e.g. articulatory-based features…</li>
+</ul></li>
+</ul>
+</section>
+<section id="articulatory-based-features" class="slide level2">
+<h2>Articulatory-based Features</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/plots2/artic-features.png" alt="Threshold Image" /><figcaption aria-hidden="true">Threshold Image</figcaption>
+</figure>
+</div><div class="column">
+<p>From the binary image we can extract features such as:</p>
+<ul>
+<li>the height and width of the mouth region</li>
+<li>the number of pixels within the mouth region</li>
+<li>the mouth centroid</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="image-segmentation-15" class="slide level2">
+<h2>Image Segmentation</h2>
+<p>Automated approaches are attractive as there is no manual effort. However:</p>
+<ul>
+<li>The colour of the lips is often similar to the surrounding skin.</li>
+<li>Noise is an issue.</li>
+<li>The facial appearance can change over time (e.g. beard growth, etc.).</li>
+</ul>
+</section>
+<section id="image-segmentation-16" class="slide level2">
+<h2>Image Segmentation</h2>
+<p>Semi-automated approaches are generally more robust.</p>
+<ul>
+<li>They might need significant effort to reliably construct the model.</li>
+<li>But priors can be imposed on the expected shape.</li>
+</ul>
+</section></section>
+<section>
+<section id="point-distribution-models" class="title-slide slide level1">
+<h1>Point Distribution Models</h1>
+
+</section>
+<section id="point-distribution-models-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Point Distribution Models</h2>
+<p>A <em>generative</em> statistical model of the variation of the shape of an object.</p>
+</section>
+<section id="point-distribution-models-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Point Distribution Models</h2>
+<p>Use <strong>Principal Component Analysis (PCA)</strong> to model the variation in the coordinates of a set of <em>landmark</em> points.</p>
+<p>The PDM can represent complex shapes with just a few parameters.</p>
+</section>
+<section id="point-distribution-models-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Point Distribution Models</h2>
+<p>You can use an <em>Active Shape Model (ASM) </em> or <em>Active Appearance Model (AAM)</em> to automatically locate the landmarks (facial tracking).</p>
+<p>This model <strong>requires training</strong>.</p>
+</section>
+<section id="point-distribution-models-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Point Distribution Models</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/img3/aj_sample_05.jpg" /></p>
+</div><div class="column">
+<p>A <strong>shape</strong> is represented by a set of <strong>landmarks</strong> located along the shape boundary.</p>
+</div>
+</div>
+</section>
+<section id="point-distribution-models-5" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Point Distribution Models</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/img3/aj_sample_05.jpg" /></p>
+</div><div class="column">
+<ul>
+<li>The landmarks must be easy to locate from one image to another.</li>
+<li>T-junctions, points of high curvature, corners etc. form good candidates.</li>
+<li>Include evenly spaced intermediate points along the boundary.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="point-distribution-models-6" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Point Distribution Models</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/img3/aj_sample_05.jpg" /></p>
+</div><div class="column">
+<p>I provide a tool to annotate landmarks here: <a href="https://github.com/davegreenwood/face-landmark-tool">https://github.com/davegreenwood/face-landmark-tool</a></p>
+</div>
+</div>
+</section>
+<section id="point-distribution-models-7" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Point Distribution Models</h2>
+<p><img data-src="assets/img3/comb-lm.jpg" /></p>
+<p>Manually hand label a selection of images from a training set.</p>
+<p>All examples <em>must</em> have the <strong>same number</strong> of landmarks and be labelled in the <strong>same order</strong>.</p>
+</section>
+<section id="point-distribution-models-8" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Point Distribution Models</h2>
+<p><img data-src="assets/img3/comb-lm.jpg" /></p>
+<p>Sufficient images must be labelled to capture the expected range of variation.</p>
+<ul>
+<li>Capture large facial expressions, wide mouths, etc.</li>
+<li>Typically need 20 - 30 images per person.</li>
+</ul>
+</section>
+<section id="point-distribution-models-9" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Point Distribution Models</h2>
+<p>A shape is the concatenation of the <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> coordinates of the landmarks:</p>
+<p><span class="math display">\[X = \{x_1, x_2, \dots, x_n, y_1, y_2, \dots, y_n\}^T \]</span></p>
+<p>The consistency in the labelling ensures the elements of these vectors have the same meaning.</p>
+</section>
+<section id="point-distribution-models-10" class="slide level2">
+<h2>Point Distribution Models</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/img3/multi-lm.png" /></p>
+</div><div class="column">
+<p>The coordinates describe the shape in the image coordinate frame.</p>
+<p>The same shape at different locations results in a different shape vector.</p>
+</div>
+</div>
+</section>
+<section id="point-distribution-models-11" class="slide level2">
+<h2>Point Distribution Models</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/img3/multi-lm.png" /></p>
+</div><div class="column">
+<p>We need to normalise shapes for translation, scale and rotation. This can be done using <strong>Procrustes analysis</strong>.</p>
+</div>
+</div>
+</section>
+<section id="aside-procrustes-analysis" class="slide level2">
+<h2><em>Aside:</em> Procrustes analysis</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/img3/multi-lm.png" alt="captured landmarks" /><figcaption aria-hidden="true">captured landmarks</figcaption>
+</figure>
+</div><div class="column">
+<figure>
+<img data-src="assets/img3/multi-lm-aligned.png" alt="aligned landmarks" /><figcaption aria-hidden="true">aligned landmarks</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="point-distribution-models-12" class="slide level2">
+<h2>Point Distribution Models</h2>
+<p>Given the aligned shapes, compute a model that describes the variation in shape.</p>
+<p>A linear model of the variation can be found using <strong>Principal Components Analysis (PCA)</strong>.</p>
+</section>
+<section id="point-distribution-models-13" class="slide level2">
+<h2>Point Distribution Models</h2>
+<p>The model is in the form:</p>
+<p><span class="math display">\[x = \overline x + \mathbf{P}_{s} \mathbf{b}_{s}\]</span></p>
+<p>where <span class="math inline">\(x\)</span> is a shape, <span class="math inline">\(\overline x\)</span> is the <em>mean</em> shape, the matrix <span class="math inline">\(\mathbf{P}_{s}\)</span> describes the variation in shape, and <span class="math inline">\(\mathbf{b}_{s}\)</span> are the <strong>parameters</strong> that represent a shape instance.</p>
+</section>
+<section id="aside-principal-component-analysis-pca" class="slide level2">
+<h2><em>Aside:</em> Principal Component Analysis (PCA)</h2>
+<div>
+<ul>
+<li class="fragment">Reveals the internal structure of the data in a way that best <em>explains the variance</em> in the data.</li>
+<li class="fragment">Used for dimensionality reduction.</li>
+<li class="fragment">Reduces data down into its basic components, stripping away any unnecessary parts.</li>
+</ul>
+</div>
+<aside class="notes">
+<p>PCA was invented in 1901 by Karl Pearson, as an analogue of the principal axis theorem in mechanics;</p>
+</aside>
+</section>
+<section id="aside-principal-component-analysis-pca-1" class="slide level2">
+<h2><em>Aside:</em> Principal Component Analysis (PCA)</h2>
+<div>
+<ul>
+<li class="fragment">Assume we have 2-dimensional measurements. e.g. the height and foot size for a number of people</li>
+<li class="fragment">We expect the measurements to be correlated to some degree. e.g. taller people tend to have larger feet</li>
+<li class="fragment">Visualise the data by plotting one measure against the other.</li>
+</ul>
+</div>
+</section>
+<section class="slide level2">
+
+<p><img data-src="assets/plots2/pca_01.png" style="width:85.0%" /></p>
+</section>
+<section id="aside-principal-component-analysis-pca-2" class="slide level2">
+<h2><em>Aside:</em> Principal Component Analysis (PCA)</h2>
+<p>The objective of PCA is to capture as much of the variation in as few dimensions as possible.</p>
+<p>Find line of “best fit” through the data, then line of “next best fit” which is <em>orthogonal</em> to the first…</p>
+<p>Repeat for however many dimensions your data has</p>
+</section>
+<section class="slide level2">
+
+<p><img data-src="assets/plots2/pca_02.png" style="width:85.0%" /></p>
+</section>
+<section class="slide level2">
+
+<p><img data-src="assets/plots2/pca_03.png" style="width:85.0%" /></p>
+</section>
+<section id="aside-principal-component-analysis-pca-3" class="slide level2">
+<h2><em>Aside:</em> Principal Component Analysis (PCA)</h2>
+<p>Since the dimensions must be orthogonal, all we have done is rotate the axes to better align with the data.</p>
+<p>In doing this:</p>
+<ul>
+<li>P1 captures most of the meaningful variation</li>
+<li>P2 seems to capture the noise in the measurements</li>
+</ul>
+<p>The original data can be approximated as some distance along P1 from the centre of the data cloud.</p>
+</section>
+<section class="slide level2">
+
+<p><img data-src="assets/plots2/pca_04.png" style="width:85.0%" /></p>
+</section>
+<section class="slide level2">
+
+<p><img data-src="assets/plots2/pca_05.png" style="width:85.0%" /></p>
+</section>
+<section class="slide level2">
+
+<p><img data-src="assets/plots2/pca_06.png" style="width:85.0%" /></p>
+</section>
+<section class="slide level2">
+
+<p><img data-src="assets/plots2/pca_07.png" style="width:85.0%" /></p>
+</section>
+<section id="aside-principal-component-analysis-pca-4" class="slide level2">
+<h2><em>Aside:</em> Principal Component Analysis (PCA)</h2>
+<p>To project a data point onto a new axis:</p>
+<p><span class="math display">\[\mathbf{b}_{s}  = \mathbf{P}_{s}^{T}  (x - \overline x )\]</span></p>
+</section>
+<section id="aside-principal-component-analysis-pca-5" class="slide level2">
+<h2><em>Aside:</em> Principal Component Analysis (PCA)</h2>
+<p>To reconstruct the data point from the features:</p>
+<p><span class="math display">\[x \approx \overline x + \mathbf{P}_{s} \mathbf{b}_{s}\]</span></p>
+<p>This is only an approximation since the data are truncated to lie on just the principal component(s).</p>
+</section>
+<section id="aside-principal-component-analysis-pca-6" class="slide level2">
+<h2><em>Aside:</em> Principal Component Analysis (PCA)</h2>
+<p>Note, in the previous example we have moved from a 2D problem to 1D so the representation is more compact.</p>
+<p>Staying within the limits of the data means new examples can be generated — this is a <strong>generative</strong> model.</p>
+</section>
+<section id="aside-principal-component-analysis-pca-7" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true"><em>Aside:</em> Principal Component Analysis (PCA)</h2>
+<p>Algorithm:</p>
+<ul>
+<li>Compute the mean of the data and subtract.</li>
+<li>Compute the covariance matrix.</li>
+<li>Compute the eigenvectors and eigenvalues of the covariance matrix and sort into descending order of eigenvalue.</li>
+</ul>
+</section>
+<section id="aside-principal-component-analysis-pca-8" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true"><em>Aside:</em> Principal Component Analysis (PCA)</h2>
+<ul>
+<li>Eigenvectors are the principal components.</li>
+<li>Eigenvalues are the variance explained by each principal component.</li>
+<li>We typically retain the number of eigenvectors that describe 95% of the total variation in the data.</li>
+</ul>
+</section>
+<section id="aside-principal-component-analysis-pca-9" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true"><em>Aside:</em> Principal Component Analysis (PCA)</h2>
+<p>Matlab has implementations of both PCA and of Eigenvector/Eigenvalue decomposition.</p>
+</section>
+<section id="point-distribution-models-14" class="slide level2">
+<h2>Point Distribution Models</h2>
+<p>For modelling shapes, an n-point shape is represented as a 2n element vector:</p>
+<p><span class="math display">\[X = \{x_1, x_2, \dots, x_n, y_1, y_2, \dots, y_n \}^{T}\]</span></p>
+<p>Can be thought of as a single point in a <span class="math inline">\(\mathbb{R}^{2n}\)</span> space.</p>
+</section>
+<section id="point-distribution-models-15" class="slide level2">
+<h2>Point Distribution Models</h2>
+<p>PCA can be applied to the <span class="math inline">\(\mathbb{R}^{2n}\)</span> data, rotating the <span class="math inline">\(2n\)</span> axes to best fit to the data cloud in <span class="math inline">\(\mathbb{R}^{2n}\)</span> space.</p>
+<p>We retain only the meaningful variation - often resulting in considerable compression.</p>
+</section>
+<section id="point-distribution-models-16" class="slide level2">
+<h2>Point Distribution Models</h2>
+<p><img data-src="assets/plots2/pca_mouth.png" /></p>
+<aside class="notes">
+<p>Here, the original data is 20 x 2D points. We can express the mouth shapes with only 3 values.</p>
+</aside>
+</section>
+<section id="fitting-a-pdm" class="slide level2">
+<h2>Fitting a PDM</h2>
+<p>Given a PDM, and a new image, how do we fit the PDM to the facial pose in the new image?</p>
+<ul>
+<li><p>Sample the pixels around each landmark in the training set, and look for the region in the image that best matches the sample.</p></li>
+<li><p>Refine the fit by forcing the shape to lie within the model space.</p></li>
+<li><p>More efficient if provided an approximate starting point.</p></li>
+<li><p>Further reading: <a href="http://personalpages.manchester.ac.uk/staff/timothy.f.cootes/papers/asm_overview.pdf">Active Shape Models</a></p></li>
+</ul>
+<aside class="notes">
+<p>There is a lot to model-fitting and optimisation. Too much to cover in one slide… Gradient descent is a good start. Creating an Active Appearance Model (AAM) would be great.</p>
+</aside>
+</section></section>
+<section>
+<section id="fourier-descriptors-of-shape" class="title-slide slide level1">
+<h1>Fourier Descriptors of Shape</h1>
+
+</section>
+<section id="fourier-descriptors" class="slide level2">
+<h2>Fourier Descriptors</h2>
+<p>The lip boundary provides a closed contour.</p>
+<ul>
+<li>Normalise the length to <span class="math inline">\(2 \pi\)</span> units.</li>
+<li>Measure the distance from the centroid to the contour at regular intervals to calculate a <strong>Centroid Contour Distance Curve</strong>.</li>
+<li>The curve is <em>periodic</em> with period <span class="math inline">\(2 \pi\)</span>, and it is real, continuous.</li>
+</ul>
+</section>
+<section id="fourier-descriptors-1" class="slide level2">
+<h2>Fourier Descriptors</h2>
+<p><img data-src="assets/plots2/fourier_descriptors.gif" /></p>
+</section>
+<section id="fourier-descriptors-2" class="slide level2">
+<h2>Fourier Descriptors</h2>
+<p>The curve can be decomposed into a <strong>Fourier</strong> series (refer back to the audio processing slides).</p>
+</section>
+<section id="fourier-descriptors-3" class="slide level2">
+<h2>Fourier Descriptors</h2>
+<ul>
+<li>The coefficients of the series provide the visual features</li>
+<li>This requires an accurate and complete estimate of the lip-contour.</li>
+<li>The coefficients do not have direct physical meaning.</li>
+</ul>
+<aside class="notes">
+<p>you could get the lip contour from tracking or thresholding.</p>
+</aside>
+</section></section>
+<section id="summary" class="title-slide slide level1">
+<h1>Summary</h1>
+<ul>
+<li>Visual Features</li>
+<li>Image segmentation</li>
+<li>Point distribution models and PCA</li>
+<li>Fourier descriptors</li>
+</ul>
+</section>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/reveal.js@^4/dist/reveal.js"></script>
+
+  // reveal.js plugins
+  <script src="https://unpkg.com/reveal.js@^4/plugin/notes/notes.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/search/search.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/zoom/zoom.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/math/math.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/highlight/highlight.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+        // Display a presentation progress bar
+        progress: true,
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+        // Push each slide change to the browser history
+        history: true,
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+        // Enable the slide overview mode
+        overview: true,
+        // Vertical centering of slides
+        center: true,
+        // Enables touch navigation on devices with touch input
+        touch: true,
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+        // Turns fragments on and off globally
+        fragments: true,
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+        // Global override for autoplaying embedded media (video/audio/iframe)
+        // - null: Media will only autoplay if data-autoplay is present
+        // - true: All media will autoplay, regardless of individual setting
+        // - false: No media will autoplay, regardless of individual setting
+        autoPlayMedia: null,
+        // Global override for preloading lazy-loaded iframes
+        // - null: Iframes with data-src AND data-preload will be loaded when within
+        //   the viewDistance, iframes with only data-src will be loaded when visible
+        // - true: All iframes with data-src will be loaded when within the viewDistance
+        // - false: All iframes with data-src will be loaded only when visible
+        preloadIframes: null,
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+        // Transition style
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+        // Transition speed
+        transitionSpeed: 'default', // default/fast/slow
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'fade', // none/fade/slide/convex/concave/zoom
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+        // Factor of the display size that should remain empty around the content
+        margin: 0.2,
+        // The display mode that will be used to show slides
+        display: 'block',
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [
+          RevealMath,
+          RevealHighlight,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>
