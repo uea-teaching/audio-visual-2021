@@ -23,8 +23,15 @@ Lectures are available as online html or printable pdf.
 - Visual Speech: [online](lectures/visual-speech.html)
   or printable [pdf](lectures/visual-speech.bmr.pdf).
 
+- Shape Features: [online](lectures/shape-features.html)
+  or printable [pdf](lectures/shape-features.bmr.pdf).
+
+- Appearance Features: [online](lectures/appearance-features.html)
+  or printable [pdf](lectures/appearance-features.bmr.pdf).
+
 ## Labs
 
 Labs are usually a pdf file, or a zip file if additional resources are provided.
 
 - Images and Video [labsheet](labs/01-images-video.lab.pdf).
+- FFMPEG [labsheet](labs/02-ffmpeg.lab.pdf).
