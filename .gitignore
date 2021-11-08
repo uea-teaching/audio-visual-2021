@@ -14,6 +14,8 @@
 !labs/*.pdf
 
 !lectures/
+!lectures/*.pdf
+!lectures/*.html
 !lectures/assets/
 !lectures/assets/*.css
 !lectures/assets/img*/
