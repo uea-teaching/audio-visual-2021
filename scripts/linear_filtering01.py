@@ -197,53 +197,58 @@ fig, ax = plot_conv(f, h, g)
 fig.savefig(root + f'kernel_{i}{j}_g{i}{j}.png', **savekw)
 fig
 
-f = np.ones([10, 10, 3]) * 0.7
-f[1:9, 1:9, :] = 1
+# %%
+
+f = np.ones([12, 12, 3]) * 0.7
+f[1:11, 1:11, :] = 1
 f[:3, :3, :] = cols[5]
 f[1:3, 1:3, :] = cols[6]
 fig, ax = plt.subplots(1, figsize=(7, 7))
-plot_square(ax, 10, '', '', 'Padding Edges', data=f)
+plot_square(ax, 12, '', '', '', data=f)
 fig.savefig(root + 'conv_edge_00.png', **savekw)
+
 
 # %%
 
-f = np.ones([10, 10, 3]) * 0.7
-f[1:9, 1:9, :] = 1
+f = np.ones([12, 12, 3]) * 0.7
+f[1:11, 1:11, :] = 1
 f[:3, :3, :] = cols[6]
 fig, ax = plt.subplots(1, figsize=(7, 7))
-plot_square(ax, 10, '', '', 'Zero Padding', data=f)
-for i in range(10):
+plot_square(ax, 12, '', '', '', data=f)
+for i in range(12):
     ax.text(i + 0.5, 0.5, '0', fontsize=16, ha='center', va='center')
-for i in range(1, 9):
+for i in range(1, 11):
     ax.text(0.5, i + 0.5, '0', fontsize=16, ha='center', va='center')
-    ax.text(9.5, i + 0.5, '0', fontsize=16, ha='center', va='center')
-for i in range(10):
-    ax.text(i + 0.5, 9.5, '0', fontsize=16, ha='center', va='center')
+    ax.text(11.5, i + 0.5, '0', fontsize=16, ha='center', va='center')
+for i in range(12):
+    ax.text(i + 0.5, 11.5, '0', fontsize=16, ha='center', va='center')
 
 fig.savefig(root + 'conv_edge_zeros.png', **savekw)
 
 # %%
 
-f = np.ones([10, 10, 3]) * 0.7
-f[1:9, 1:9, :] = 1
+f = np.ones([12, 12, 3]) * 0.7
+f[1:11, 1:11, :] = 1
 f[:3, :3, :] = cols[6]
-f[1:9, 8, :] = cols[3]
+f[1:11, 10, :] = cols[3]
 fig, ax = plt.subplots(1, figsize=(7, 7))
-plot_square(ax, 10, '', '', 'Wrapping Edges', data=f)
-for i in range(8):
-    ax.arrow(8.5, i + 1.5, -7.75, 0, head_width=0.2,
+plot_square(ax, 12, '', '', '', data=f)
+for i in range(10):
+    ax.arrow(10.5, i + 1.5, -9.75, 0, head_width=0.2,
              head_length=0.3, fc='m', ec='m', lw=2)
 fig.savefig(root + 'conv_edge_wrap.png', **savekw)
 
 # %%
 
-f = np.ones([10, 10, 3]) * 0.7
-f[1:9, 1:9, :] = 1
+f = np.ones([12, 12, 3]) * 0.7
+f[1:11, 1:11, :] = 1
 f[:3, :3, :] = cols[6]
-f[1:9, 8, :] = cols[3]
+f[1:11, 10, :] = cols[3]
 fig, ax = plt.subplots(1, figsize=(7, 7))
-plot_square(ax, 10, '', '', 'Repeating Edges', data=f)
-for i in range(8):
-    ax.arrow(8.5, i + 1.5, 0.75, 0, head_width=0.2,
+plot_square(ax, 12, '', '', '', data=f)
+for i in range(10):
+    ax.arrow(10.5, i + 1.5, 0.75, 0, head_width=0.2,
              head_length=0.3, fc='m', ec='m', lw=2)
 fig.savefig(root + 'conv_edge_repeat.png', **savekw)
+
+# %%
