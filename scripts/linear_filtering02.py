@@ -20,10 +20,10 @@ cols = [(1, 0, 0), (0.3, 0.9, 0.3), (0.9, 0.9, 0.3),
         (0.9, 0.3, 0.9), (0.3, 0.9, 0.9), (0.9, 0.6, 0.6), (0.9, 0.9, 0.6)]
 
 
-def plot_image(ax, image):
+def plot_image(ax, image, title):
     n, m = image.shape[:2]
     ax.imshow(image, cmap='gray', vmin=0, vmax=1)
-    ax.set_title('$f$')
+    ax.set_title(title)
     ax.grid(False)
 
 
@@ -59,9 +59,9 @@ def plot_kernel(ax, n, txt, fs=18):
 def plot_filter(f=None, g=None):
     fig, ax = plt.subplots(1, 3, figsize=(10, 8), gridspec_kw={
         'width_ratios': [10, 3.5, 10]})
-    plot_image(ax[0], f)
+    plot_image(ax[0], f, '$f$')
     if g is not None:
-        plot_image(ax[2], g)
+        plot_image(ax[2], g, '$g$')
     else:
         plot_question(ax[2])
     for a in ax:
