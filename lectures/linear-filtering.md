@@ -54,11 +54,13 @@ So for a 3x3 kernel:
 
 $$ \text{both } m, n = -1, 0, 1$$
 
-## Convolution
+::: notes
+Kernel does not need to be square - but often are.
+:::
 
-Kernel matrix coordinate origin is in the _centre_.
+## Kernel Matrix
 
-![](assets/plots3/kernel_coords.png)
+![The kernel origin is in the _centre_.](assets/plots3/kernel_coords.png)
 
 ::: notes
 Recall: the image coordinate origin is in the top left.
@@ -78,55 +80,212 @@ Recall: the image coordinate origin is in the top left.
 
 ## Convolution {data-auto-animate="true"}
 
-![](assets/plots3/kernel_11_00.png)
+![The kernel is positioned at (1,1) in input image.](assets/plots3/kernel_11_00.png)
 
 ## Convolution {data-auto-animate="true"}
 
-![](assets/plots3/kernel_11_01.png)
+![We iterate the values of $m$ and $n$.](assets/plots3/kernel_11_01.png)
 
 ## Convolution {data-auto-animate="true"}
 
-![](assets/plots3/kernel_11_02.png)
+![$m=-1, ~n=0$](assets/plots3/kernel_11_02.png)
 
 ## Convolution {data-auto-animate="true"}
 
-![](assets/plots3/kernel_11_03.png)
+![$m=-1, ~n=1$](assets/plots3/kernel_11_03.png)
 
 ## Convolution {data-auto-animate="true"}
 
-![](assets/plots3/kernel_11_04.png)
+![$m=0, ~n=1$](assets/plots3/kernel_11_04.png)
 
 ## Convolution {data-auto-animate="true"}
 
-![](assets/plots3/kernel_11_all.png)
+![Iteration is complete.](assets/plots3/kernel_11_all.png)
 
 ## Convolution {data-auto-animate="true"}
 
-![](assets/plots3/kernel_11_g11.png)
+![The product sum is assigned to the output image.](assets/plots3/kernel_11_g11.png)
 
 ## Convolution {data-auto-animate="true"}
 
-![](assets/plots3/kernel_12_g12.png)
+![Slide the kernel along the row.](assets/plots3/kernel_12_g12.png)
 
 ## Convolution {data-auto-animate="true"}
 
-![](assets/plots3/kernel_13_g13.png)
+![Slide the kernel along the row.](assets/plots3/kernel_13_g13.png)
 
 ## Convolution {data-auto-animate="true"}
 
-![](assets/plots3/kernel_21_g21.png)
+![Move the kernel to the next row.](assets/plots3/kernel_21_g21.png)
 
 ## Convolution {data-auto-animate="true"}
 
-![](assets/plots3/kernel_28_g28.png)
+![Continue sliding.](assets/plots3/kernel_28_g28.png)
 
 ## Convolution {data-auto-animate="true"}
 
-![](assets/plots3/kernel_88_g88.png)
+![The image is completely covered.](assets/plots3/kernel_88_g88.png)
 
-## Images Edges
+## What about the edges? {data-auto-animate="true"}
 
-![](assets/plots3/conv_edge_00.png){width=55%}
+::: columns
+::::: column
+
+![](assets/plots3/conv_edge_00.png)
+
+:::::
+::::: column
+
+The filter window falls off the edge of the image.
+
+:::::
+:::
+
+## What about the edges? {data-auto-animate="true"}
+
+::: columns
+::::: column
+
+![](assets/plots3/conv_edge_zeros.png)
+
+:::::
+::::: column
+
+A common strategy is to pad with zeros.
+
+The image is effectively larger than the original.
+
+:::::
+:::
+
+## What about the edges? {data-auto-animate="true"}
+
+::: columns
+::::: column
+
+![](assets/plots3/conv_edge_wrap.png)
+
+:::::
+::::: column
+
+We could _wrap_ the pixels, from each edge to the opposite.
+
+Again, the image is effectively larger.
+
+:::::
+:::
+
+## What about the edges? {data-auto-animate="true"}
+
+::: columns
+::::: column
+
+![](assets/plots3/conv_edge_repeat.png)
+
+:::::
+::::: column
+
+Alternatively, we could _repeat_ the pixels, extending each edge outward.
+
+:::::
+:::
+
+# Linear Kernels
+
+---
+
+What would the filtered image look like?
+
+![kernel 1](assets/plots3/kernel1_q.png)
+
+---
+
+No change!
+
+![kernel 1](assets/plots3/kernel1_a.png)
+
+---
+
+What would the filtered image look like?
+
+![kernel 2](assets/plots3/kernel2_q.png)
+
+---
+
+Shifted left by 1 pixel.
+
+![kernel 2](assets/plots3/kernel2_a.png)
+
+---
+
+What would the filtered image look like?
+
+![kernel 3](assets/plots3/kernel3_q.png)
+
+---
+
+Blurred...
+
+![kernel 3](assets/plots3/kernel3_a.png)
+
+# Smoothing Filters
+
+## Mean Filter {data-auto-animate="true"}
+
+replace each pixel with the mean of local neighbours:
+
+$$
+h = \frac{1}{9}\times
+   \begin{bmatrix}
+      1 & 1 & 1 \\
+      1 & 1 & 1 \\
+      1 & 1 & 1
+   \end{bmatrix}
+$$
+
+## Mean Filter {data-auto-animate="true"}
+
+![Mean filtered with 3 x 3 kernel](assets/plots3/mean_3x3.png)
+
+## Mean Filter {data-auto-animate="true"}
+
+we can increase the size of the kernel to get a smoother image:
+
+$$
+h = \frac{1}{25}\times
+   \begin{bmatrix}
+      1 & 1 & 1 & 1 & 1 \\
+      1 & 1 & 1 & 1 & 1 \\
+      1 & 1 & 1 & 1 & 1 \\
+      1 & 1 & 1 & 1 & 1 \\
+      1 & 1 & 1 & 1 & 1
+   \end{bmatrix}
+$$
+
+## Mean Filter {data-auto-animate="true"}
+
+![Mean filtered with 5 x 5 kernel](assets/plots3/mean_5x5.png)
+
+## Mean Filter {data-auto-animate="true"}
+
+![Mean filtered with 7 x 7 kernel](assets/plots3/mean_7x7.png)
+
+## Gaussian blur {data-auto-animate="true"}
+
+Similar to averaging filter:
+
+- Replace intensities with a weighted average of neighbours.
+- Pixels closer to the centre of the kernel have more influence.
+
+## Gaussian blur {data-auto-animate="true"}
+
+::: {style="font-size:1.5em"}
+
+$$
+g(x,y) = \frac{1}{2\pi\sigma^2}~ {\rm  e}^{ - \frac{x^2+y^2}{2\sigma^2} }
+$$
+
+:::
 
 ## More Kernel Examples
 
