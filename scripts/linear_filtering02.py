@@ -143,3 +143,39 @@ fig.savefig(root + 'kernel4_a.png', **savekw)
 fig
 
 # %%
+
+h33 = np.ones([3, 3])/9
+filtered = filters.edges.convolve(cameraman, h33)
+fig, ax = plt.subplots(1, 2, figsize=(10, 6))
+plot_image(ax[0], cameraman, 'original')
+plot_image(ax[1], filtered, 'mean 3x3')
+for a in ax:
+    outline(a)
+fig.tight_layout()
+fig.savefig(root + 'mean_3x3.png', **savekw)
+
+# %%
+
+h55 = np.ones([5, 5])/25
+filtered = filters.edges.convolve(cameraman, h55)
+fig, ax = plt.subplots(1, 2, figsize=(10, 6))
+plot_image(ax[0], cameraman, 'original')
+plot_image(ax[1], filtered, 'mean 5x5')
+for a in ax:
+    outline(a)
+fig.tight_layout()
+fig.savefig(root + 'mean_5x5.png', **savekw)
+
+# %%
+
+h77 = np.ones([7, 7])/49
+filtered = filters.edges.convolve(cameraman, h77)
+fig, ax = plt.subplots(1, 2, figsize=(10, 6))
+plot_image(ax[0], cameraman, 'original')
+plot_image(ax[1], filtered, 'mean 7x7')
+for a in ax:
+    outline(a)
+fig.tight_layout()
+fig.savefig(root + 'mean_7x7.png', **savekw)
+
+# %%
