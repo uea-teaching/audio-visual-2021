@@ -272,7 +272,7 @@ $$
 
 ## Gaussian blur {data-auto-animate="true"}
 
-Similar to averaging filter:
+Similar to mean filter:
 
 - Replace intensities with a weighted average of neighbours.
 - Pixels closer to the centre of the kernel have more influence.
@@ -287,7 +287,72 @@ $$
 
 :::
 
+## Gaussian blur {data-auto-animate="true"}
+
+![Gaussian kernel](assets/plots3/2d_gaussian.png)
+
+## Gaussian blur {data-auto-animate="true"}
+
+![Mean and Gaussian blur](assets/plots3/cameraman_filtered.png)
+
+## Image Smoothing
+
+Smoothing effectively _low pass_ filters the image.
+
+- Only really practical for small kernels
+- Blurring also destroys image information
+- Difference between the mean and Gaussian filter is subtle, but Gaussian is usually preferred
+
+::: notes
+Dampens high frequency information so that edges and noise are less prominent
+:::
+
+## Image Smoothing
+
+If we have many images of the same scene:
+
+- Use idea of averaging to reduce noise.
+- Average pixel intensities across images rather than across the spatial neighbour.
+
+## Image Smoothing
+
+- Effectively increases the signal-to-noise ratio.
+- Useful in applications where image signal is low.
+  - E.g., imaging astronomical objects.
+
+---
+
+What would the filtered image look like?
+
+![kernel 4](assets/plots3/kernel4_q.png)
+
+---
+
+![kernel 4](assets/plots3/kernel4_a.png)
+
 ## More Kernel Examples
 
 There is a nice interactive tool to view kernel operations here:
 [https://setosa.io/ev/image-kernels/](https://setosa.io/ev/image-kernels/)
+
+# Unsharp Masking
+
+A _high pass_ filter formed from a _low pass_ filtered image.
+
+# Unsharp Masking
+
+Low pass filter removes high-frequency detail.
+
+::: incremental
+
+- Difference between original and filtered images is what the filter removed.
+  - high frequency information.
+- Add difference to original image to enhance edges, etc.
+
+:::
+
+::: notes
+
+Known as unsharp masking.
+
+:::
