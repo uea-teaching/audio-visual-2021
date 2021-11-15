@@ -8,7 +8,7 @@ date: \today
 # Content
 
 - 2D Convolutions
-- Smoothing Filter
+- Smoothing Filters
 - Sharpening and Unsharp Masking
 - Template Matching
 
@@ -20,19 +20,19 @@ Filtering replaces each pixel with a value based on some function performed on i
 
 Used for smoothing and sharpening.
 
-IMAGE HERE
+![Sharpen Example](assets/plots3/sharp_example.png.png)
 
 ## What is Image Filtering? {data-auto-animate="true"}
 
 Estimating gradients.
 
-IMAGE HERE
+![Gradient Example](assets/plots3/gradient_example.png.png)
 
 ## What is Image Filtering? {data-auto-animate="true"}
 
 Removing noise.
 
-IMAGE HERE
+![Noise Example](assets/plots3/noise_example.png.png)
 
 ## Linear Filtering
 
