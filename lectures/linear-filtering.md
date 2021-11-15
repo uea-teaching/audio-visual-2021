@@ -14,25 +14,25 @@ date: \today
 
 ## What is Image Filtering? {data-auto-animate="true"}
 
-Filtering replaces each pixel with a value based on some function performed on it’s local neighbourhood.
+**Filtering** replaces each pixel with a value based on some function performed on it’s _local neighbourhood_.
 
 ## What is Image Filtering? {data-auto-animate="true"}
 
-Used for smoothing and sharpening.
+Used for smoothing and sharpening...
 
-![Sharpen Example](assets/plots3/sharp_example.png.png)
-
-## What is Image Filtering? {data-auto-animate="true"}
-
-Estimating gradients.
-
-![Gradient Example](assets/plots3/gradient_example.png.png)
+![Sharpen Example](assets/plots3/sharp_example.png)
 
 ## What is Image Filtering? {data-auto-animate="true"}
 
-Removing noise.
+Estimating gradients...
 
-![Noise Example](assets/plots3/noise_example.png.png)
+![Gradient Example](assets/plots3/gradient_example.png)
+
+## What is Image Filtering? {data-auto-animate="true"}
+
+Removing noise...
+
+![Noise Example](assets/plots3/noise_example.png)
 
 ## Linear Filtering
 
@@ -320,6 +320,8 @@ If we have many images of the same scene:
 - Useful in applications where image signal is low.
   - E.g., imaging astronomical objects.
 
+# Image Sharpening
+
 ---
 
 What would the filtered image look like?
@@ -330,16 +332,46 @@ What would the filtered image look like?
 
 ![kernel 4](assets/plots3/kernel4_a.png)
 
+## Image Sharpening
+
+We can control the _amount_ of sharpening:
+
+$$
+h_{sharp} =
+\begin{bmatrix}
+   0 & 0 & 0\\
+   0 & 1 & 0\\
+   0 & 0 & 0
+\end{bmatrix}
++
+\begin{bmatrix}
+   0 & -1 & 0\\
+   -1 & 4 & -1\\
+   0 & -1 & 0
+\end{bmatrix}
+* amount
+$$
+
+::: notes
+If anyone has ever developed film - similar to a high acutance developer formula...
+:::
+
 ## More Kernel Examples
 
 There is a nice interactive tool to view kernel operations here:
 [https://setosa.io/ev/image-kernels/](https://setosa.io/ev/image-kernels/)
 
-# Unsharp Masking
+The ImageMagick documentation has a nice list of kernels:
+[https://legacy.imagemagick.org/Usage/convolve/](https://legacy.imagemagick.org/Usage/convolve/)
+
+## Unsharp Masking
 
 A _high pass_ filter formed from a _low pass_ filtered image.
 
-# Unsharp Masking
+- Usually preferred over kernel sharpening filter.
+- A legacy of the pre-digital period.
+
+## Unsharp Masking
 
 Low pass filter removes high-frequency detail.
 
@@ -352,7 +384,89 @@ Low pass filter removes high-frequency detail.
 :::
 
 ::: notes
-
 Known as unsharp masking.
-
 :::
+
+## Unsharp Masking
+
+![Unsharp masking 7x7 Gaussian kernel](assets/plots3/unsharp_diff.png)
+
+::: notes
+The difference image is the unsharp mask!
+:::
+
+## Unsharp Masking
+
+The **sharpened** image is the original image plus the _unsharp mask_ multiplied by some factor.
+
+- The difference image is the unsharp mask!
+
+## Unsharp Masking
+
+![Unsharp masking 2D and 5D](assets/plots3/unsharp_mask7x7.png)
+
+## Unsharp Masking
+
+![Unsharp masking 11x11 Gaussian kernel](assets/plots3/unsharp_diff_11x11.png)
+
+## Unsharp Masking
+
+![Unsharp masking 2D and 5D](assets/plots3/unsharp_mask11x11.png)
+
+## Unsharp Masking
+
+Generally don’t want to boost all fine detail as noise would also be enhanced.
+
+- Adjust the Gaussian parameters.
+- Threshold the difference image.
+- Care is required to avoid artefacts (e.g. halos).
+
+# Image Filters as Templates {data-auto-animate="true"}
+
+2D Convolution can be thought of as comparing a little picture (the filter kernel) against all local regions in the image.
+
+## Image Filters as Templates {data-auto-animate="true"}
+
+If the filter kernel contains a picture of something you want to locate inside the image (a template), the filter response should be maximised at the local region that most closely matches it.
+
+- We can use image filtering for object location
+- Known as Template Matching.
+
+## Image Filters as Templates {data-auto-animate="true"}
+
+Algorithm:
+
+- subtract the mean from the image and template
+- convolve the template with the image
+- find the location of the maximum response
+
+## Image Filters as Templates {data-auto-animate="true"}
+
+![Select a region to form a template.](assets/plots3/template_region.png)
+
+::: notes
+The region must be rotated for a convolution operation.
+:::
+
+## Image Filters as Templates {data-auto-animate="true"}
+
+![Perform the convolution operation.](assets/plots3/template_response.png)
+
+::: notes
+The region must be rotated for a convolution operation.
+:::
+
+## Image Filters as Templates {data-auto-animate="true"}
+
+![Locate the maximum filter response.](assets/plots3/template_max.png)
+
+::: notes
+This is the highest pixel value in the output image.
+:::
+
+# Summary
+
+- 2D Convolutions
+- Smoothing Filters
+- Sharpening and Unsharp masking
+- Template matching
