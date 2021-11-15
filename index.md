@@ -29,6 +29,9 @@ Lectures are available as online html or printable pdf.
 - Appearance Features: [online](lectures/appearance-features.html)
   or printable [pdf](lectures/appearance-features.bmr.pdf).
 
+- Linear Image Filtering: [online](lectures/linear-filtering.html)
+  or printable [pdf](lectures/linear-filtering.bmr.pdf).
+
 ## Labs
 
 Labs are usually a pdf file, or a zip file if additional resources are provided.

@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Dr. David Greenwood">
+  <title>Linear Image Filtering</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reset.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/theme/black.css" id="theme">
+  <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.2.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Linear Image Filtering</h1>
+  <p class="subtitle">Audiovisual Processing CMP-6026A</p>
+  <p class="author">Dr. David Greenwood</p>
+</section>
+
+<section>
+<section id="content" class="title-slide slide level1">
+<h1>Content</h1>
+<ul>
+<li>2D Convolutions</li>
+<li>Smoothing Filters</li>
+<li>Sharpening and Unsharp Masking</li>
+<li>Template Matching</li>
+</ul>
+</section>
+<section id="what-is-image-filtering" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">What is Image Filtering?</h2>
+<p><strong>Filtering</strong> replaces each pixel with a value based on some function performed on it’s <em>local neighbourhood</em>.</p>
+</section>
+<section id="what-is-image-filtering-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">What is Image Filtering?</h2>
+<p>Used for smoothing and sharpening…</p>
+<figure>
+<img data-src="assets/plots3/sharp_example.png" alt="Sharpen Example" /><figcaption aria-hidden="true">Sharpen Example</figcaption>
+</figure>
+</section>
+<section id="what-is-image-filtering-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">What is Image Filtering?</h2>
+<p>Estimating gradients…</p>
+<figure>
+<img data-src="assets/plots3/gradient_example.png" alt="Gradient Example" /><figcaption aria-hidden="true">Gradient Example</figcaption>
+</figure>
+</section>
+<section id="what-is-image-filtering-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">What is Image Filtering?</h2>
+<p>Removing noise…</p>
+<figure>
+<img data-src="assets/plots3/noise_example.png" alt="Noise Example" /><figcaption aria-hidden="true">Noise Example</figcaption>
+</figure>
+</section>
+<section id="linear-filtering" class="slide level2">
+<h2>Linear Filtering</h2>
+<p>Linear Filtering is defined as a convolution.</p>
+<p>This is a <em>sum of products</em> between an image region and a <strong>kernel</strong> matrix:</p>
+<p><span class="math display">\[g(i, j) = \sum_{m=-a}^{a}\sum_{n=-b}^{b} f(i - m, j - n) h(m, n)\]</span></p>
+<p>where <span class="math inline">\(g\)</span> is the filtered image, <span class="math inline">\(f\)</span> is the original image, <span class="math inline">\(h\)</span> is the kernel, and <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> are the image coordinates.</p>
+</section>
+<section id="convolution" class="slide level2">
+<h2>Convolution</h2>
+<p>Typically:</p>
+<p><span class="math display">\[a=\lfloor \frac{h_{rows}}{2} \rfloor, ~ b=\lfloor \frac{h_{cols}}{2} \rfloor\]</span></p>
+<p>So for a 3x3 kernel:</p>
+<p><span class="math display">\[ \text{both } m, n = -1, 0, 1\]</span></p>
+<aside class="notes">
+<p>Kernel does not need to be square - but often are.</p>
+</aside>
+</section>
+<section id="kernel-matrix" class="slide level2">
+<h2>Kernel Matrix</h2>
+<figure>
+<img data-src="assets/plots3/kernel_coords.png" alt="The kernel origin is in the centre." /><figcaption aria-hidden="true">The kernel origin is in the <em>centre</em>.</figcaption>
+</figure>
+<aside class="notes">
+<p>Recall: the image coordinate origin is in the top left.</p>
+</aside>
+</section>
+<section id="convolution-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Convolution</h2>
+<ol type="1">
+<li><p>Scan image with a sub-window centred at each pixel.</p>
+<ul>
+<li>The sub-window is known as the kernel, or mask.</li>
+</ul></li>
+<li><p>Replace the pixel with the sum of products between the kernel coefficients and all of the pixels beneath the kernel.</p>
+<ul>
+<li>Sum of products only for linear filters</li>
+</ul></li>
+<li><p>Slide the kernel so it’s centred on the next pixel and repeat for all pixels in the image.</p></li>
+</ol>
+</section>
+<section id="convolution-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Convolution</h2>
+<figure>
+<img data-src="assets/plots3/kernel_11_00.png" alt="The kernel is positioned at (1,1) in input image." /><figcaption aria-hidden="true">The kernel is positioned at (1,1) in input image.</figcaption>
+</figure>
+</section>
+<section id="convolution-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Convolution</h2>
+<figure>
+<img data-src="assets/plots3/kernel_11_01.png" alt="We iterate the values of m and n." /><figcaption aria-hidden="true">We iterate the values of <span class="math inline">\(m\)</span> and <span class="math inline">\(n\)</span>.</figcaption>
+</figure>
+</section>
+<section id="convolution-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Convolution</h2>
+<figure>
+<img data-src="assets/plots3/kernel_11_02.png" alt="m=-1, ~n=0" /><figcaption aria-hidden="true"><span class="math inline">\(m=-1, ~n=0\)</span></figcaption>
+</figure>
+</section>
+<section id="convolution-5" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Convolution</h2>
+<figure>
+<img data-src="assets/plots3/kernel_11_03.png" alt="m=-1, ~n=1" /><figcaption aria-hidden="true"><span class="math inline">\(m=-1, ~n=1\)</span></figcaption>
+</figure>
+</section>
+<section id="convolution-6" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Convolution</h2>
+<figure>
+<img data-src="assets/plots3/kernel_11_04.png" alt="m=0, ~n=1" /><figcaption aria-hidden="true"><span class="math inline">\(m=0, ~n=1\)</span></figcaption>
+</figure>
+</section>
+<section id="convolution-7" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Convolution</h2>
+<figure>
+<img data-src="assets/plots3/kernel_11_all.png" alt="Iteration is complete." /><figcaption aria-hidden="true">Iteration is complete.</figcaption>
+</figure>
+</section>
+<section id="convolution-8" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Convolution</h2>
+<figure>
+<img data-src="assets/plots3/kernel_11_g11.png" alt="The product sum is assigned to the output image." /><figcaption aria-hidden="true">The product sum is assigned to the output image.</figcaption>
+</figure>
+</section>
+<section id="convolution-9" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Convolution</h2>
+<figure>
+<img data-src="assets/plots3/kernel_12_g12.png" alt="Slide the kernel along the row." /><figcaption aria-hidden="true">Slide the kernel along the row.</figcaption>
+</figure>
+</section>
+<section id="convolution-10" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Convolution</h2>
+<figure>
+<img data-src="assets/plots3/kernel_13_g13.png" alt="Slide the kernel along the row." /><figcaption aria-hidden="true">Slide the kernel along the row.</figcaption>
+</figure>
+</section>
+<section id="convolution-11" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Convolution</h2>
+<figure>
+<img data-src="assets/plots3/kernel_21_g21.png" alt="Move the kernel to the next row." /><figcaption aria-hidden="true">Move the kernel to the next row.</figcaption>
+</figure>
+</section>
+<section id="convolution-12" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Convolution</h2>
+<figure>
+<img data-src="assets/plots3/kernel_28_g28.png" alt="Continue sliding." /><figcaption aria-hidden="true">Continue sliding.</figcaption>
+</figure>
+</section>
+<section id="convolution-13" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Convolution</h2>
+<figure>
+<img data-src="assets/plots3/kernel_88_g88.png" alt="The image is completely covered." /><figcaption aria-hidden="true">The image is completely covered.</figcaption>
+</figure>
+</section>
+<section id="what-about-the-edges" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">What about the edges?</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/plots3/conv_edge_00.png" /></p>
+</div><div class="column">
+<p>The filter window falls off the edge of the image.</p>
+</div>
+</div>
+</section>
+<section id="what-about-the-edges-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">What about the edges?</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/plots3/conv_edge_zeros.png" /></p>
+</div><div class="column">
+<p>A common strategy is to pad with zeros.</p>
+<p>The image is effectively larger than the original.</p>
+</div>
+</div>
+</section>
+<section id="what-about-the-edges-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">What about the edges?</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/plots3/conv_edge_wrap.png" /></p>
+</div><div class="column">
+<p>We could <em>wrap</em> the pixels, from each edge to the opposite.</p>
+<p>Again, the image is effectively larger.</p>
+</div>
+</div>
+</section>
+<section id="what-about-the-edges-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">What about the edges?</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/plots3/conv_edge_repeat.png" /></p>
+</div><div class="column">
+<p>Alternatively, we could <em>repeat</em> the pixels, extending each edge outward.</p>
+</div>
+</div>
+</section></section>
+<section>
+<section id="linear-kernels" class="title-slide slide level1">
+<h1>Linear Kernels</h1>
+
+</section>
+<section class="slide level2">
+
+<p>What would the filtered image look like?</p>
+<figure>
+<img data-src="assets/plots3/kernel1_q.png" alt="kernel 1" /><figcaption aria-hidden="true">kernel 1</figcaption>
+</figure>
+</section>
+<section class="slide level2">
+
+<p>No change!</p>
+<figure>
+<img data-src="assets/plots3/kernel1_a.png" alt="kernel 1" /><figcaption aria-hidden="true">kernel 1</figcaption>
+</figure>
+</section>
+<section class="slide level2">
+
+<p>What would the filtered image look like?</p>
+<figure>
+<img data-src="assets/plots3/kernel2_q.png" alt="kernel 2" /><figcaption aria-hidden="true">kernel 2</figcaption>
+</figure>
+</section>
+<section class="slide level2">
+
+<p>Shifted left by 1 pixel.</p>
+<figure>
+<img data-src="assets/plots3/kernel2_a.png" alt="kernel 2" /><figcaption aria-hidden="true">kernel 2</figcaption>
+</figure>
+</section>
+<section class="slide level2">
+
+<p>What would the filtered image look like?</p>
+<figure>
+<img data-src="assets/plots3/kernel3_q.png" alt="kernel 3" /><figcaption aria-hidden="true">kernel 3</figcaption>
+</figure>
+</section>
+<section class="slide level2">
+
+<p>Blurred…</p>
+<figure>
+<img data-src="assets/plots3/kernel3_a.png" alt="kernel 3" /><figcaption aria-hidden="true">kernel 3</figcaption>
+</figure>
+</section></section>
+<section>
+<section id="smoothing-filters" class="title-slide slide level1">
+<h1>Smoothing Filters</h1>
+
+</section>
+<section id="mean-filter" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Mean Filter</h2>
+<p>replace each pixel with the mean of local neighbours:</p>
+<p><span class="math display">\[
+h = \frac{1}{9}\times
+   \begin{bmatrix}
+      1 &amp; 1 &amp; 1 \\
+      1 &amp; 1 &amp; 1 \\
+      1 &amp; 1 &amp; 1
+   \end{bmatrix}
+\]</span></p>
+</section>
+<section id="mean-filter-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Mean Filter</h2>
+<figure>
+<img data-src="assets/plots3/mean_3x3.png" alt="Mean filtered with 3 x 3 kernel" /><figcaption aria-hidden="true">Mean filtered with 3 x 3 kernel</figcaption>
+</figure>
+</section>
+<section id="mean-filter-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Mean Filter</h2>
+<p>we can increase the size of the kernel to get a smoother image:</p>
+<p><span class="math display">\[
+h = \frac{1}{25}\times
+   \begin{bmatrix}
+      1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 \\
+      1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 \\
+      1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 \\
+      1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 \\
+      1 &amp; 1 &amp; 1 &amp; 1 &amp; 1
+   \end{bmatrix}
+\]</span></p>
+</section>
+<section id="mean-filter-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Mean Filter</h2>
+<figure>
+<img data-src="assets/plots3/mean_5x5.png" alt="Mean filtered with 5 x 5 kernel" /><figcaption aria-hidden="true">Mean filtered with 5 x 5 kernel</figcaption>
+</figure>
+</section>
+<section id="mean-filter-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Mean Filter</h2>
+<figure>
+<img data-src="assets/plots3/mean_7x7.png" alt="Mean filtered with 7 x 7 kernel" /><figcaption aria-hidden="true">Mean filtered with 7 x 7 kernel</figcaption>
+</figure>
+</section>
+<section id="gaussian-blur" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Gaussian blur</h2>
+<p>Similar to mean filter:</p>
+<ul>
+<li>Replace intensities with a weighted average of neighbours.</li>
+<li>Pixels closer to the centre of the kernel have more influence.</li>
+</ul>
+</section>
+<section id="gaussian-blur-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Gaussian blur</h2>
+<div style="font-size:1.5em">
+<p><span class="math display">\[
+g(x,y) = \frac{1}{2\pi\sigma^2}~ {\rm  e}^{ - \frac{x^2+y^2}{2\sigma^2} }
+\]</span></p>
+</div>
+</section>
+<section id="gaussian-blur-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Gaussian blur</h2>
+<figure>
+<img data-src="assets/plots3/2d_gaussian.png" alt="Gaussian kernel" /><figcaption aria-hidden="true">Gaussian kernel</figcaption>
+</figure>
+</section>
+<section id="gaussian-blur-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Gaussian blur</h2>
+<figure>
+<img data-src="assets/plots3/cameraman_filtered.png" alt="Mean and Gaussian blur" /><figcaption aria-hidden="true">Mean and Gaussian blur</figcaption>
+</figure>
+</section>
+<section id="image-smoothing" class="slide level2">
+<h2>Image Smoothing</h2>
+<p>Smoothing effectively <em>low pass</em> filters the image.</p>
+<ul>
+<li>Only really practical for small kernels</li>
+<li>Blurring also destroys image information</li>
+<li>Difference between the mean and Gaussian filter is subtle, but Gaussian is usually preferred</li>
+</ul>
+<aside class="notes">
+<p>Dampens high frequency information so that edges and noise are less prominent</p>
+</aside>
+</section>
+<section id="image-smoothing-1" class="slide level2">
+<h2>Image Smoothing</h2>
+<p>If we have many images of the same scene:</p>
+<ul>
+<li>Use idea of averaging to reduce noise.</li>
+<li>Average pixel intensities across images rather than across the spatial neighbour.</li>
+</ul>
+</section>
+<section id="image-smoothing-2" class="slide level2">
+<h2>Image Smoothing</h2>
+<ul>
+<li>Effectively increases the signal-to-noise ratio.</li>
+<li>Useful in applications where image signal is low.
+<ul>
+<li>E.g., imaging astronomical objects.</li>
+</ul></li>
+</ul>
+</section></section>
+<section>
+<section id="image-sharpening" class="title-slide slide level1">
+<h1>Image Sharpening</h1>
+
+</section>
+<section class="slide level2">
+
+<p>What would the filtered image look like?</p>
+<figure>
+<img data-src="assets/plots3/kernel4_q.png" alt="kernel 4" /><figcaption aria-hidden="true">kernel 4</figcaption>
+</figure>
+</section>
+<section class="slide level2">
+
+<figure>
+<img data-src="assets/plots3/kernel4_a.png" alt="kernel 4" /><figcaption aria-hidden="true">kernel 4</figcaption>
+</figure>
+</section>
+<section id="image-sharpening-1" class="slide level2">
+<h2>Image Sharpening</h2>
+<p>We can control the <em>amount</em> of sharpening:</p>
+<p><span class="math display">\[
+h_{sharp} =
+\begin{bmatrix}
+   0 &amp; 0 &amp; 0\\
+   0 &amp; 1 &amp; 0\\
+   0 &amp; 0 &amp; 0
+\end{bmatrix}
++
+\begin{bmatrix}
+   0 &amp; -1 &amp; 0\\
+   -1 &amp; 4 &amp; -1\\
+   0 &amp; -1 &amp; 0
+\end{bmatrix}
+* amount
+\]</span></p>
+<aside class="notes">
+<p>If anyone has ever developed film - similar to a high acutance developer formula…</p>
+</aside>
+</section>
+<section id="more-kernel-examples" class="slide level2">
+<h2>More Kernel Examples</h2>
+<p>There is a nice interactive tool to view kernel operations here: <a href="https://setosa.io/ev/image-kernels/">https://setosa.io/ev/image-kernels/</a></p>
+<p>The ImageMagick documentation has a nice list of kernels: <a href="https://legacy.imagemagick.org/Usage/convolve/">https://legacy.imagemagick.org/Usage/convolve/</a></p>
+</section>
+<section id="unsharp-masking" class="slide level2">
+<h2>Unsharp Masking</h2>
+<p>A <em>high pass</em> filter formed from a <em>low pass</em> filtered image.</p>
+<ul>
+<li>Usually preferred over kernel sharpening filter.</li>
+<li>A legacy of the pre-digital period.</li>
+</ul>
+</section>
+<section id="unsharp-masking-1" class="slide level2">
+<h2>Unsharp Masking</h2>
+<p>Low pass filter removes high-frequency detail.</p>
+<div>
+<ul>
+<li class="fragment">Difference between original and filtered images is what the filter removed.
+<ul>
+<li class="fragment">high frequency information.</li>
+</ul></li>
+<li class="fragment">Add difference to original image to enhance edges, etc.</li>
+</ul>
+</div>
+<aside class="notes">
+<p>Known as unsharp masking.</p>
+</aside>
+</section>
+<section id="unsharp-masking-2" class="slide level2">
+<h2>Unsharp Masking</h2>
+<figure>
+<img data-src="assets/plots3/unsharp_diff.png" alt="Unsharp masking 7x7 Gaussian kernel" /><figcaption aria-hidden="true">Unsharp masking 7x7 Gaussian kernel</figcaption>
+</figure>
+<aside class="notes">
+<p>The difference image is the unsharp mask!</p>
+</aside>
+</section>
+<section id="unsharp-masking-3" class="slide level2">
+<h2>Unsharp Masking</h2>
+<p>The <strong>sharpened</strong> image is the original image plus the <em>unsharp mask</em> multiplied by some factor.</p>
+<ul>
+<li>The difference image is the unsharp mask!</li>
+</ul>
+</section>
+<section id="unsharp-masking-4" class="slide level2">
+<h2>Unsharp Masking</h2>
+<figure>
+<img data-src="assets/plots3/unsharp_mask7x7.png" alt="Unsharp masking 2D and 5D" /><figcaption aria-hidden="true">Unsharp masking 2D and 5D</figcaption>
+</figure>
+</section>
+<section id="unsharp-masking-5" class="slide level2">
+<h2>Unsharp Masking</h2>
+<figure>
+<img data-src="assets/plots3/unsharp_diff_11x11.png" alt="Unsharp masking 11x11 Gaussian kernel" /><figcaption aria-hidden="true">Unsharp masking 11x11 Gaussian kernel</figcaption>
+</figure>
+</section>
+<section id="unsharp-masking-6" class="slide level2">
+<h2>Unsharp Masking</h2>
+<figure>
+<img data-src="assets/plots3/unsharp_mask11x11.png" alt="Unsharp masking 2D and 5D" /><figcaption aria-hidden="true">Unsharp masking 2D and 5D</figcaption>
+</figure>
+</section>
+<section id="unsharp-masking-7" class="slide level2">
+<h2>Unsharp Masking</h2>
+<p>Generally don’t want to boost all fine detail as noise would also be enhanced.</p>
+<ul>
+<li>Adjust the Gaussian parameters.</li>
+<li>Threshold the difference image.</li>
+<li>Care is required to avoid artefacts (e.g. halos).</li>
+</ul>
+</section></section>
+<section>
+<section id="image-filters-as-templates" class="title-slide slide level1" data-auto-animate="true">
+<h1 data-auto-animate="true">Image Filters as Templates</h1>
+<p>2D Convolution can be thought of as comparing a little picture (the filter kernel) against all local regions in the image.</p>
+</section>
+<section id="image-filters-as-templates-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Image Filters as Templates</h2>
+<p>If the filter kernel contains a picture of something you want to locate inside the image (a template), the filter response should be maximised at the local region that most closely matches it.</p>
+<ul>
+<li>We can use image filtering for object location</li>
+<li>Known as Template Matching.</li>
+</ul>
+</section>
+<section id="image-filters-as-templates-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Image Filters as Templates</h2>
+<p>Algorithm:</p>
+<ul>
+<li>subtract the mean from the image and template</li>
+<li>convolve the template with the image</li>
+<li>find the location of the maximum response</li>
+</ul>
+</section>
+<section id="image-filters-as-templates-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Image Filters as Templates</h2>
+<figure>
+<img data-src="assets/plots3/template_region.png" alt="Select a region to form a template." /><figcaption aria-hidden="true">Select a region to form a template.</figcaption>
+</figure>
+<aside class="notes">
+<p>The region must be rotated for a convolution operation.</p>
+</aside>
+</section>
+<section id="image-filters-as-templates-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Image Filters as Templates</h2>
+<figure>
+<img data-src="assets/plots3/template_response.png" alt="Perform the convolution operation." /><figcaption aria-hidden="true">Perform the convolution operation.</figcaption>
+</figure>
+<aside class="notes">
+<p>The region must be rotated for a convolution operation.</p>
+</aside>
+</section>
+<section id="image-filters-as-templates-5" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Image Filters as Templates</h2>
+<figure>
+<img data-src="assets/plots3/template_max.png" alt="Locate the maximum filter response." /><figcaption aria-hidden="true">Locate the maximum filter response.</figcaption>
+</figure>
+<aside class="notes">
+<p>This is the highest pixel value in the output image.</p>
+</aside>
+</section></section>
+<section id="summary" class="title-slide slide level1">
+<h1>Summary</h1>
+<ul>
+<li>2D Convolutions</li>
+<li>Smoothing Filters</li>
+<li>Sharpening and Unsharp masking</li>
+<li>Template matching</li>
+</ul>
+</section>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/reveal.js@^4/dist/reveal.js"></script>
+
+  // reveal.js plugins
+  <script src="https://unpkg.com/reveal.js@^4/plugin/notes/notes.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/search/search.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/zoom/zoom.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/math/math.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/highlight/highlight.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+        // Display a presentation progress bar
+        progress: true,
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+        // Push each slide change to the browser history
+        history: true,
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+        // Enable the slide overview mode
+        overview: true,
+        // Vertical centering of slides
+        center: true,
+        // Enables touch navigation on devices with touch input
+        touch: true,
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+        // Turns fragments on and off globally
+        fragments: true,
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+        // Global override for autoplaying embedded media (video/audio/iframe)
+        // - null: Media will only autoplay if data-autoplay is present
+        // - true: All media will autoplay, regardless of individual setting
+        // - false: No media will autoplay, regardless of individual setting
+        autoPlayMedia: null,
+        // Global override for preloading lazy-loaded iframes
+        // - null: Iframes with data-src AND data-preload will be loaded when within
+        //   the viewDistance, iframes with only data-src will be loaded when visible
+        // - true: All iframes with data-src will be loaded when within the viewDistance
+        // - false: All iframes with data-src will be loaded only when visible
+        preloadIframes: null,
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+        // Transition style
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+        // Transition speed
+        transitionSpeed: 'default', // default/fast/slow
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'fade', // none/fade/slide/convex/concave/zoom
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+        // Factor of the display size that should remain empty around the content
+        margin: 0.2,
+        // The display mode that will be used to show slides
+        display: 'block',
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [
+          RevealMath,
+          RevealHighlight,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>
