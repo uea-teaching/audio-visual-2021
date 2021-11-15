@@ -1,10 +1,7 @@
 # %%
 
 import numpy as np
-from numpy.lib.type_check import imag
 from skimage import filters
-from skimage.feature import match_template
-from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 
@@ -215,5 +212,49 @@ ax[1].plot(x, y, 'rx', ms=15)
 
 fig.tight_layout()
 fig.savefig(root + 'template_max.png', **savekw)
+
+# %%
+
+# sharpening example
+h = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
+sharper = filters.edges.convolve(cameraman, h)
+fig, ax = plt.subplots(1, 2, figsize=(10, 6))
+plot_image(ax[0], cameraman, 'original')
+plot_image(ax[1], sharper, 'sharpened')
+for a in ax:
+    outline(a)
+fig.tight_layout()
+fig.savefig(root + 'sharp_example.png', **savekw)
+
+# %%
+
+# noise example
+np.random.seed(42)
+noise = np.random.randn(*cameraman.shape) * 0.1
+fig, ax = plt.subplots(1, 2, figsize=(10, 6))
+plot_image(ax[0], cameraman + noise, 'noisy image')
+plot_image(ax[1], cameraman, 'cleaned image')
+for a in ax:
+    outline(a)
+fig.tight_layout()
+fig.savefig(root + 'noise_example.png', **savekw)
+
+
+# %%
+
+# gradient example
+
+gx = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])
+gy = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]])
+
+gx_image = filters.edges.convolve(cameraman, gx)
+gy_image = filters.edges.convolve(cameraman, gy)
+fig, ax = plt.subplots(1, 2, figsize=(10, 6))
+plot_image_min_max(ax[0], gx_image, 'x gradient')
+plot_image_min_max(ax[1], gy_image, 'y gradient')
+for a in ax:
+    outline(a)
+fig.tight_layout()
+fig.savefig(root + 'gradient_example.png', **savekw)
 
 # %%
