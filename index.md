@@ -35,3 +35,4 @@ Labs are usually a pdf file, or a zip file if additional resources are provided.
 
 - Images and Video [labsheet](labs/01-images-video.lab.pdf).
 - FFMPEG [labsheet](labs/02-ffmpeg.lab.pdf).
+- 2D DCT [labsheet](labs/03-2D-DCT.lab.pdf).
