@@ -104,11 +104,15 @@ We have only considered vectors so far.
 - Images are 2-dimensional (two spatial co-ordinates).
 - Apply DCT to both rows and columns of the image.
 
+::: {style="font-size:0.75em;"}
+
 $$
 X_{u, v} = s_u s_v ~ \sum_{x=0}^{N-1} \sum_{y=0}^{N-1} I(x, y) ~
     cos \left[ \frac{\pi u (2x + 1)}{2N} \right]
     cos \left[ \frac{\pi v (2y + 1)}{2N} \right]
 $$
+
+:::
 
 ## DCT for 2D Signals
 
