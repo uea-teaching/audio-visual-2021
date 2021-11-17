@@ -70,7 +70,7 @@ For example, the salt and pepper noise model:
 
 ---
 
-Aside: What is salt and pepper noise?
+_Aside_: What is salt and pepper noise?
 
 - Also called impulse noise.
 - Can be hardware dependent - hot pixels or dead pixels.
@@ -78,4 +78,59 @@ Aside: What is salt and pepper noise?
 
 ## Median Filter
 
-![salt and pepper noise](assets/plots3/salt_pepper.png)
+![salt and pepper noise, $P=0.1$](assets/plots3/salt_pepper.png)
+
+## Median Filter
+
+![noisy and median filtered images](assets/plots3/sp_median_filtered.png)
+
+## Median Filter
+
+![original and median filtered images](assets/plots3/orig_median_filtered.png)
+
+## Median Filter
+
+![difference image](assets/plots3/orig_median_difference.png){width=50%}
+
+## Median Filter
+
+![gaussian and median filtered images](assets/plots3/gauss_median_filtered.png)
+
+## Noise removal
+
+::: columns
+::::: column
+![pixel values](assets/img4/noise-01.png)
+:::::
+::::: column
+If we consider this 5 pixel neighbourhood, what will the median filter do?
+:::::
+:::
+
+## Noise removal
+
+::: columns
+::::: column
+![median filter](assets/img4/noise-02.png)
+:::::
+::::: column
+The median filter removes spike noise.
+
+::: incremental
+
+- What will the gaussian filter do?
+
+:::
+:::::
+:::
+
+## Noise removal
+
+::: columns
+::::: column
+![Gaussian filter](assets/img4/noise-03.png)
+:::::
+::::: column
+The Gaussian filter amplifies noise.
+:::::
+:::
