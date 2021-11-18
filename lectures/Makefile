@@ -9,6 +9,7 @@ all : $(HTM) $(BMR)
 	--css assets/style.css \
 	-V highlightjs-theme=atom-one-dark \
 	-V theme=black \
+	-V transition=none \
 	-o $@
 
 %.bmr.pdf : %.md
