@@ -1,9 +1,7 @@
 # %%
 
-import re
 import numpy as np
-from sklearn.decomposition import PCA
-from skimage import data, io, filters, transform, feature
+from skimage import io, transform
 from skimage.color import rgb2gray
 from scipy.fftpack import dct, dctn, idctn
 import matplotlib.pyplot as plt
