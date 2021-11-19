@@ -329,6 +329,29 @@ A _binary_ image (or mask) that allows us to define neighbourhood structures.
 
 ::: notes
 bold indicates the origin
+Zero valued pixels are ignored in structuring elements.
+:::
+
+## Structuring Element
+
+A structuring element is said to **fit** the image if,
+for each of its pixels set to 1, the corresponding image pixel is also 1.
+
+The _set_ of all displacements such that the image and the structuring element overlap at **every** pixel.
+
+::: notes
+When a structuring element is placed in a binary image, each of its pixels is associated with the corresponding pixel of the neighbourhood under the structuring element. The structuring element is said to fit the image if, for each of its pixels set to 1, the corresponding image pixel is also 1. Similarly, a structuring element is said to hit, or intersect, an image if, at least for one of its pixels set to 1 the corresponding image pixel is also 1.
+:::
+
+## Structuring Element
+
+A structuring element is said to **hit**, an image if,
+at least for one of its pixels set to 1 the corresponding image pixel is also 1.
+
+The _set_ of all displacements such that the image and the structuring element overlap at **any** pixel.
+
+::: notes
+When a structuring element is placed in a binary image, each of its pixels is associated with the corresponding pixel of the neighbourhood under the structuring element. The structuring element is said to fit the image if, for each of its pixels set to 1, the corresponding image pixel is also 1. Similarly, a structuring element is said to hit, or intersect, an image if, at least for one of its pixels set to 1 the corresponding image pixel is also 1.
 :::
 
 # Morphological Operators
@@ -337,6 +360,155 @@ bold indicates the origin
 
 $$A \oplus B = \{ x, y| B_{x, y} \cap \neq \emptyset \} $$
 
-Defines dilation of binary image $A$ by structuring element $B$
+Defines dilation of binary image $A$ by structuring element $B$.
 
-Calculate the binary **OR** of elements in $A$ masked by $B$
+Calculate the binary **OR** of elements in $A$ masked by $B$.
+
+The structuring element _hits_ the image.
+
+::: notes
+Move B over A, placing origin at each pixel...
+:::
+
+## Dilation {data-auto-animate="true"}
+
+::: columns
+::::: column
+![binary image](assets/img4/original-binary.png)
+:::::
+::::: column
+$$A \oplus B$$
+
+![structured element](assets/img4/structuring-element3x3.png){width=30%}
+:::::
+:::
+
+## Dilation {data-auto-animate="true"}
+
+::: columns
+::::: column
+![binary image](assets/img4/original-binary.png)
+:::::
+::::: column
+![dilated image](assets/img4/dilated-binary.png)
+:::::
+:::
+
+::: notes
+where the structuring element has hit the image - we assign 1 to the output pixel.
+:::
+
+## Dilation Example {data-auto-animate="true"}
+
+![dilation 5x5](assets/plots3/dilation_5.png)
+
+## Dilation Example {data-auto-animate="true"}
+
+![dilation 15x15](assets/plots3/dilation_15.png)
+
+## Dilation
+
+::: incremental
+
+- Expands the size of 1-pixel objects
+- Smoothes object boundaries
+- Closes holes and gaps
+- Regions grow
+
+:::
+
+## Erosion
+
+$$A \ominus B = \{ x, y| B_{x, y} \subseteq A \} $$
+
+Defines erosion of binary image $A$ by structuring element $B$.
+
+Calculate the binary **AND** of elements in $A$ masked by $B$.
+
+The structuring element _fits_ the image.
+
+::: notes
+Move B over A, placing origin at each pixel...
+:::
+
+## Erosion {data-auto-animate="true"}
+
+::: columns
+::::: column
+![binary image](assets/img4/original-binary.png)
+:::::
+::::: column
+$$A \ominus B$$
+
+![structured element](assets/img4/structuring-element3x3.png){width=30%}
+:::::
+:::
+
+## Erosion {data-auto-animate="true"}
+
+::: columns
+::::: column
+![binary image](assets/img4/original-binary.png)
+:::::
+::::: column
+![eroded image](assets/img4/eroded-binary.png)
+:::::
+:::
+
+::: notes
+where the structuring element fits the image - we assign 1 to the output pixel.
+:::
+
+## Erosion Example {data-auto-animate="true"}
+
+![erosion 5x5](assets/plots3/erosion_5.png)
+
+## Erosion Example {data-auto-animate="true"}
+
+![erosion 15x15](assets/plots3/erosion_15.png)
+
+## Erosion {data-auto-animate="true"}
+
+::: incremental
+
+- Shrinks the size of 1-valued objects.
+- Smooths object boundaries.
+- Removes peninsulas, fingers, and small objects (such as noise).
+
+:::
+
+::: notes
+Erosion is not the inverse of dilation. Although it has the opposite effect.
+:::
+
+## Opening {data-auto-animate="true"}
+
+$$A \circ B = (A \ominus B) \oplus B $$
+
+**Erosion** followed by **Dilation**.
+
+- Has the effect of smoothing contours by breaking narrow connections and eliminating thin protrusions.
+
+## Opening Example {data-auto-animate="true"}
+
+![opening 5x5](assets/plots3/opening_5.png)
+
+## Opening Example {data-auto-animate="true"}
+
+![opening 15x15](assets/plots3/opening_15.png)
+
+## Closing {data-auto-animate="true"}
+
+$$A \bullet B = (A \oplus B) \ominus B $$
+
+**Dilation** followed by **Erosion**.
+
+- Has the effect of smoothing contours by filling narrow gulfs, holes and small gaps.
+
+## Closing Example {data-auto-animate="true"}
+
+![closing 5x5](assets/plots3/closing_5.png)
+
+## Closing Example {data-auto-animate="true"}
+
+![closing 15x15](assets/plots3/closing_15.png)
