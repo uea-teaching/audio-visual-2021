@@ -512,3 +512,13 @@ $$A \bullet B = (A \oplus B) \ominus B $$
 ## Closing Example {data-auto-animate="true"}
 
 ![closing 15x15](assets/plots3/closing_15.png)
+
+## QUESTION? {data-auto-animate="true"}
+
+After performing **dilation** of A by B, what does the resulting binary image look like?
+
+![](assets/plots3/dilate_question.png)
+
+::: notes
+you might want to start by asking me a question...
+:::
