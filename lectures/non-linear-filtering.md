@@ -140,12 +140,12 @@ The Gaussian filter amplifies noise.
 :::::
 :::
 
-# Morphological Filters
-
 ::: notes
 One of the issues we will have to deal with is noise in binary images.
 We could consider min and max filters for this - but I'd like to introduce morphological filters for that task.
 :::
+
+# Morphological Filters
 
 ## Morphological Filters
 
@@ -513,7 +513,7 @@ $$A \bullet B = (A \oplus B) \ominus B $$
 
 ![closing 15x15](assets/plots3/closing_15.png)
 
-## QUESTION? {data-auto-animate="true"}
+## QUESTION?
 
 After performing **dilation** of A by B, what does the resulting binary image look like?
 
@@ -522,3 +522,121 @@ After performing **dilation** of A by B, what does the resulting binary image lo
 ::: notes
 you might want to start by asking me a question...
 :::
+
+## Answer
+
+After performing **dilation** of A by B, what does the resulting binary image look like?
+
+![](assets/plots3/dilate_answer.png)
+
+# Morphological Operations for Object Detection
+
+## Object Detection {data-auto-animate="true"}
+
+![Original image $A$](assets/img4/text.png){width=70%}
+
+::: notes
+let's suppose we want to extract the certain characters from the image.
+:::
+
+## Object Detection {data-auto-animate="true"}
+
+::: columns
+::::: {.column width=70%}
+![original image $A$](assets/img4/text.png)
+:::::
+::::: column
+
+![structuring element $B$](assets/img4/SE.png){width=30%}
+
+:::::
+:::
+
+::: notes
+if we carefully choose a structuring element, we can extract the characters from the image using opening.
+:::
+
+## $A \circ B$ opening {data-auto-animate="true"}
+
+![](assets/img4/text_result.png){width=70%}
+
+# Morphological Operations for Edge Detection
+
+## Edge Detection {data-auto-animate="true"}
+
+Using difference images, we can detect edges.
+
+::: incremental
+
+- Dilation of A by structural element B, followed by difference with A.
+- Erosion of A by B, followed by difference with A.
+- Dilation of A by B, followed by difference with erosion of A by B.
+
+:::
+
+::: notes
+Has the effect of outlining the shapes defined by set A
+:::
+
+## Edge Detection {data-auto-animate="true"}
+
+![binary $A$](assets/img4/binary_for_edges.png){width=60%}
+
+## Edge Detection {data-auto-animate="true"}
+
+::: columns
+::::: column
+![](assets/img4/edges1.png)
+:::::
+::::: column
+
+$$(A \oplus B) - A$$
+
+Dilation Difference image.
+
+:::::
+:::
+
+## Edge Detection {data-auto-animate="true"}
+
+::: columns
+::::: column
+![](assets/img4/edges2.png)
+:::::
+::::: column
+
+$$(A \ominus B) - A$$
+
+Erosion Difference image.
+
+:::::
+:::
+
+## Edge Detection {data-auto-animate="true"}
+
+::: columns
+::::: column
+![](assets/img4/edges3.png)
+:::::
+::::: column
+
+$$(A \oplus B) - (A \ominus B)$$
+
+Dilation Erosion Difference.
+
+:::::
+:::
+
+# Further Reading
+
+Digital Image Processing
+
+- Rafael C. Gonzalez, University of Tennessee
+- Richard E. Woods, MedData Interactive
+
+# Summary
+
+- Order Statistics filters
+- Morphological filtering
+- Morphological operations for object detection
+- Morphological operations for edge detection
