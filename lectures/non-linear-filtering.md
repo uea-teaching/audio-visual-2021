@@ -631,8 +631,8 @@ Dilation Erosion Difference.
 
 Digital Image Processing
 
-- Rafael C. Gonzalez, University of Tennessee
-- Richard E. Woods, MedData Interactive
+- Rafael C. Gonzalez
+- Richard E. Woods
 
 # Summary
 
