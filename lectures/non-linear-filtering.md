@@ -542,12 +542,12 @@ let's suppose we want to extract the certain characters from the image.
 ## Object Detection {data-auto-animate="true"}
 
 ::: columns
-::::: {.column width=70%}
-![original image $A$](assets/img4/text.png)
+::::: {.column width=60%}
+![$A$](assets/img4/text.png)
 :::::
 ::::: column
 
-![structuring element $B$](assets/img4/SE.png){width=30%}
+![$B$](assets/img4/SE.png){width=30%}
 
 :::::
 :::
@@ -556,7 +556,7 @@ let's suppose we want to extract the certain characters from the image.
 if we carefully choose a structuring element, we can extract the characters from the image using opening.
 :::
 
-## $A \circ B$ opening {data-auto-animate="true"}
+## $A \circ B$ {data-auto-animate="true"}
 
 ![](assets/img4/text_result.png){width=70%}
 
