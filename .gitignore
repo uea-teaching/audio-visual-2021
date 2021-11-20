@@ -11,6 +11,7 @@
 !labs/*.md
 !labs/*.jpg
 !labs/*.png
+!labs/morph.pdf
 
 !lectures/
 !lectures/Makefile
