@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Dr. David Greenwood">
+  <title>Non-Linear Image Filtering</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reset.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/theme/black.css" id="theme">
+  <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.2.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Non-Linear Image Filtering</h1>
+  <p class="subtitle">Audiovisual Processing CMP-6026A</p>
+  <p class="author">Dr. David Greenwood</p>
+</section>
+
+<section id="content" class="title-slide slide level1">
+<h1>Content</h1>
+<ul>
+<li>Order Statistics filters</li>
+<li>Morphological filtering</li>
+<li>Morphological operations for object detection</li>
+<li>Morphological operations for edge detection</li>
+</ul>
+</section>
+
+<section>
+<section id="order-statistics-filters" class="title-slide slide level1">
+<h1>Order-Statistics Filters</h1>
+<p>Linear filters compute the sum of products between kernel coefficients and the image neighbourhood.</p>
+<p>Instead, replace intensity with a measure obtained by ordering the pixel intensities in the neighbourhood.</p>
+<ul>
+<li>Common filters are <strong>median</strong>, <strong>max</strong> and <strong>min</strong>.</li>
+</ul>
+</section>
+<section id="section" class="slide level2">
+<h2></h2>
+<p>Crop a part of a larger image to uses as an example.</p>
+<figure>
+<img data-src="assets/plots3/region_8x8.png" alt="Cameraman crop" /><figcaption aria-hidden="true">Cameraman crop</figcaption>
+</figure>
+</section>
+<section id="section-1" class="slide level2">
+<h2></h2>
+<p>First, window a region of size 3x3:</p>
+<figure>
+<img data-src="assets/plots3/region_select.png" alt="region window" /><figcaption aria-hidden="true">region window</figcaption>
+</figure>
+</section>
+<section id="section-2" class="slide level2">
+<h2></h2>
+<p>Sort the intensities in the region:</p>
+<figure>
+<img data-src="assets/plots3/region_ordered.png" alt="ordered values" /><figcaption aria-hidden="true">ordered values</figcaption>
+</figure>
+</section>
+<section id="section-3" class="slide level2">
+<h2></h2>
+<p>Sort the intensities in the region, and select the middle value:</p>
+<figure>
+<img data-src="assets/plots3/region_median.png" alt="median value" /><figcaption aria-hidden="true">median value</figcaption>
+</figure>
+</section>
+<section id="section-4" class="slide level2">
+<h2></h2>
+<p>Max filter is similar to median filter, but selects the maximum value:</p>
+<figure>
+<img data-src="assets/plots3/region_max.png" alt="maximum value" /><figcaption aria-hidden="true">maximum value</figcaption>
+</figure>
+</section>
+<section id="section-5" class="slide level2">
+<h2></h2>
+<p>Min filter is again similar, but selects the minimum value:</p>
+<figure>
+<img data-src="assets/plots3/region_min.png" alt="minimum value" /><figcaption aria-hidden="true">minimum value</figcaption>
+</figure>
+</section>
+<section id="section-6" class="slide level2">
+<h2></h2>
+<p>Order-statistics filters are good for noise removal where:</p>
+<ul>
+<li>Noise is random</li>
+<li>Noise is not dependent on surrounding pixels</li>
+</ul>
+<p>For example, the salt and pepper noise model:</p>
+<ul>
+<li>Noisy pixels are the outliers in the local neighbourhood</li>
+<li>Replace outliers with estimate from image data</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p><em>Aside</em>: What is salt and pepper noise?</p>
+<ul>
+<li>Also called impulse noise.</li>
+<li>Can be hardware dependent - hot pixels or dead pixels.</li>
+<li>Artificially applied by random selecting a subset of pixels and setting to black or white.</li>
+</ul>
+</section>
+<section id="median-filter" class="slide level2">
+<h2>Median Filter</h2>
+<figure>
+<img data-src="assets/plots3/salt_pepper.png" alt="salt and pepper noise, P=0.1" /><figcaption aria-hidden="true">salt and pepper noise, <span class="math inline">\(P=0.1\)</span></figcaption>
+</figure>
+</section>
+<section id="median-filter-1" class="slide level2">
+<h2>Median Filter</h2>
+<figure>
+<img data-src="assets/plots3/sp_median_filtered.png" alt="noisy and median filtered images" /><figcaption aria-hidden="true">noisy and median filtered images</figcaption>
+</figure>
+</section>
+<section id="median-filter-2" class="slide level2">
+<h2>Median Filter</h2>
+<figure>
+<img data-src="assets/plots3/orig_median_filtered.png" alt="original and median filtered images" /><figcaption aria-hidden="true">original and median filtered images</figcaption>
+</figure>
+</section>
+<section id="median-filter-3" class="slide level2">
+<h2>Median Filter</h2>
+<figure>
+<img data-src="assets/plots3/orig_median_difference.png" style="width:50.0%" alt="difference image" /><figcaption aria-hidden="true">difference image</figcaption>
+</figure>
+</section>
+<section id="median-filter-4" class="slide level2">
+<h2>Median Filter</h2>
+<figure>
+<img data-src="assets/plots3/gauss_median_filtered.png" alt="gaussian and median filtered images" /><figcaption aria-hidden="true">gaussian and median filtered images</figcaption>
+</figure>
+<aside class="notes">
+<p>You might think that a gaussian blur would be a good alternative to a median filter. Let’s look closely at the difference between the two.</p>
+</aside>
+</section>
+<section id="noise-removal" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Noise removal</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/img4/noise-01.png" /></p>
+</div><div class="column">
+<p>If we consider this 5 pixel neighbourhood, what will the median filter do?</p>
+</div>
+</div>
+</section>
+<section id="noise-removal-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Noise removal</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/img4/noise-02.png" /></p>
+</div><div class="column">
+<p>The median filter removes spike noise.</p>
+<div>
+<ul>
+<li class="fragment">What will the gaussian filter do?</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="noise-removal-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Noise removal</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/img4/noise-03.png" /></p>
+</div><div class="column">
+<p>The Gaussian filter amplifies noise.</p>
+</div>
+</div>
+<aside class="notes">
+<p>One of the issues we will have to deal with is noise in binary images. We could consider min and max filters for this - but I’d like to introduce morphological filters for that task.</p>
+</aside>
+</section></section>
+<section>
+<section id="morphological-filters" class="title-slide slide level1">
+<h1>Morphological Filters</h1>
+
+</section>
+<section id="morphological-filters-1" class="slide level2">
+<h2>Morphological Filters</h2>
+<p>Operation of the filter is characterised by mathematical morphology.</p>
+<div>
+<ul>
+<li class="fragment">Embedded in set theory.</li>
+<li class="fragment">Useful for thickening and thinning edges and de-noising binary images</li>
+</ul>
+</div>
+<aside class="notes">
+<p>We will consider only binary images. The notation gets messy beyond this!</p>
+</aside>
+</section>
+<section id="motivation" class="slide level2">
+<h2>Motivation</h2>
+<figure>
+<img data-src="assets/plots3/coins_erosion.png" alt="Filtered Threshold Image" /><figcaption aria-hidden="true">Filtered Threshold Image</figcaption>
+</figure>
+<aside class="notes">
+<p>Useful for cleaning up binary images.</p>
+</aside>
+</section>
+<section id="morphological-filters-2" class="slide level2">
+<h2>Morphological Filters</h2>
+<p>For binary images:</p>
+<div>
+<ul>
+<li class="fragment">White pixels (with intensity 1) can be considered elements in a set.</li>
+<li class="fragment">Black pixels (with intensity 0) can be considered elements outside of the set.</li>
+<li class="fragment">Morphological filters are essentially set operations.</li>
+</ul>
+</div>
+</section>
+<section id="set-notation" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Set Notation</h2>
+<p><span class="math display">\[\text{Let } A \text{ be a set in } \mathbb{Z}^{2}\]</span></p>
+<p>the set of <em>all integers</em> in 2 dimensions…</p>
+</section>
+<section id="set-notation-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Set Notation</h2>
+<p><span class="math display">\[ a \in A \text{ if } a = (x, y) \text{ is an element of set } A \]</span></p>
+<p>this is the <em>element</em> symbol…</p>
+</section>
+<section id="set-notation-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Set Notation</h2>
+<p><span class="math display">\[ a \notin A \text{ if } a \text{ is not in } A \]</span></p>
+<p><em>not</em> in…</p>
+</section>
+<section id="set-notation-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Set Notation</h2>
+<p><span class="math display">\[ C = \{ w|w = -d, ~ for ~ d \in D \} \]</span></p>
+<p>the set of all <span class="math inline">\(w\)</span> <em>such that</em>…</p>
+<aside class="notes">
+<p>The elements of C, are w, which are formed by multiplying the elements of set D by -1</p>
+<p>Braces are used to delimit the contents of a set.</p>
+</aside>
+</section>
+<section id="set-notation-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Set Notation</h2>
+<p><span class="math display">\[\emptyset \text{ is the empty set} \]</span></p>
+</section>
+<section id="set-operations" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Set Operations</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/img4/set-01.png" /></p>
+</div><div class="column">
+<p>Given two sets, A and B, the following can be defined:</p>
+</div>
+</div>
+</section>
+<section id="set-operations-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Set Operations</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/img4/set-02.png" /></p>
+</div><div class="column">
+<p><span class="math display">\[C \subseteq B,  A \nsubseteq B\]</span></p>
+<p>Subset: a set where all members belong to a given set.</p>
+</div>
+</div>
+<aside class="notes">
+<p>C is a subset of B. A is not a subset of B.</p>
+</aside>
+</section>
+<section id="set-operations-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Set Operations</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/img4/set-03.png" /></p>
+</div><div class="column">
+<p><span class="math display">\[A \cup B\]</span></p>
+<p>Union: all elements that are either in set A or set B.</p>
+</div>
+</div>
+</section>
+<section id="set-operations-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Set Operations</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/img4/set-04.png" /></p>
+</div><div class="column">
+<p><span class="math display">\[A \cap B\]</span></p>
+<p>Intersection: all elements that are common to both A and B.</p>
+</div>
+</div>
+</section>
+<section id="set-operations-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Set Operations</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/img4/set-05.png" /></p>
+</div><div class="column">
+<p><span class="math display">\[A^{c} \{w|w ~\notin ~ A\}\]</span></p>
+<p>Complement: the elements not contained in set A</p>
+</div>
+</div>
+</section>
+<section id="set-operations-5" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Set Operations</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/img4/set-06.png" /></p>
+</div><div class="column">
+<p><span class="math display">\[A \setminus B = \{w|w ~\in ~ A,~ w ~\notin ~ B \}\]</span></p>
+<p>Difference: the elements of set A that are not in set B</p>
+</div>
+</div>
+<aside class="notes">
+<p>Sometimes the minus sign is used for set difference…</p>
+</aside>
+</section></section>
+<section>
+<section id="structuring-element" class="title-slide slide level1">
+<h1>Structuring Element</h1>
+<p>A <em>binary</em> image (or mask) that allows us to define neighbourhood structures.</p>
+</section>
+<section id="structuring-element-1" class="slide level2">
+<h2>Structuring Element</h2>
+<div>
+<ul>
+<li class="fragment">Can be different sizes: larger structuring elements produce a more extreme effect.</li>
+<li class="fragment">Can be different shapes: common to use a disk or cross shape.</li>
+<li class="fragment">Has a defined origin: usually at the centre.</li>
+</ul>
+</div>
+</section>
+<section id="structuring-element-2" class="slide level2">
+<h2>Structuring Element</h2>
+<p><img data-src="assets/img4/structuring-elements.png" /></p>
+<aside class="notes">
+<p>bold indicates the origin Zero valued pixels are ignored in structuring elements.</p>
+</aside>
+</section>
+<section id="structuring-element-3" class="slide level2">
+<h2>Structuring Element</h2>
+<p>A structuring element is said to <strong>fit</strong> the image if, for each of its pixels set to 1, the corresponding image pixel is also 1.</p>
+<p>The <em>set</em> of all displacements such that the image and the structuring element overlap at <strong>every</strong> pixel.</p>
+<aside class="notes">
+<p>When a structuring element is placed in a binary image, each of its pixels is associated with the corresponding pixel of the neighbourhood under the structuring element. The structuring element is said to fit the image if, for each of its pixels set to 1, the corresponding image pixel is also 1. Similarly, a structuring element is said to hit, or intersect, an image if, at least for one of its pixels set to 1 the corresponding image pixel is also 1.</p>
+</aside>
+</section>
+<section id="structuring-element-4" class="slide level2">
+<h2>Structuring Element</h2>
+<p>A structuring element is said to <strong>hit</strong>, an image if, at least for one of its pixels set to 1 the corresponding image pixel is also 1.</p>
+<p>The <em>set</em> of all displacements such that the image and the structuring element overlap at <strong>any</strong> pixel.</p>
+<aside class="notes">
+<p>When a structuring element is placed in a binary image, each of its pixels is associated with the corresponding pixel of the neighbourhood under the structuring element. The structuring element is said to fit the image if, for each of its pixels set to 1, the corresponding image pixel is also 1. Similarly, a structuring element is said to hit, or intersect, an image if, at least for one of its pixels set to 1 the corresponding image pixel is also 1.</p>
+</aside>
+</section></section>
+<section>
+<section id="morphological-operators" class="title-slide slide level1">
+<h1>Morphological Operators</h1>
+
+</section>
+<section id="dilation" class="slide level2">
+<h2>Dilation</h2>
+<p><span class="math display">\[A \oplus B = \{ x, y| B_{x, y} \cap A \neq \emptyset \} \]</span></p>
+<p>Defines dilation of binary image <span class="math inline">\(A\)</span> by structuring element <span class="math inline">\(B\)</span>.</p>
+<p>Calculate the binary <strong>OR</strong> of elements in <span class="math inline">\(A\)</span> masked by <span class="math inline">\(B\)</span>.</p>
+<p>The structuring element <em>hits</em> the image.</p>
+<aside class="notes">
+<p>Move B over A, placing origin at each pixel…</p>
+</aside>
+</section>
+<section id="dilation-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Dilation</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/img4/original-binary.png" alt="binary image" /><figcaption aria-hidden="true">binary image</figcaption>
+</figure>
+</div><div class="column">
+<p><span class="math display">\[A \oplus B\]</span></p>
+<figure>
+<img data-src="assets/img4/structuring-element3x3.png" style="width:30.0%" alt="structured element" /><figcaption aria-hidden="true">structured element</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="dilation-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Dilation</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/img4/original-binary.png" alt="binary image" /><figcaption aria-hidden="true">binary image</figcaption>
+</figure>
+</div><div class="column">
+<figure>
+<img data-src="assets/img4/dilated-binary.png" alt="dilated image" /><figcaption aria-hidden="true">dilated image</figcaption>
+</figure>
+</div>
+</div>
+<aside class="notes">
+<p>where the structuring element has hit the image - we assign 1 to the output pixel.</p>
+</aside>
+</section>
+<section id="dilation-example" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Dilation Example</h2>
+<figure>
+<img data-src="assets/plots3/dilation_5.png" alt="dilation 5x5" /><figcaption aria-hidden="true">dilation 5x5</figcaption>
+</figure>
+</section>
+<section id="dilation-example-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Dilation Example</h2>
+<figure>
+<img data-src="assets/plots3/dilation_15.png" alt="dilation 15x15" /><figcaption aria-hidden="true">dilation 15x15</figcaption>
+</figure>
+</section>
+<section id="dilation-3" class="slide level2">
+<h2>Dilation</h2>
+<div>
+<ul>
+<li class="fragment">Expands the size of 1-pixel objects</li>
+<li class="fragment">Smoothes object boundaries</li>
+<li class="fragment">Closes holes and gaps</li>
+<li class="fragment">Regions grow</li>
+</ul>
+</div>
+</section>
+<section id="erosion" class="slide level2">
+<h2>Erosion</h2>
+<p><span class="math display">\[A \ominus B = \{ x, y| B_{x, y} \subseteq A \} \]</span></p>
+<p>Defines erosion of binary image <span class="math inline">\(A\)</span> by structuring element <span class="math inline">\(B\)</span>.</p>
+<p>Calculate the binary <strong>AND</strong> of elements in <span class="math inline">\(A\)</span> masked by <span class="math inline">\(B\)</span>.</p>
+<p>The structuring element <em>fits</em> the image.</p>
+<aside class="notes">
+<p>Move B over A, placing origin at each pixel…</p>
+</aside>
+</section>
+<section id="erosion-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Erosion</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/img4/original-binary.png" alt="binary image" /><figcaption aria-hidden="true">binary image</figcaption>
+</figure>
+</div><div class="column">
+<p><span class="math display">\[A \ominus B\]</span></p>
+<figure>
+<img data-src="assets/img4/structuring-element3x3.png" style="width:30.0%" alt="structured element" /><figcaption aria-hidden="true">structured element</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="erosion-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Erosion</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/img4/original-binary.png" alt="binary image" /><figcaption aria-hidden="true">binary image</figcaption>
+</figure>
+</div><div class="column">
+<figure>
+<img data-src="assets/img4/eroded-binary.png" alt="eroded image" /><figcaption aria-hidden="true">eroded image</figcaption>
+</figure>
+</div>
+</div>
+<aside class="notes">
+<p>where the structuring element fits the image - we assign 1 to the output pixel.</p>
+</aside>
+</section>
+<section id="erosion-example" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Erosion Example</h2>
+<figure>
+<img data-src="assets/plots3/erosion_5.png" alt="erosion 5x5" /><figcaption aria-hidden="true">erosion 5x5</figcaption>
+</figure>
+</section>
+<section id="erosion-example-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Erosion Example</h2>
+<figure>
+<img data-src="assets/plots3/erosion_15.png" alt="erosion 15x15" /><figcaption aria-hidden="true">erosion 15x15</figcaption>
+</figure>
+</section>
+<section id="erosion-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Erosion</h2>
+<div>
+<ul>
+<li class="fragment">Shrinks the size of 1-valued objects.</li>
+<li class="fragment">Smooths object boundaries.</li>
+<li class="fragment">Removes peninsulas, fingers, and small objects (such as noise).</li>
+</ul>
+</div>
+<aside class="notes">
+<p>Erosion is not the inverse of dilation. Although it has the opposite effect.</p>
+</aside>
+</section>
+<section id="opening" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Opening</h2>
+<p><span class="math display">\[A \circ B = (A \ominus B) \oplus B \]</span></p>
+<p><strong>Erosion</strong> followed by <strong>Dilation</strong>.</p>
+<ul>
+<li>Has the effect of smoothing contours by breaking narrow connections and eliminating thin protrusions.</li>
+</ul>
+</section>
+<section id="opening-example" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Opening Example</h2>
+<figure>
+<img data-src="assets/plots3/opening_5.png" alt="opening 5x5" /><figcaption aria-hidden="true">opening 5x5</figcaption>
+</figure>
+</section>
+<section id="opening-example-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Opening Example</h2>
+<figure>
+<img data-src="assets/plots3/opening_15.png" alt="opening 15x15" /><figcaption aria-hidden="true">opening 15x15</figcaption>
+</figure>
+</section>
+<section id="closing" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Closing</h2>
+<p><span class="math display">\[A \bullet B = (A \oplus B) \ominus B \]</span></p>
+<p><strong>Dilation</strong> followed by <strong>Erosion</strong>.</p>
+<ul>
+<li>Has the effect of smoothing contours by filling narrow gulfs, holes and small gaps.</li>
+</ul>
+</section>
+<section id="closing-example" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Closing Example</h2>
+<figure>
+<img data-src="assets/plots3/closing_5.png" alt="closing 5x5" /><figcaption aria-hidden="true">closing 5x5</figcaption>
+</figure>
+</section>
+<section id="closing-example-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Closing Example</h2>
+<figure>
+<img data-src="assets/plots3/closing_15.png" alt="closing 15x15" /><figcaption aria-hidden="true">closing 15x15</figcaption>
+</figure>
+</section>
+<section id="question" class="slide level2">
+<h2>QUESTION?</h2>
+<p>After performing <strong>dilation</strong> of A by B, what does the resulting binary image look like?</p>
+<p><img data-src="assets/plots3/dilate_question.png" /></p>
+<aside class="notes">
+<p>you might want to start by asking me a question…</p>
+</aside>
+</section>
+<section id="answer" class="slide level2">
+<h2>Answer</h2>
+<p>After performing <strong>dilation</strong> of A by B, what does the resulting binary image look like?</p>
+<p><img data-src="assets/plots3/dilate_answer.png" /></p>
+</section></section>
+<section>
+<section id="morphological-operations-for-object-detection" class="title-slide slide level1">
+<h1>Morphological Operations for Object Detection</h1>
+
+</section>
+<section id="object-detection" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Object Detection</h2>
+<figure>
+<img data-src="assets/img4/text.png" style="width:70.0%" alt="Original image A" /><figcaption aria-hidden="true">Original image <span class="math inline">\(A\)</span></figcaption>
+</figure>
+<aside class="notes">
+<p>let’s suppose we want to extract the certain characters from the image.</p>
+</aside>
+</section>
+<section id="object-detection-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Object Detection</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<figure>
+<img data-src="assets/img4/text.png" alt="A" /><figcaption aria-hidden="true"><span class="math inline">\(A\)</span></figcaption>
+</figure>
+</div><div class="column">
+<figure>
+<img data-src="assets/img4/SE.png" style="width:30.0%" alt="B" /><figcaption aria-hidden="true"><span class="math inline">\(B\)</span></figcaption>
+</figure>
+</div>
+</div>
+<aside class="notes">
+<p>if we carefully choose a structuring element, we can extract the characters from the image using opening.</p>
+</aside>
+</section>
+<section id="a-circ-b" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true"><span class="math inline">\(A \circ B\)</span></h2>
+<p><img data-src="assets/img4/text_result.png" style="width:70.0%" /></p>
+</section></section>
+<section>
+<section id="morphological-operations-for-edge-detection" class="title-slide slide level1">
+<h1>Morphological Operations for Edge Detection</h1>
+
+</section>
+<section id="edge-detection" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Edge Detection</h2>
+<p>Using difference images, we can detect edges.</p>
+<div>
+<ul>
+<li class="fragment">Dilation of A by structural element B, followed by difference with A.</li>
+<li class="fragment">Erosion of A by B, followed by difference with A.</li>
+<li class="fragment">Dilation of A by B, followed by difference with erosion of A by B.</li>
+</ul>
+</div>
+<aside class="notes">
+<p>Has the effect of outlining the shapes defined by set A</p>
+</aside>
+</section>
+<section id="edge-detection-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Edge Detection</h2>
+<figure>
+<img data-src="assets/img4/binary_for_edges.png" style="width:60.0%" alt="binary A" /><figcaption aria-hidden="true">binary <span class="math inline">\(A\)</span></figcaption>
+</figure>
+</section>
+<section id="edge-detection-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Edge Detection</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/img4/edges1.png" /></p>
+</div><div class="column">
+<p><span class="math display">\[(A \oplus B) - A\]</span></p>
+<p>Dilation Difference image.</p>
+</div>
+</div>
+</section>
+<section id="edge-detection-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Edge Detection</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/img4/edges2.png" /></p>
+</div><div class="column">
+<p><span class="math display">\[(A \ominus B) - A\]</span></p>
+<p>Erosion Difference image.</p>
+</div>
+</div>
+</section>
+<section id="edge-detection-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Edge Detection</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/img4/edges3.png" /></p>
+</div><div class="column">
+<p><span class="math display">\[(A \oplus B) - (A \ominus B)\]</span></p>
+<p>Dilation Erosion Difference.</p>
+</div>
+</div>
+</section></section>
+<section id="further-reading" class="title-slide slide level1">
+<h1>Further Reading</h1>
+<p>Digital Image Processing</p>
+<ul>
+<li>Rafael C. Gonzalez</li>
+<li>Richard E. Woods</li>
+</ul>
+</section>
+
+<section id="summary" class="title-slide slide level1">
+<h1>Summary</h1>
+<ul>
+<li>Order Statistics filters</li>
+<li>Morphological filtering</li>
+<li>Morphological operations for object detection</li>
+<li>Morphological operations for edge detection</li>
+</ul>
+</section>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/reveal.js@^4/dist/reveal.js"></script>
+
+  // reveal.js plugins
+  <script src="https://unpkg.com/reveal.js@^4/plugin/notes/notes.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/search/search.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/zoom/zoom.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/math/math.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/highlight/highlight.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+        // Display a presentation progress bar
+        progress: true,
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+        // Push each slide change to the browser history
+        history: true,
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+        // Enable the slide overview mode
+        overview: true,
+        // Vertical centering of slides
+        center: true,
+        // Enables touch navigation on devices with touch input
+        touch: true,
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+        // Turns fragments on and off globally
+        fragments: true,
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+        // Global override for autoplaying embedded media (video/audio/iframe)
+        // - null: Media will only autoplay if data-autoplay is present
+        // - true: All media will autoplay, regardless of individual setting
+        // - false: No media will autoplay, regardless of individual setting
+        autoPlayMedia: null,
+        // Global override for preloading lazy-loaded iframes
+        // - null: Iframes with data-src AND data-preload will be loaded when within
+        //   the viewDistance, iframes with only data-src will be loaded when visible
+        // - true: All iframes with data-src will be loaded when within the viewDistance
+        // - false: All iframes with data-src will be loaded only when visible
+        preloadIframes: null,
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+        // Transition style
+        transition: 'none', // none/fade/slide/convex/concave/zoom
+        // Transition speed
+        transitionSpeed: 'default', // default/fast/slow
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'fade', // none/fade/slide/convex/concave/zoom
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+        // Factor of the display size that should remain empty around the content
+        margin: 0.2,
+        // The display mode that will be used to show slides
+        display: 'block',
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [
+          RevealMath,
+          RevealHighlight,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>
