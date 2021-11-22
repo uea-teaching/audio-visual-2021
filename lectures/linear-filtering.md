@@ -2,7 +2,7 @@
 title: Linear Image Filtering
 subtitle: Audiovisual Processing CMP-6026A
 author: Dr. David Greenwood
-date: \today
+date: November 22, 2021
 ---
 
 # Content
