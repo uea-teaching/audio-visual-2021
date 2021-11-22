@@ -358,7 +358,7 @@ When a structuring element is placed in a binary image, each of its pixels is as
 
 ## Dilation
 
-$$A \oplus B = \{ x, y| B_{x, y} \cap \neq \emptyset \} $$
+$$A \oplus B = \{ x, y| B_{x, y} \cap A \neq \emptyset \} $$
 
 Defines dilation of binary image $A$ by structuring element $B$.
 
