@@ -32,6 +32,9 @@ Lectures are available as online html or printable pdf.
 - Linear Image Filtering: [online](lectures/linear-filtering.html)
   or printable [pdf](lectures/linear-filtering.bmr.pdf).
 
+- Non Linear Image Filtering: [online](lectures/non-linear-filtering.html)
+  or printable [pdf](lectures/non-linear-filtering.bmr.pdf).
+
 ## Labs
 
 Labs are usually a pdf file, or a zip file if additional resources are provided.
@@ -39,3 +42,5 @@ Labs are usually a pdf file, or a zip file if additional resources are provided.
 - Images and Video [labsheet](labs/01-images-video.lab.pdf).
 - FFMPEG [labsheet](labs/02-ffmpeg.lab.pdf).
 - 2D DCT [labsheet](labs/03-2D-DCT.lab.pdf).
+- Linear Image Filters [labsheet](labs/04-linear-image-filters.lab.pdf).
+- Non Linear Image Filters [labsheet](labs/05-non-linear-image-filters.lab.pdf).
