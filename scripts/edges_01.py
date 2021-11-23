@@ -1,10 +1,9 @@
 # %%
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
 from mpl_toolkits.axes_grid1 import make_axes_locatable
-import matplotlib.gridspec as gridspec
 from skimage import filters
+from skimage import feature
 
 plt.style.use('fivethirtyeight')
 savekw = dict(bbox_inches='tight', dpi=120)
@@ -249,7 +248,7 @@ for i, k in enumerate(prewitts):
     ax[i].grid(False)
     ax[i].set_xticks([])
     ax[i].set_yticks([])
-fig.suptitle('Prewitt operators', fontsize=20)
+fig.suptitle('Prewitt operators', fontsize=20, y=0.95)
 fig.tight_layout()
 fig.savefig(root + 'cameraman_prewitts.png', **savekw)
 
@@ -289,8 +288,64 @@ for i, k in enumerate(sobels):
     ax[i].grid(False)
     ax[i].set_xticks([])
     ax[i].set_yticks([])
-fig.suptitle('Sobel operators', fontsize=20)
+fig.suptitle('Sobel operators', fontsize=20, y=0.95)
 fig.tight_layout()
 fig.savefig(root + 'cameraman_sobels.png', **savekw)
+
+# %%
+
+filtered = np.stack(
+    [filters.edges.convolve(cameraman, s) for s in sobels],
+    axis=-1).max(axis=-1)
+
+fig, ax = plt.subplots(1, 2, figsize=(12, 7), sharey=True)
+ax[0].imshow(filtered, cmap='gray')
+ax[0].set_title(r'$L(x, y) = max ~ L_i(x, y), ~ i=1...8$')
+ax[1].imshow(filtered > 1, cmap='gray', vmin=0, vmax=1)
+ax[1].set_title(r'$L(x, y) = 1 ~ if ~ L(x, y) > t,~ else ~ 0$')
+ax[1].yaxis.set_label_position("right")
+ax[1].set_ylabel('pixels')
+for a in ax:
+    a.set_xticks([0, 127, 256])
+    a.set_yticks([0, 127, 256])
+    a.grid(False)
+fig.tight_layout()
+fig.savefig(root + 'sobel_threshold.png', **savekw)
+
+
+# %%
+
+canny3 = feature.canny(
+    cameraman, sigma=np.sqrt(2), low_threshold=0.4, high_threshold=0.6)
+
+fig, ax = plt.subplots(1, 2, figsize=(12, 7), sharey=True)
+ax[0].imshow(cameraman, cmap='gray')
+ax[0].set_title('original')
+ax[1].imshow(canny3, cmap='gray')
+ax[1].set_title('Canny')
+ax[1].yaxis.set_label_position("right")
+ax[1].set_ylabel('pixels')
+for a in ax:
+    a.set_xticks([0, 127, 256])
+    a.set_yticks([0, 127, 256])
+    a.grid(False)
+fig.tight_layout()
+fig.savefig(root + 'cameraman_canny.png', **savekw)
+
+# %%
+
+fig, ax = plt.subplots(1, 2, figsize=(12, 7), sharey=True)
+ax[0].imshow(filtered > 1, cmap='gray')
+ax[0].set_title('Sobel')
+ax[1].imshow(canny3, cmap='gray')
+ax[1].set_title('Canny')
+ax[1].yaxis.set_label_position("right")
+ax[1].set_ylabel('pixels')
+for a in ax:
+    a.set_xticks([0, 127, 256])
+    a.set_yticks([0, 127, 256])
+    a.grid(False)
+fig.tight_layout()
+fig.savefig(root + 'sobel_canny.png', **savekw)
 
 # %%
