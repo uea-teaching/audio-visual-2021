@@ -171,27 +171,6 @@ fig.savefig(root + 'laplacian_vert_lines.png', **savekw)
 
 # %%
 
-vert = np.array([[-1, 2, -1], [-1, 2, -1], [-1, 2, -1]])
-fdiag = np.array([[-1, -1, 2], [-1, 2, -1], [2, -1, -1]])
-horiz = np.array([[-1, -1, -1], [2, 2, 2], [-1, -1, -1]])
-bdiag = np.array([[2, -1, -1], [-1, 2, -1], [-1, -1, 2]])
-
-kernels = [vert, fdiag, horiz, bdiag]
-labels = ['vertical', 'forward diagonal', 'horizontal', 'backward diagonal']
-fig, ax = plt.subplots(1, 4, figsize=(14, 5))
-
-for i, k in enumerate(kernels):
-    filt = filters.edges.convolve(cameraman, k)
-    ax[i].imshow(filt, cmap='gray', vmin=0, vmax=1)
-    ax[i].set_title(labels[i])
-    ax[i].grid(False)
-    ax[i].set_xticks([])
-    ax[i].set_yticks([])
-fig.tight_layout()
-fig.savefig(root + 'four_directions.png', **savekw)
-
-# %%
-
 
 def plot_kernel(ax, k, t, fs=18):
     img = np.ones_like(k)
@@ -214,6 +193,37 @@ def plot_kernel(ax, k, t, fs=18):
                     ha='center', va='center', fontsize=fs)
 
 
+vert = np.array([[-1, 2, -1], [-1, 2, -1], [-1, 2, -1]])
+fdiag = np.array([[-1, -1, 2], [-1, 2, -1], [2, -1, -1]])
+horiz = np.array([[-1, -1, -1], [2, 2, 2], [-1, -1, -1]])
+bdiag = np.array([[2, -1, -1], [-1, 2, -1], [-1, -1, 2]])
+
+directions = [vert, fdiag, horiz, bdiag]
+labels = ['vertical', 'forward diagonal', 'horizontal', 'backward diagonal']
+
+fig, axs = plt.subplots(1, 4, figsize=(10, 3))
+ax = axs.flatten()
+for i, k in enumerate(directions):
+    plot_kernel(ax[i], k, labels[i])
+fig.tight_layout()
+fig.savefig(root + 'directions.png', **savekw)
+
+# %%
+
+fig, ax = plt.subplots(1, 4, figsize=(14, 5))
+
+for i, k in enumerate(directions):
+    filt = filters.edges.convolve(cameraman, k)
+    ax[i].imshow(filt, cmap='gray', vmin=0, vmax=1)
+    ax[i].set_title(labels[i])
+    ax[i].grid(False)
+    ax[i].set_xticks([])
+    ax[i].set_yticks([])
+fig.tight_layout()
+fig.savefig(root + 'four_directions.png', **savekw)
+
+# %%
+
 # prewitt operators - have a smoothing effect
 prewitt_a = np.array([[1, 1, 1], [0, 0, 0], [-1, -1, -1]])
 prewitt_b = np.array([[0, 1, 1], [-1, 0, 1], [-1, -1, 0]])
@@ -232,8 +242,8 @@ labels = ['n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']
 fig, axs = plt.subplots(2, 4, figsize=(10, 6))
 ax = axs.flatten()
 for i, k in enumerate(prewitts):
-    plot_kernel(ax[i], k, labels[i])
-fig.suptitle('Prewitt operators', fontsize=20)
+    plot_kernel(ax[i], k, None)
+fig.suptitle('Prewitt operators', fontsize=20, y=0.96)
 fig.tight_layout()
 fig.savefig(root + 'prewitts.png', **savekw)
 
@@ -244,11 +254,11 @@ ax = axs.flatten()
 for i, k in enumerate(prewitts):
     filt = filters.edges.convolve(cameraman, k)
     ax[i].imshow(filt, cmap='gray', vmin=0, vmax=1)
-    ax[i].set_title(labels[i])
+    ax[i].set_title(None)
     ax[i].grid(False)
     ax[i].set_xticks([])
     ax[i].set_yticks([])
-fig.suptitle('Prewitt operators', fontsize=20, y=0.95)
+fig.suptitle('Prewitt operators', fontsize=20, y=0.9)
 fig.tight_layout()
 fig.savefig(root + 'cameraman_prewitts.png', **savekw)
 
@@ -272,8 +282,8 @@ labels = ['n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']
 fig, axs = plt.subplots(2, 4, figsize=(10, 6))
 ax = axs.flatten()
 for i, k in enumerate(sobels):
-    plot_kernel(ax[i], k, labels[i])
-fig.suptitle('Sobel operators', fontsize=20)
+    plot_kernel(ax[i], k, None)
+fig.suptitle('Sobel operators', fontsize=20, y=0.95)
 fig.tight_layout()
 fig.savefig(root + 'sobels.png', **savekw)
 
@@ -284,11 +294,11 @@ ax = axs.flatten()
 for i, k in enumerate(sobels):
     filt = filters.edges.convolve(cameraman, k)
     ax[i].imshow(filt, cmap='gray', vmin=0, vmax=1)
-    ax[i].set_title(labels[i])
+    ax[i].set_title(None)
     ax[i].grid(False)
     ax[i].set_xticks([])
     ax[i].set_yticks([])
-fig.suptitle('Sobel operators', fontsize=20, y=0.95)
+fig.suptitle('Sobel operators', fontsize=20, y=0.9)
 fig.tight_layout()
 fig.savefig(root + 'cameraman_sobels.png', **savekw)
 
