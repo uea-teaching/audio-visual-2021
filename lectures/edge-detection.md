@@ -231,7 +231,7 @@ $$
 \end{bmatrix}
 $$
 
-The Laplacian can also be calculated by convolving the image with this filter.
+The Laplacian can also be calculated by **convolving** the image with this filter.
 
 ## Laplacian {data-auto-animate="true"}
 
@@ -254,6 +254,3 @@ Thin potential edges to 1-pixel wide curves. First, find the normal to the edge 
 Perform a hysteresis thresholding: first label all points above the high threshold as edges. Then recursively label any point above the low threshold that is 8-connected to a labeled point as an edge.
 
 :::
-
-$$
-$$
