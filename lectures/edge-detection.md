@@ -12,9 +12,36 @@ date: December 1, 2021
 - Line detection operators
 - Canny edge detector
 
-# Edges
+# Edge Detection
+
+Convert an image into a set of curves.
+
+- Extracts salient _features_ of the image.
+- Far more compact than pixels
+
+## Edges
 
 An edge in an image is a significant local change or discontinuity in the image intensity.
+
+## Edges
+
+Edges come from discontinuity in:
+
+::: incremental
+
+- surface normal
+- depth
+- surface color
+- illumination
+
+:::
+
+::: notes
+the shape or form of an object
+one object in front of another
+colour
+lighting
+:::
 
 ## Edges {data-auto-animate="true"}
 
@@ -56,14 +83,18 @@ We can see how edges are defined by these changes in intensity.
 :::::
 :::
 
-## Image Derivatives {data-auto-animate="true"}
+## Derivatives {data-auto-animate="true"}
 
 The derivative is the rate of change of a function.
 
-- 1D first order derivative: **difference** in consecutive pixels:
+- 1D _first_ order derivative: **difference** in consecutive pixels:
   $$\frac{\delta f}{\delta x} \approx f(x + 1) - f(x)$$
 
-- 1D second order derivative: **acceleration** of pixel intensity change:
+## Derivatives {data-auto-animate="true"}
+
+The derivative is the rate of change of a function.
+
+- 1D _second_ order derivative: **acceleration** of pixel intensity change:
   $$\frac{\delta^{2}f}{\delta {x}^2} \approx f(x + 1) + f(x - 1) - 2f(x)$$
 
 ::: notes
@@ -72,19 +103,7 @@ The first derivative, in 1D, can be thought of as a tangent - wth a slope - or g
 We used a partial derivative here in order to keep the notation consistent when we consider an image function of two variables.
 :::
 
----
-
-![Example from Gonzalez and Woods.](assets/img4/ramps.png){width=80%}
-
-::: notes
-
-It might be helpful to look at some specific values as a concrete example.
-
-:::
-
----
-
-## Image Derivatives {data-auto-animate="true"}
+## Derivatives {data-auto-animate="true"}
 
 Required properties of first derivatives:
 
@@ -97,10 +116,12 @@ Required properties of first derivatives:
 :::
 
 ::: notes
-Derivatives of a digital function are defined in terms of differences. There are various ways to define these differences. However, we require that any definition we use for a derivative has these properties.
+Derivatives of a digital function are defined in terms of differences.
+There are various ways to define these differences.
+However, we require that any definition we use for a derivative has these properties.
 :::
 
-## Image Derivatives {data-auto-animate="true"}
+## Derivatives {data-auto-animate="true"}
 
 Required properties of second derivatives:
 
@@ -112,13 +133,22 @@ Required properties of second derivatives:
 
 :::
 
+## Derivatives {data-auto-animate="true"}
+
+![Example from Gonzalez and Woods.](assets/img4/ramps.png){width=80%}
+
+::: notes
+It might be helpful to look at some specific values as a concrete example.
+notice we lose some dimension by taking differences.
+:::
+
+## Derivatives {data-auto-animate="true"}
+
+![Intensity, first and second derivatives](assets/plots4/coins_derivatives.png)
+
 ::: notes
 Going back to our row of pixels, we can see how some real data looks.
 :::
-
----
-
-![Intensity, first and second derivatives](assets/plots4/coins_derivatives.png)
 
 ## Image Derivatives {data-auto-animate="true"}
 
@@ -304,7 +334,7 @@ Previous filter gives strong response along a line.
 ::: incremental
 
 - **But...** also responds at isolated pixels.
-- Edge detector should respond only to edges
+- Edge detector should respond _only_ to edges
 
 :::
 
@@ -365,7 +395,7 @@ We rarely observe ideal edges in real images.
 ::: incremental
 
 - Lens imperfections, sensor noise, etc.
-- Edges appear more like noisy gradients
+- Edges appear more like noisy ramps.
 
 :::
 
@@ -389,6 +419,10 @@ Four limitations with basic gradient-based edge detection:
 # Canny Edge Detector{data-auto-animate="true"}
 
 The **Canny Edge Detector** is _optimal_ with respect to gradient-based limitations.
+
+::: notes
+Canny, J. (1986) A computational approach to edge detection. >35k citations.
+:::
 
 ## Canny Edge Detector
 
@@ -414,19 +448,144 @@ Canny provides an elegant solution to edge detection.
 
 ## Canny Edge Detector
 
+Canny Edge Detection is a four step process:
+
+::: incremental
+
 1. Convolve image with Gaussians of particular scales.
 2. Compute gradient magnitude and direction.
 3. Perform **non-maximal** suppression to thin the edges.
 4. Threshold edges with **hysteresis**.
 
+:::
+
+## Canny Edge Detector
+
+Step 1: Convolve image with Gaussians of particular scales.
+
+- Smoothing helps ensure robustness to noise.
+- The size of the Gaussian kernel affects the performance of the detector.
+
+## Canny Edge Detector
+
+Step 2: Compute gradient _magnitude_ and _direction_:
+
+- Using Sobel operators.
+
+**Quantise** the angle of the gradient:
+
+- Discrete nature of image limits the possible angle.
+- Angle can only be {0, 45, 90, 135} degrees.
+
 ::: notes
+Gradient direction is always perpendicular to edges.
+It is rounded to one of four angles representing vertical, horizontal and two diagonal directions.
+:::
 
-Smooth the image using a Gaussian with sigma width.
+## Canny Edge Detector
 
-Apply the horizontal and vertical Sobel operators to get the gradients within the image. The edge strength is the norm of the gradient.
+Step 3: Perform **non-maximal** suppression.
 
-Thin potential edges to 1-pixel wide curves. First, find the normal to the edge at each point. This is done by looking at the signs and the relative magnitude of the X-Sobel and Y-Sobel to sort the points into 4 categories: horizontal, vertical, diagonal and antidiagonal. Then look in the normal and reverse directions to see if the values in either of those directions are greater than the point in question. Use interpolation to get a mix of points instead of picking the one that’s the closest to the normal.
+::: columns
+::::: {.column width=40%}
+![direction of gradient](assets/img4/edge-suppression.png)
+:::::
+::::: column
 
-Perform a hysteresis thresholding: first label all points above the high threshold as edges. Then recursively label any point above the low threshold that is 8-connected to a labeled point as an edge.
+::: incremental
 
+- An edge-thinning technique.
+- Searches for maximum value along direction of gradient and sets all others to zero.
+- Result is a one pixel wide curve.
+
+:::
+
+:::::
+:::
+
+::: notes
+After getting gradient magnitude and direction, a full scan of image is done to remove any unwanted pixels which may not constitute the edge.
+
+For this, at every pixel, the pixel is checked if it is a local maximum in its neighbourhood in the direction of gradient. (look along direction of gradient)
+:::
+
+## Canny Edge Detector {data-auto-animate="true"}
+
+Step 4: Threshold edges with **hysteresis**.
+
+- Hysteresis is the dependence of the state of a system on its history.
+
+::: notes
+Finally, hysteresis is used as a means of eliminating streaking. Streaking is the breaking up of an edge contour caused by the operator output fluctuating above and below the threshold.
+If a single threshold, T is applied to an image, and an edge has an average strength equal to T, then due to noise, there will be instances where the edge dips below the threshold.
+Equally it will also extend above the threshold making an edge look like a dashed line.
+:::
+
+## Canny Edge Detector {data-auto-animate="true"}
+
+Step 4: Threshold edges with **hysteresis**.
+
+Use **two** thresholds: $T_{min}$ and $T_{max}$.
+
+$$
+\begin{aligned}
+E(x, y) = \begin{cases}
+1~ & E(x, y) \geq T_{max} \\
+0~ & E(x, y) < T_{min}
+\end{cases}
+\end{aligned}
+$$
+
+::: notes
+To avoid this, hysteresis uses 2 thresholds, a high and a low.
+
+Any edges with intensity gradient more than Tmax are sure to be edges and those below Tmin are sure to be non-edges, so discarded.
+
+Those who lie between these two thresholds are classified edges or non-edges based on their connectivity.
+If they are connected to "sure-edge" pixels, they are considered to be part of edges.
+Otherwise, they are also discarded.
+:::
+
+## Canny Edge Detector {data-auto-animate="true"}
+
+Step 4: Threshold edges with **hysteresis**.
+
+::: {style="font-size:0.8em"}
+
+$$
+\begin{aligned}
+E(x, y) = \begin{cases}
+1 &T_{min} \leq E(x, y) < T_{max} \iff \text{linked to an edge} \\
+0 &T_{min} \leq E(x, y) < T_{max}~ \text{  otherwise}
+\end{cases}
+\end{aligned}
+$$
+
+:::
+
+## Canny Edge Detector {data-auto-animate="true"}
+
+![Canny edge detection](assets/plots4/cameraman_canny.png)
+
+::: notes
+MATLAB has an implementation of Canny Edge Detector, with the `edge` function.
+:::
+
+## Canny Edge Detector {data-auto-animate="true"}
+
+![Max Sobel compared to Canny](assets/plots4/sobel_canny.png)
+
+# Summary
+
+- Image derivatives
+- Laplacian operator for 2nd order derivatives
+- Line detection kernels
+- Canny Edge Detector
+
+::: notes
+Image derivatives consider derivatives in both x and y directions
+First and second order derivatives have different strengths and weaknesses
+Laplacian matrices encode the 2D second order derivatives of an image
+Images can be convolved with line detection filter kernels to detect edges in different directions.
+Canny edge detector is a better approach.
 :::
