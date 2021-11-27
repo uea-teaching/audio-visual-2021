@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Dr. David Greenwood">
+  <meta name="dcterms.date" content="2021-12-01">
+  <title>Edge Detection</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reset.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/theme/black.css" id="theme">
+  <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.2.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Edge Detection</h1>
+  <p class="subtitle">Audiovisual Processing CMP-6026A</p>
+  <p class="author">Dr. David Greenwood</p>
+  <p class="date">December 1, 2021</p>
+</section>
+
+<section id="content" class="title-slide slide level1">
+<h1>Content</h1>
+<ul>
+<li>Edges from image derivatives</li>
+<li>Laplacian matrices</li>
+<li>Line detection operators</li>
+<li>Canny edge detector</li>
+</ul>
+</section>
+
+<section>
+<section id="edge-detection" class="title-slide slide level1">
+<h1>Edge Detection</h1>
+<p>Convert an image into a set of <strong>curves</strong>.</p>
+<div>
+<ul>
+<li class="fragment">Extracts salient <em>features</em> of the image.</li>
+<li class="fragment">Far more <em>compact</em> than pixels.</li>
+</ul>
+</div>
+</section>
+<section id="edges" class="slide level2">
+<h2>Edges</h2>
+<p>An <em>edge</em> in an image is a significant local change or discontinuity in the image intensity.</p>
+</section>
+<section id="edges-1" class="slide level2">
+<h2>Edges</h2>
+<p>Edges come from discontinuity in:</p>
+<div>
+<ul>
+<li class="fragment">surface normal</li>
+<li class="fragment">depth</li>
+<li class="fragment">surface color</li>
+<li class="fragment">illumination</li>
+</ul>
+</div>
+<aside class="notes">
+<p>the shape or form of an object one object in front of another colour lighting</p>
+</aside>
+</section>
+<section id="edges-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Edges</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/plots4/coins_fig.png" /></p>
+</div><div class="column">
+<p>An image is a 2D matrix of intensities.</p>
+</div>
+</div>
+</section>
+<section id="edges-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Edges</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/plots4/coins_row.png" /></p>
+</div><div class="column">
+<p>We can look at those intensities in a single row.</p>
+</div>
+</div>
+</section>
+<section id="edges-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Edges</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/plots4/coins_row.png" /></p>
+</div><div class="column">
+<p>We can see how edges are defined by these changes in intensity.</p>
+</div>
+</div>
+</section>
+<section id="derivatives" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Derivatives</h2>
+<p>The derivative is the rate of change of a function.</p>
+<ul>
+<li>1D <em>first</em> order derivative: <strong>difference</strong> in consecutive pixels: <span class="math display">\[\frac{\delta f}{\delta x} \approx f(x + 1) - f(x)\]</span></li>
+</ul>
+<aside class="notes">
+<p>this is one way of approximating the derivative…we could use the difference to the left or right.</p>
+</aside>
+</section>
+<section id="derivatives-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Derivatives</h2>
+<p>The derivative is the rate of change of a function.</p>
+<ul>
+<li>1D <em>second</em> order derivative: <strong>acceleration</strong> of pixel intensity change: <span class="math display">\[\frac{\delta^{2}f}{\delta {x}^2} \approx f(x + 1) + f(x - 1) - 2f(x)\]</span></li>
+</ul>
+<aside class="notes">
+<p>the x is the location along the line of the pixel - The first derivative, in 1D, can be thought of as a tangent - wth a slope - or gradient. We used a partial derivative here in order to keep the notation consistent when we consider an image function of two variables.</p>
+</aside>
+</section>
+<section id="derivatives-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Derivatives</h2>
+<p>Required properties of first derivatives:</p>
+<div>
+<ul>
+<li class="fragment">Zero in regions of constant intensity</li>
+<li class="fragment">Non-zero at onset of a ramp or step</li>
+<li class="fragment">Non-zero along intensity ramps</li>
+</ul>
+</div>
+<aside class="notes">
+<p>Derivatives of a digital function are defined in terms of differences. There are various ways to define these differences. However, we require that any definition we use for a derivative has these properties.</p>
+</aside>
+</section>
+<section id="derivatives-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Derivatives</h2>
+<p>Required properties of second derivatives:</p>
+<div>
+<ul>
+<li class="fragment">Zero in regions of constant intensity</li>
+<li class="fragment">Non-zero at the onset <strong>and</strong> end of an intensity step or ramp.</li>
+<li class="fragment"><em>Zero</em> along intensity ramps.</li>
+</ul>
+</div>
+</section>
+<section id="derivatives-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Derivatives</h2>
+<figure>
+<img data-src="assets/img4/ramps.png" style="width:80.0%" alt="Example from Gonzalez and Woods." /><figcaption aria-hidden="true">Example from Gonzalez and Woods.</figcaption>
+</figure>
+<aside class="notes">
+<p>It might be helpful to look at some specific values as a concrete example. notice we lose some dimension by taking differences.</p>
+</aside>
+</section>
+<section id="derivatives-5" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Derivatives</h2>
+<figure>
+<img data-src="assets/plots4/coins_derivatives.png" alt="Intensity, first and second derivatives" /><figcaption aria-hidden="true">Intensity, first and second derivatives</figcaption>
+</figure>
+<aside class="notes">
+<p>Going back to our row of pixels, we can see how some real data looks.</p>
+</aside>
+</section>
+<section id="image-derivatives" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Image Derivatives</h2>
+<p>For images, we must consider the derivative in both directions:</p>
+<p><span class="math display">\[\frac{\delta f}{\delta x} \approx f(x + 1, y) - f(x, y)\]</span></p>
+<p><span class="math display">\[\frac{\delta f}{\delta y} \approx f(x, y + 1) - f(x, y)\]</span></p>
+<aside class="notes">
+<p>We used a partial derivative here in order to keep the notation consistent when we consider an image function of two variables.</p>
+</aside>
+</section>
+<section id="image-derivatives-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Image Derivatives</h2>
+<figure>
+<img data-src="assets/plots4/cameraman_derivatives.png" alt="x and y first derivatives" /><figcaption aria-hidden="true">x and y first derivatives</figcaption>
+</figure>
+</section>
+<section id="image-derivatives-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Image Derivatives</h2>
+<p>An image <em>gradient</em> is formed of two components:</p>
+<p><span class="math display">\[\nabla f = \left[ \frac{\delta f}{\delta x}, \frac{\delta f}{\delta y} \right]\]</span></p>
+<aside class="notes">
+<p>The first derivative, in 1D, can be thought of as a tangent - wth a slope - or gradient.</p>
+</aside>
+</section>
+<section id="image-derivatives-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Image Derivatives</h2>
+<p>Image gradient is a vector:</p>
+<p><span class="math display">\[\nabla f = \left[ \frac{\delta f}{\delta x}, \frac{\delta f}{\delta y} \right]\]</span></p>
+</section>
+<section id="image-derivatives-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Image Derivatives</h2>
+<p>A vector has magnitude…</p>
+<p><span class="math display">\[|\nabla f| = \sqrt{\left( \frac{\delta f}{\delta x} \right)^{2} + \left( \frac{\delta f}{\delta y} \right)^{2}}\]</span></p>
+<p>Magnitude is the <em>strength</em> of the edge.</p>
+<aside class="notes">
+<p>The magnitude is always positive.</p>
+</aside>
+</section>
+<section id="image-derivatives-5" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Image Derivatives</h2>
+<p>A vector has direction…</p>
+<p><span class="math display">\[ \theta = \tan^{-1} \left( \frac{\delta f}{\delta y} / \frac{\delta f}{\delta x} \right) \]</span></p>
+<p>Direction of an edge is <strong>perpendicular</strong> to the gradient direction.</p>
+</section>
+<section id="image-derivatives-6" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Image Derivatives</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/img4/gradient.png" alt="gradient direction" /><figcaption aria-hidden="true">gradient direction</figcaption>
+</figure>
+</div><div class="column">
+<div>
+<ul>
+<li class="fragment">The gradient points in the direction of most rapid change in intensity.</li>
+<li class="fragment"><strong>Perpendicular</strong> to the edge direction.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="image-derivatives-7" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Image Derivatives</h2>
+<figure>
+<img data-src="assets/plots4/cameraman_mag.png" style="width:50.0%" alt="gradient magnitude as greyscale" /><figcaption aria-hidden="true">gradient magnitude as greyscale</figcaption>
+</figure>
+</section>
+<section id="image-derivatives-8" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Image Derivatives</h2>
+<p>First order derivatives:</p>
+<div>
+<ul>
+<li class="fragment">produce thicker edges in images</li>
+<li class="fragment">have a stronger response to stepped intensity changes</li>
+</ul>
+</div>
+</section>
+<section id="second-order-derivatives" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Second Order Derivatives</h2>
+<p>Second order derivatives:</p>
+<div>
+<ul>
+<li class="fragment">have a stronger response to fine detail</li>
+<li class="fragment">are more aggressive at enhancing detail</li>
+<li class="fragment">Generally, second-order derivatives are <em>preferred.</em></li>
+</ul>
+</div>
+</section>
+<section id="second-order-derivatives-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Second Order Derivatives</h2>
+<p><span class="math display">\[\nabla^{2} f = \frac{\delta^{2} f}{\delta x^{2}} + \frac{\delta^{2} f}{\delta y^{2}}\]</span></p>
+<p>Derivative in this form is known as the <strong>Laplacian</strong>.</p>
+<aside class="notes">
+<p>Derived by computing 2nd order derivatives in each direction and then summing.</p>
+</aside>
+</section></section>
+<section>
+<section id="laplacian" class="title-slide slide level1" data-auto-animate="true">
+<h1 data-auto-animate="true">Laplacian</h1>
+<p>We know:</p>
+<p><span class="math display">\[\frac{\delta^{2}f}{\delta {x}^2} \approx f(x + 1) + f(x - 1) - 2f(x)\]</span></p>
+<p><span class="math display">\[\frac{\delta^{2}f}{\delta {y}^2} \approx f(y + 1) + f(y - 1) - 2f(y)\]</span></p>
+</section>
+<section id="laplacian-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Laplacian</h2>
+<p>So, the Laplacian is calculated as:</p>
+<p><span class="math display">\[\nabla^{2} f = f(x + 1) + f(x - 1) + f(y + 1) + f(y - 1) - 4f(x, y)\]</span></p>
+<aside class="notes">
+<p>summing the two second order derivatives in each direction.</p>
+</aside>
+</section>
+<section id="laplacian-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Laplacian</h2>
+<p><span class="math display">\[
+\begin{bmatrix}
+  0 &amp; 1 &amp; 0 \\
+  1 &amp; -4 &amp; 1 \\
+  0 &amp; 1 &amp; 0
+\end{bmatrix}
+\]</span></p>
+<p>The Laplacian can also be calculated by <strong>convolving</strong> the image with this filter.</p>
+</section>
+<section id="laplacian-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Laplacian</h2>
+<figure>
+<img data-src="assets/plots4/cameraman_laplacian.png" alt="Laplacian" /><figcaption aria-hidden="true">Laplacian</figcaption>
+</figure>
+</section>
+<section id="laplacian-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Laplacian</h2>
+<figure>
+<img data-src="assets/plots4/mag_grad_laplacian.png" alt="Gradient magnitude and Laplacian" /><figcaption aria-hidden="true">Gradient magnitude and Laplacian</figcaption>
+</figure>
+<aside class="notes">
+<p>I hope you will agree that the first order derivatives produce thicker edges.</p>
+</aside>
+</section></section>
+<section>
+<section id="line-detection" class="title-slide slide level1" data-auto-animate="true">
+<h1 data-auto-animate="true">Line Detection</h1>
+<p>The Laplacian responds strongly to <em>any</em> detail in the image.</p>
+</section>
+<section id="line-detection-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Line Detection</h2>
+<p>What if we only wanted to detect lines that point in a certain direction?</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+  -1 &amp; 2 &amp; -1 \\
+  -1 &amp; 2 &amp; -1 \\
+  -1 &amp; 2 &amp; -1
+\end{bmatrix}
+\]</span></p>
+</section>
+<section id="line-detection-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Line Detection</h2>
+<figure>
+<img data-src="assets/plots4/laplacian_vert_lines.png" alt="Line Detection" /><figcaption aria-hidden="true">Line Detection</figcaption>
+</figure>
+</section>
+<section id="line-detection-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Line Detection</h2>
+<p>What about detecting edges in other directions?</p>
+<figure>
+<img data-src="assets/plots4/directions.png" alt="Line directions" /><figcaption aria-hidden="true">Line directions</figcaption>
+</figure>
+</section>
+<section id="line-detection-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Line Detection</h2>
+<p>What about detecting edges in other directions?</p>
+<figure>
+<img data-src="assets/plots4/four_directions.png" alt="Line directions" /><figcaption aria-hidden="true">Line directions</figcaption>
+</figure>
+</section>
+<section id="line-detection-5" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Line Detection</h2>
+<p>Previous filter gives strong response along a line.</p>
+<div>
+<ul>
+<li class="fragment"><strong>But…</strong> also responds at isolated pixels.</li>
+<li class="fragment">Edge detector should respond <em>only</em> to edges</li>
+</ul>
+</div>
+</section>
+<section id="line-detection-6" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Line Detection</h2>
+<p>Look either side of candidate pixel…</p>
+<div>
+<ul>
+<li class="fragment">but ignore the pixel itself.</li>
+</ul>
+</div>
+</section>
+<section id="line-detection-7" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Line Detection</h2>
+<p>Two popular <em>first-order</em> operators are <strong>Prewitt</strong> and <strong>Sobel</strong>.</p>
+<p>Both provide approximations of derivatives.</p>
+</section>
+<section id="line-detection-8" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Line Detection</h2>
+<figure>
+<img data-src="assets/plots4/prewitts.png" alt="Prewitt, J.M.S. (1970). “Object Enhancement and Extraction”" /><figcaption aria-hidden="true">Prewitt, J.M.S. (1970). “Object Enhancement and Extraction”</figcaption>
+</figure>
+</section>
+<section id="line-detection-9" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Line Detection</h2>
+<figure>
+<img data-src="assets/plots4/cameraman_prewitts.png" alt="Prewitt responses" /><figcaption aria-hidden="true">Prewitt responses</figcaption>
+</figure>
+</section>
+<section id="line-detection-10" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Line Detection</h2>
+<figure>
+<img data-src="assets/plots4/sobels.png" alt="Sobel, I. (1968) “An Isotropic 3x3 Image Gradient Operator”" /><figcaption aria-hidden="true">Sobel, I. (1968) “An Isotropic 3x3 Image Gradient Operator”</figcaption>
+</figure>
+<aside class="notes">
+<p>Described in a talk, at the Stanford Artificial Intelligence Project, published rather later.</p>
+</aside>
+</section>
+<section id="line-detection-11" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Line Detection</h2>
+<figure>
+<img data-src="assets/plots4/cameraman_sobels.png" alt="Sobel responses" /><figcaption aria-hidden="true">Sobel responses</figcaption>
+</figure>
+<aside class="notes">
+<p>Described in a talk, at the Stanford Artificial Intelligence Project, published rather later.</p>
+</aside>
+</section>
+<section class="slide level2">
+
+<p>For each pixel, find the maximum value from all of the filter responses, and then threshold.</p>
+<figure>
+<img data-src="assets/plots4/sobel_threshold.png" alt="Sobel maximum" /><figcaption aria-hidden="true">Sobel maximum</figcaption>
+</figure>
+<aside class="notes">
+<p>So, to turn back to detection of edges, we take the max of each directional response, and threshold, maybe 200 for 8 bit images.</p>
+</aside>
+</section>
+<section class="slide level2">
+
+<div class="columns">
+<div class="column" style="width:45%;">
+<figure>
+<img data-src="assets/img4/edge-noise.png" alt="Gonzalez and Woods" /><figcaption aria-hidden="true">Gonzalez and Woods</figcaption>
+</figure>
+</div><div class="column">
+<p>We rarely observe <em>ideal</em> edges in real images.</p>
+<ul>
+<li>Lens imperfections</li>
+<li>sensor noise, etc.</li>
+<li>Edges appear more like noisy ramps.</li>
+</ul>
+</div>
+</div>
+<aside class="notes">
+<p>These issues present problems for gradient-based edge detection.</p>
+</aside>
+</section>
+<section id="edge-detection-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Edge Detection</h2>
+<p>Four limitations with basic gradient-based edge detection:</p>
+<div>
+<ul>
+<li class="fragment">Hard to set the optimal value for the threshold.</li>
+<li class="fragment">Edges are broken (known as streaking)</li>
+<li class="fragment">Edges can be poorly localised</li>
+<li class="fragment">An edge might produce more than one response</li>
+</ul>
+</div>
+</section></section>
+<section>
+<section id="canny-edge-detector" class="title-slide slide level1" data-auto-animate="true">
+<h1 data-auto-animate="true">Canny Edge Detector</h1>
+<p>The <strong>Canny Edge Detector</strong> is <em>optimal</em> with respect to gradient-based limitations.</p>
+<aside class="notes">
+<p>Canny, J. (1986) A computational approach to edge detection. &gt;35k citations.</p>
+</aside>
+</section>
+<section id="canny-edge-detector-1" class="slide level2">
+<h2>Canny Edge Detector</h2>
+<p>Requirements for a <em>good</em> edge detector:</p>
+<div>
+<ul>
+<li class="fragment">Good detection - respond to edges, not noise.</li>
+<li class="fragment">Good localisation - detected edge near real edge.</li>
+<li class="fragment">Single response - only one response per edge.</li>
+</ul>
+</div>
+</section>
+<section id="canny-edge-detector-2" class="slide level2">
+<h2>Canny Edge Detector</h2>
+<p>Canny provides an elegant solution to edge detection.</p>
+<div>
+<ul>
+<li class="fragment">Canny provides a <em>hacky</em> solution to edge detection!</li>
+</ul>
+</div>
+</section>
+<section id="canny-edge-detector-3" class="slide level2">
+<h2>Canny Edge Detector</h2>
+<p>Canny Edge Detection is a four step process:</p>
+<div>
+<ol type="1">
+<li class="fragment">Convolve image with Gaussians of particular scales.</li>
+<li class="fragment">Compute gradient magnitude and direction.</li>
+<li class="fragment">Perform <strong>non-maximal</strong> suppression to thin the edges.</li>
+<li class="fragment">Threshold edges with <strong>hysteresis</strong>.</li>
+</ol>
+</div>
+</section>
+<section id="canny-edge-detector-4" class="slide level2">
+<h2>Canny Edge Detector</h2>
+<p>Step 1: Convolve image with Gaussians of particular scales.</p>
+<ul>
+<li>Smoothing helps ensure robustness to noise.</li>
+<li>The size of the Gaussian kernel affects the performance of the detector.</li>
+</ul>
+</section>
+<section id="canny-edge-detector-5" class="slide level2">
+<h2>Canny Edge Detector</h2>
+<p>Step 2: Compute gradient <em>magnitude</em> and <em>direction</em>:</p>
+<ul>
+<li>Using Sobel operators.</li>
+</ul>
+<p><strong>Quantise</strong> the angle of the gradient:</p>
+<ul>
+<li>Discrete nature of image limits the possible angle.</li>
+<li>Angle can only be {0, 45, 90, 135} degrees.</li>
+</ul>
+<aside class="notes">
+<p>Gradient direction is always perpendicular to edges. It is rounded to one of four angles representing vertical, horizontal and two diagonal directions.</p>
+</aside>
+</section>
+<section id="canny-edge-detector-6" class="slide level2">
+<h2>Canny Edge Detector</h2>
+<p>Step 3: Perform <strong>non-maximal</strong> suppression.</p>
+<div class="columns">
+<div class="column" style="width:40%;">
+<figure>
+<img data-src="assets/img4/edge-suppression.png" alt="direction of gradient" /><figcaption aria-hidden="true">direction of gradient</figcaption>
+</figure>
+</div><div class="column">
+<div>
+<ul>
+<li class="fragment">An edge-thinning technique.</li>
+<li class="fragment">Searches for maximum value along direction of gradient and sets all others to zero.</li>
+<li class="fragment">Result is a one pixel wide curve.</li>
+</ul>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>After getting gradient magnitude and direction, a full scan of image is done to remove any unwanted pixels which may not constitute the edge.</p>
+<p>For this, at every pixel, the pixel is checked if it is a local maximum in its neighbourhood in the direction of gradient. (look along direction of gradient)</p>
+</aside>
+</section>
+<section id="canny-edge-detector-7" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Canny Edge Detector</h2>
+<p>Step 4: Threshold edges with <strong>hysteresis</strong>.</p>
+<ul>
+<li>Hysteresis is the dependence of the state of a system on its history.</li>
+</ul>
+<aside class="notes">
+<p>Finally, hysteresis is used as a means of eliminating streaking. Streaking is the breaking up of an edge contour caused by the operator output fluctuating above and below the threshold. If a single threshold, T is applied to an image, and an edge has an average strength equal to T, then due to noise, there will be instances where the edge dips below the threshold. Equally it will also extend above the threshold making an edge look like a dashed line.</p>
+</aside>
+</section>
+<section id="canny-edge-detector-8" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Canny Edge Detector</h2>
+<p>Step 4: Threshold edges with <strong>hysteresis</strong>.</p>
+<p>Use <strong>two</strong> thresholds: <span class="math inline">\(T_{min}\)</span> and <span class="math inline">\(T_{max}\)</span>.</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(x, y) = \begin{cases}
+1~ &amp; E(x, y) \geq T_{max} \\
+0~ &amp; E(x, y) &lt; T_{min}
+\end{cases}
+\end{aligned}
+\]</span></p>
+<aside class="notes">
+<p>To avoid this, hysteresis uses 2 thresholds, a high and a low.</p>
+<p>Any edges with intensity gradient more than Tmax are sure to be edges and those below Tmin are sure to be non-edges, so discarded.</p>
+<p>Those who lie between these two thresholds are classified edges or non-edges based on their connectivity. If they are connected to “sure-edge” pixels, they are considered to be part of edges. Otherwise, they are also discarded.</p>
+</aside>
+</section>
+<section id="canny-edge-detector-9" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Canny Edge Detector</h2>
+<p>Step 4: Threshold edges with <strong>hysteresis</strong>.</p>
+<div style="font-size:0.8em">
+<p><span class="math display">\[
+\begin{aligned}
+E(x, y) = \begin{cases}
+1 &amp;T_{min} \leq E(x, y) &lt; T_{max} \iff \text{linked to an edge} \\
+0 &amp;T_{min} \leq E(x, y) &lt; T_{max}~ \text{  otherwise}
+\end{cases}
+\end{aligned}
+\]</span></p>
+</div>
+</section>
+<section id="canny-edge-detector-10" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Canny Edge Detector</h2>
+<figure>
+<img data-src="assets/plots4/cameraman_canny.png" alt="Canny edge detection" /><figcaption aria-hidden="true">Canny edge detection</figcaption>
+</figure>
+<aside class="notes">
+<p>MATLAB has an implementation of Canny Edge Detector, with the <code>edge</code> function.</p>
+</aside>
+</section>
+<section id="canny-edge-detector-11" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Canny Edge Detector</h2>
+<figure>
+<img data-src="assets/plots4/sobel_canny.png" alt="Max Sobel compared to Canny" /><figcaption aria-hidden="true">Max Sobel compared to Canny</figcaption>
+</figure>
+</section></section>
+<section id="summary" class="title-slide slide level1">
+<h1>Summary</h1>
+<ul>
+<li>Image derivatives</li>
+<li>Laplacian operator</li>
+<li>Line detection kernels</li>
+<li>Canny Edge Detector</li>
+</ul>
+<aside class="notes">
+<p>Image derivatives consider derivatives in both x and y directions First and second order derivatives have different strengths and weaknesses Laplacian matrices encode the 2D second order derivatives of an image Images can be convolved with line detection filter kernels to detect edges in different directions. Canny edge detector is a better approach.</p>
+</aside>
+</section>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/reveal.js@^4/dist/reveal.js"></script>
+
+  // reveal.js plugins
+  <script src="https://unpkg.com/reveal.js@^4/plugin/notes/notes.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/search/search.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/zoom/zoom.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/math/math.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/highlight/highlight.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+        // Display a presentation progress bar
+        progress: true,
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+        // Push each slide change to the browser history
+        history: true,
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+        // Enable the slide overview mode
+        overview: true,
+        // Vertical centering of slides
+        center: true,
+        // Enables touch navigation on devices with touch input
+        touch: true,
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+        // Turns fragments on and off globally
+        fragments: true,
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+        // Global override for autoplaying embedded media (video/audio/iframe)
+        // - null: Media will only autoplay if data-autoplay is present
+        // - true: All media will autoplay, regardless of individual setting
+        // - false: No media will autoplay, regardless of individual setting
+        autoPlayMedia: null,
+        // Global override for preloading lazy-loaded iframes
+        // - null: Iframes with data-src AND data-preload will be loaded when within
+        //   the viewDistance, iframes with only data-src will be loaded when visible
+        // - true: All iframes with data-src will be loaded when within the viewDistance
+        // - false: All iframes with data-src will be loaded only when visible
+        preloadIframes: null,
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+        // Transition style
+        transition: 'none', // none/fade/slide/convex/concave/zoom
+        // Transition speed
+        transitionSpeed: 'default', // default/fast/slow
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'fade', // none/fade/slide/convex/concave/zoom
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+        // Factor of the display size that should remain empty around the content
+        margin: 0.2,
+        // The display mode that will be used to show slides
+        display: 'block',
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [
+          RevealMath,
+          RevealHighlight,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>

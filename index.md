@@ -35,6 +35,9 @@ Lectures are available as online html or printable pdf.
 - Non Linear Image Filtering: [online](lectures/non-linear-filtering.html)
   or printable [pdf](lectures/non-linear-filtering.bmr.pdf).
 
+- Edge Detection: [online](lectures/edge-detection.html)
+  or printable [pdf](lectures/edge-detection.bmr.pdf).
+
 ## Labs
 
 Labs are usually a pdf file, or a zip file if additional resources are provided.
