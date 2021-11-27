@@ -201,7 +201,7 @@ bdiag = np.array([[2, -1, -1], [-1, 2, -1], [-1, -1, 2]])
 directions = [vert, fdiag, horiz, bdiag]
 labels = ['vertical', 'forward diagonal', 'horizontal', 'backward diagonal']
 
-fig, axs = plt.subplots(1, 4, figsize=(10, 3))
+fig, axs = plt.subplots(1, 4, figsize=(12, 4))
 ax = axs.flatten()
 for i, k in enumerate(directions):
     plot_kernel(ax[i], k, labels[i])
@@ -210,7 +210,7 @@ fig.savefig(root + 'directions.png', **savekw)
 
 # %%
 
-fig, ax = plt.subplots(1, 4, figsize=(14, 5))
+fig, ax = plt.subplots(1, 4, figsize=(12, 4))
 
 for i, k in enumerate(directions):
     filt = filters.edges.convolve(cameraman, k)
