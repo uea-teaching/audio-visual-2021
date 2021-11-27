@@ -243,13 +243,13 @@ fig, axs = plt.subplots(2, 4, figsize=(10, 6))
 ax = axs.flatten()
 for i, k in enumerate(prewitts):
     plot_kernel(ax[i], k, None)
-fig.suptitle('Prewitt operators', fontsize=20, y=0.96)
+fig.suptitle('Prewitt operators', fontsize=20, y=0.9)
 fig.tight_layout()
 fig.savefig(root + 'prewitts.png', **savekw)
 
 # %%
 
-fig, axs = plt.subplots(2, 4, figsize=(12, 8))
+fig, axs = plt.subplots(2, 4, figsize=(10, 6))
 ax = axs.flatten()
 for i, k in enumerate(prewitts):
     filt = filters.edges.convolve(cameraman, k)
@@ -258,7 +258,7 @@ for i, k in enumerate(prewitts):
     ax[i].grid(False)
     ax[i].set_xticks([])
     ax[i].set_yticks([])
-fig.suptitle('Prewitt operators', fontsize=20, y=0.9)
+fig.suptitle('Prewitt responses', fontsize=20, y=0.9)
 fig.tight_layout()
 fig.savefig(root + 'cameraman_prewitts.png', **savekw)
 
@@ -283,13 +283,13 @@ fig, axs = plt.subplots(2, 4, figsize=(10, 6))
 ax = axs.flatten()
 for i, k in enumerate(sobels):
     plot_kernel(ax[i], k, None)
-fig.suptitle('Sobel operators', fontsize=20, y=0.95)
+fig.suptitle('Sobel operators', fontsize=20, y=0.9)
 fig.tight_layout()
 fig.savefig(root + 'sobels.png', **savekw)
 
 # %%
 
-fig, axs = plt.subplots(2, 4, figsize=(12, 8))
+fig, axs = plt.subplots(2, 4, figsize=(10, 6))
 ax = axs.flatten()
 for i, k in enumerate(sobels):
     filt = filters.edges.convolve(cameraman, k)
@@ -298,7 +298,7 @@ for i, k in enumerate(sobels):
     ax[i].grid(False)
     ax[i].set_xticks([])
     ax[i].set_yticks([])
-fig.suptitle('Sobel operators', fontsize=20, y=0.9)
+fig.suptitle('Sobel responses', fontsize=20, y=0.9)
 fig.tight_layout()
 fig.savefig(root + 'cameraman_sobels.png', **savekw)
 
