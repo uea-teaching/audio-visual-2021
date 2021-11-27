@@ -127,7 +127,7 @@ We can downsample the chrominance channels without affecting the image in a _per
 
 ![Chroma Subsampling](assets/img4/jpeg2.png)
 
-## Chroma Subsampling {data-auto-animate="true"}
+# Chroma Subsampling {data-auto-animate="true"}
 
 Subsampling scheme is expressed as a ratio **J:a:b**
 
@@ -213,7 +213,7 @@ Two samples from top row "a", ZERO different sample locations from "b"...
 
 ![DCT](assets/img4/jpeg4.png)
 
-## DCT {data-auto-animate="true"}
+# DCT {data-auto-animate="true"}
 
 Transforms the image into the _frequency domain_.
 
@@ -241,7 +241,7 @@ lets just follow what happens to some image values in the DCT
 This part is new to us. Quantising the coefficients.
 :::
 
-## DCT Quantisation {data-auto-animate="true"}
+# DCT Quantisation {data-auto-animate="true"}
 
 Reduce the number of bits needed to store a value by reducing precision.
 
@@ -332,4 +332,6 @@ More likely to encode all non-zeros and all zeros together...
 
 ## JPEG Compression {data-auto-animate="true"}
 
-![run-length encoding](assets/img4/jpeg6.png)
+![run-length encoding](assets/img4/jpeg7.png)
+
+# Run Length Encoding {data-auto-animate="true"}
