@@ -335,3 +335,59 @@ More likely to encode all non-zeros and all zeros together...
 ![run-length encoding](assets/img4/jpeg7.png)
 
 # Run Length Encoding {data-auto-animate="true"}
+
+Extracts series of value and length of runs from sequence of values.
+
+Exploits **inter-pixel** redundancy.
+
+## Run Length Encoding {data-auto-animate="true"}
+
+65 -27 -2 17 -3 -3 1 1 1 -2 1 1 0 -1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+## Run Length Encoding {data-auto-animate="true"}
+
+65 -27 -2 17 -3 -3 1 1 1 -2 1 1 0 -1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+65 1 -27 1 -2 1 17 1 -3 2 1 3 -2 1 1 2 0 1 -1 1 1 1 0 19
+
+::: notes
+reducing the number of bits needed to store a value by exploiting inter pixel redundancy.
+:::
+
+## Run Length Encoding {data-auto-animate="true"}
+
+**65** -27 -2 17 -3 -3 1 1 1 -2 1 1 0 -1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+**65 1** -27 1 -2 1 17 1 -3 2 1 3 -2 1 1 2 0 1 -1 1 1 1 0 19
+
+::: notes
+reducing the number of bits needed to store a value by exploiting inter pixel redundancy.
+:::
+
+## Run Length Encoding {data-auto-animate="true"}
+
+65 -27 -2 17 **-3 -3** 1 1 1 -2 1 1 0 -1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+65 1 -27 1 -2 1 17 1 **-3 2** 1 3 -2 1 1 2 0 1 -1 1 1 1 0 19
+
+## Run Length Encoding {data-auto-animate="true"}
+
+65 -27 -2 17 -3 -3 1 1 1 -2 1 1 0 -1 1 **0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0**
+
+65 1 -27 1 -2 1 17 1 -3 2 1 3 -2 1 1 2 0 1 -1 1 1 1 **0 19**
+
+## Run Length Encoding {data-auto-animate="true"}
+
+Exploits inter-pixel redundancy
+
+- the relationship between neighbouring "pixels" in the zigzag scan of the DCT coefficient matrix
+
+## JPEG Compression {data-auto-animate="true"}
+
+![entropy encoding](assets/img4/jpeg8.png)
+
+# Entropy Coding
+
+Information and data are not the same thing.
+
+## Entropy Coding {data-auto-animate="true"}
