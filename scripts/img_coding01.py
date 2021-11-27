@@ -87,7 +87,7 @@ plot_vals(ax[1], I)
 ax[0].set_title('8x8 Block')
 ax[1].set_title('Intensities')
 fig.tight_layout()
-fig.savefig(root + 'jpg_block_values.svg', **savekw)
+fig.savefig(root + 'jpg_block_values.png', **savekw)
 
 # %%
 
@@ -97,7 +97,7 @@ plot_vals(ax[1], D)
 ax[0].set_title('8x8 Block')
 ax[1].set_title('DCT Coefficients')
 fig.tight_layout()
-fig.savefig(root + 'jpg_block_dct.svg', **savekw)
+fig.savefig(root + 'jpg_block_dct.png', **savekw)
 
 # %%
 
@@ -105,7 +105,7 @@ fig, ax = plt.subplots(1, figsize=(6, 6))
 plot_vals(ax, Q)
 ax.set_title('Quantisation Matrix ' + r'$Q$')
 fig.tight_layout()
-fig.savefig(root + 'jpg_quant_matrix.svg', **savekw)
+fig.savefig(root + 'jpg_quant_matrix.png', **savekw)
 
 # %%
 
@@ -117,7 +117,7 @@ ax[1].set_title(r'$Q$')
 plot_vals(ax[2], DQ)
 ax[2].set_title('Quantised DCT')
 fig.tight_layout()
-fig.savefig(root + 'jpg_block_dct.svg', **savekw)
+fig.savefig(root + 'jpg_block_dct_quant.png', **savekw)
 
 # %%
 
@@ -125,7 +125,7 @@ fig, ax = plt.subplots(1, figsize=(6, 6))
 plot_vals(ax, DQ)
 ax.set_title('Quantised DCT')
 fig.tight_layout()
-fig.savefig(root + 'jpg_block_quantised.svg', **savekw)
+fig.savefig(root + 'jpg_block_quantised.png', **savekw)
 
 # %%
 
@@ -140,7 +140,7 @@ for z in Z[1:]:
 ax.set_title('Quantised DCT')
 
 fig.tight_layout()
-fig.savefig(root + 'jpg_zigzag.svg', **savekw)
+fig.savefig(root + 'jpg_zigzag.png', **savekw)
 
 # %%
 
