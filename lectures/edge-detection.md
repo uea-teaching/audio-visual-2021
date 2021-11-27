@@ -14,14 +14,18 @@ date: December 1, 2021
 
 # Edge Detection
 
-Convert an image into a set of curves.
+Convert an image into a set of **curves**.
+
+::: incremental
 
 - Extracts salient _features_ of the image.
-- Far more compact than pixels
+- Far more _compact_ than pixels.
+
+:::
 
 ## Edges
 
-An edge in an image is a significant local change or discontinuity in the image intensity.
+An _edge_ in an image is a significant local change or discontinuity in the image intensity.
 
 ## Edges
 
@@ -89,6 +93,10 @@ The derivative is the rate of change of a function.
 
 - 1D _first_ order derivative: **difference** in consecutive pixels:
   $$\frac{\delta f}{\delta x} \approx f(x + 1) - f(x)$$
+
+::: notes
+this is one way of approximating the derivative...we could use the difference to the left or right.
+:::
 
 ## Derivatives {data-auto-animate="true"}
 
@@ -190,11 +198,15 @@ $$|\nabla f| = \sqrt{\left( \frac{\delta f}{\delta x} \right)^{2} + \left( \frac
 
 Magnitude is the _strength_ of the edge.
 
+::: notes
+The magnitude is always positive.
+:::
+
 ## Image Derivatives {data-auto-animate="true"}
 
 A vector has direction...
 
-$$ \theta = \tan^{-1} \left( \frac{\delta f}{\delta x} / \frac{\delta f}{\delta y} \right) $$
+$$ \theta = \tan^{-1} \left( \frac{\delta f}{\delta y} / \frac{\delta f}{\delta x} \right) $$
 
 Direction of an edge is **perpendicular** to the gradient direction.
 
@@ -356,7 +368,7 @@ Both provide approximations of derivatives.
 
 ## Line Detection {data-auto-animate="true"}
 
-![ Prewitt, J.M.S. (1970). "Object Enhancement and Extraction"](assets/plots4/prewitts.png)
+![Prewitt, J.M.S. (1970). "Object Enhancement and Extraction"](assets/plots4/prewitts.png)
 
 ## Line Detection {data-auto-animate="true"}
 
@@ -388,15 +400,21 @@ For each pixel, find the maximum value from all of the filter responses, and the
 So, to turn back to detection of edges, we take the max of each directional response, and threshold, maybe 200 for 8 bit images.
 :::
 
-## Edge Detection {data-auto-animate="true"}
+---
 
-We rarely observe ideal edges in real images.
+::: columns
+::::: {.column width=45%}
+![Gonzalez and Woods](assets/img4/edge-noise.png)
+:::::
+::::: column
 
-::: incremental
+We rarely observe _ideal_ edges in real images.
 
-- Lens imperfections, sensor noise, etc.
+- Lens imperfections
+- sensor noise, etc.
 - Edges appear more like noisy ramps.
 
+:::::
 :::
 
 ::: notes
@@ -578,7 +596,7 @@ MATLAB has an implementation of Canny Edge Detector, with the `edge` function.
 # Summary
 
 - Image derivatives
-- Laplacian operator for 2nd order derivatives
+- Laplacian operator
 - Line detection kernels
 - Canny Edge Detector
 
