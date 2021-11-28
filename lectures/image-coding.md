@@ -20,7 +20,7 @@ JPEG compression
 
 # Image Coding
 
-How can we compress an image without destroying the image?
+How can we compress an image without _destroying_ the image?
 
 ::: incremental
 
@@ -405,9 +405,9 @@ Claude Shannon (1948) A Mathematical Theory of Communication.
 You might have heard of entropy in discussions about thermodynamic systems.
 :::
 
-## Entropy Coding {data-auto-animate="true"}
+## {data-auto-animate="true"}
 
-Exploits **coding redundancy**
+Entropy Coding exploits **coding redundancy**
 
 - not every value is equally likely.
 
@@ -416,14 +416,14 @@ JPEG uses _Huffman_ coding for entropy coding
 Huffman, David, A. (1952). A Method for the Construction of Minimum-Redundancy Codes.
 :::
 
-## Entropy Coding {data-auto-animate="true"}
+## {data-auto-animate="true"}
 
-Encodes a sequence with _variable_ length code so that:
+Entropy Coding encodes a sequence with _variable_ length code so that:
 
 - More probable values have fewer bits, and
 - less probable values have more bits.
 
-## Entropy Coding {data-auto-animate="true"}
+## {data-auto-animate="true"}
 
 The new alphabet requires fewer bits per pixel.
 
@@ -433,32 +433,40 @@ The new alphabet requires fewer bits per pixel.
 on average
 :::
 
-## Entropy Coding {data-auto-animate="true"}
+## {data-auto-animate="true"}
 
-The _probability_ of an event is:
+**Recall**: the _probability_ of an event is:
 
 $$p_{i} = \frac{N_{i}}{N}$$
 
-## Entropy Coding {data-auto-animate="true"}
+## {data-auto-animate="true"}
 
 The _information_ in **bits** is:
 
 $$I_{i} = - \log_{2} p_{i}$$
 
-## Entropy Coding {data-auto-animate="true"}
+::: notes
+It is measured in bits with log base 2, logs of other bases do have definitions, but we wont cover them.
+:::
+
+## {data-auto-animate="true"}
 
 The _entropy_, the smallest possible **mean** symbol length, is:
 
 $$H = - \sum_{i} p_{i} \log_{2} p_{i}$$
 
-## Entropy Coding {data-auto-animate="true"}
+## {data-auto-animate="true"}
 
 We can use these properties to develop a better coding for an image.
 
-Remember: the goal is to develop a variable length code.
-
 - The stream must be decoded _unambiguously_.
 - One code cannot be the **prefix** of another.
+
+::: notes
+Remember: the goal is to develop a variable length code.
+In JPEG we use **Huffman** coding for entropy coding.
+
+:::
 
 ## Huffman Coding {data-auto-animate="true"}
 
@@ -482,6 +490,8 @@ Step 3:
 
 - Repeat until only the root node remains.
 - Read codewords from the root to the leaves.
+
+# Case Study {data-auto-animate="true"}
 
 ## Huffman Coding {data-auto-animate="true"}
 
@@ -677,4 +687,39 @@ We can calculate the bit rate we achieved.
 :::
 
 :::::
+:::
+
+## JPEG Compression {data-auto-animate="true"}
+
+![data packing](assets/img4/jpeg9.png)
+
+# Lossy Compression
+
+## JPEG Compression {data-auto-animate="true"}
+
+![lossy components](assets/img4/jpeg10.png)
+
+## JPEG Compression {data-auto-animate="true"}
+
+![50% quality](assets/plots4/jpg_cameraman_50.png)
+
+## JPEG Compression {data-auto-animate="true"}
+
+![5% quality](assets/plots4/jpg_cameraman_05.png)
+
+# Summary
+
+Three types of redundancy are exploited in image compression.
+
+::: incremental
+
+- psycho-visual redundancy
+- inter-pixel redundancy
+- coding redundancy
+- **JPEG** uses them all.
+
+:::
+
+::: notes
+JPEG uses them all.
 :::
