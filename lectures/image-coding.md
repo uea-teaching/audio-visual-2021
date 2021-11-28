@@ -472,7 +472,7 @@ Step 1:
 Step 2:
 
 - Merge the two leaves with the smallest probability,
-  - and _add_ the probabilities,
+  - _add_ the probabilities,
   - insert the node into the sorted list.
 - Assign a 1/0 to each branch being merged.
 
@@ -502,8 +502,9 @@ The current bit rate is 3
 
 ## {data-auto-animate="true"}
 
-::: columns
-::::: {.column style="font-size:0.6em"}
+Count the frequencies of each symbol.
+
+::: {style="font-size: 0.7em;"}
 
 | Frequency | Symbol |
 | :-------: | :----: |
@@ -516,16 +517,13 @@ The current bit rate is 3
 |     2     |   6    |
 |     9     |   7    |
 
-:::::
-::::: column
-Count the frequencies of each symbol.
-:::::
 :::
 
 ## {data-auto-animate="true"}
 
-::: columns
-::::: {.column style="font-size:0.6em"}
+What is the **entropy** of this image?
+
+::: {style="font-size: 0.7em;"}
 
 | $p(s)$ | $-\log p(s)$ | $\times$  |
 | :----: | :----------: | :-------: |
@@ -539,16 +537,13 @@ Count the frequencies of each symbol.
 |  0.02  |    5.644     |   0.113   |
 |        |     $+$      | **2.651** |
 
-:::::
-::::: column
-What is the **entropy** of this image?
-:::::
 :::
 
 ## {data-auto-animate="true"}
 
-::: columns
-::::: {.column style="font-size:0.6em"}
+Sort by the most frequent symbol.
+
+::: {style="font-size: 0.7em;"}
 
 | Frequency | Symbol |
 | :-------: | :----: |
@@ -561,30 +556,19 @@ What is the **entropy** of this image?
 |     4     |   0    |
 |     2     |   6    |
 
-:::::
-::::: column
-Sort by the most frequent symbol.
-:::::
 :::
 
 ## {data-auto-animate="true"}
 
-::: columns
-::::: {.column width=60%}
-![](assets/img4/huff1.png)
-:::::
-::::: column
-Start with the lowest frequency symbols.
+Merge the two leaves with the lowest frequency...
 
-- Merge the two leaves with the lowest frequency...
-
-:::::
-:::
+![](assets/img4/huff1.png){width=65%}
 
 ## {data-auto-animate="true"}
 
-::: columns
-::::: {.column style="font-size:0.6em"}
+Insert the node into the sorted list.
+
+::: {style="font-size: 0.7em;"}
 
 | Frequency | Symbol |
 | :-------: | :----: |
@@ -596,27 +580,19 @@ Start with the lowest frequency symbols.
 |     8     |   3    |
 |     6     |   \*   |
 
-:::::
-::::: column
-Insert the node into the sorted list.
-:::::
 :::
 
 ## {data-auto-animate="true"}
 
-::: columns
-::::: {.column width=60%}
-![](assets/img4/huff2.png)
-:::::
-::::: column
 Repeat with the next two lowest frequencies.
-:::::
-:::
+
+![](assets/img4/huff2.png){width=65%}
 
 ## {data-auto-animate="true"}
 
-::: columns
-::::: {.column style="font-size:0.6em"}
+Insert the node into the sorted list.
+
+::: {style="font-size: 0.7em;"}
 
 | Frequency | Symbol |
 | :-------: | :----: |
@@ -627,49 +603,31 @@ Repeat with the next two lowest frequencies.
 |    10     |   4    |
 |     9     |   7    |
 
-:::::
-::::: column
-Insert the node into the sorted list.
-:::::
 :::
 
 ## {data-auto-animate="true"}
 
-::: columns
-::::: {.column width=60%}
-![](assets/img4/huff3.png)
-:::::
-::::: column
 Repeat with the next two lowest frequencies.
-:::::
-:::
+
+![](assets/img4/huff3.png){width=65%}
 
 ## {data-auto-animate="true"}
 
-::: columns
-::::: {.column width=60%}
-![](assets/img4/huff4.png)
-:::::
-::::: column
 Continue until the tree is complete.
-:::::
-:::
+
+![](assets/img4/huff4.png){width=65%}
 
 ## {data-auto-animate="true"}
 
-::: columns
-::::: {.column width=60%}
-![](assets/img4/huff5.png)
-:::::
-::::: column
 Label left branches with **0**, right branches with **1**.
-:::::
-:::
+
+![](assets/img4/huff5.png){width=65%}
 
 ## {data-auto-animate="true"}
 
-::: columns
-::::: {.column style="font-size:0.6em"}
+Read from the **root** to compute the new codes.
+
+::: {style="font-size: 0.7em;"}
 
 | Code  | Symbol |
 | :---: | :----: |
@@ -682,10 +640,10 @@ Label left branches with **0**, right branches with **1**.
 | 11000 |   6    |
 |  000  |   7    |
 
-:::::
-::::: column
-Read from the root to compute the new codes.
-:::::
+:::
+
+::: notes
+no code is a prefix of another
 :::
 
 ## {data-auto-animate="true"}
