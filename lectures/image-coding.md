@@ -398,4 +398,325 @@ Exploits inter-pixel redundancy
 
 Information and data are not the same thing.
 
+- Claude Shannon, (1948). A Mathematical Theory of Communication.
+
+::: notes
+Claude Shannon (1948) A Mathematical Theory of Communication.
+You might have heard of entropy in discussions about thermodynamic systems.
+:::
+
 ## Entropy Coding {data-auto-animate="true"}
+
+Exploits **coding redundancy**
+
+- not every value is equally likely.
+
+::: notes
+JPEG uses _Huffman_ coding for entropy coding
+Huffman, David, A. (1952). A Method for the Construction of Minimum-Redundancy Codes.
+:::
+
+## Entropy Coding {data-auto-animate="true"}
+
+Encodes a sequence with _variable_ length code so that:
+
+- More probable values have fewer bits, and
+- less probable values have more bits.
+
+## Entropy Coding {data-auto-animate="true"}
+
+The new alphabet requires fewer bits per pixel.
+
+- How many bits do we need?
+
+::: notes
+on average
+:::
+
+## Entropy Coding {data-auto-animate="true"}
+
+The _probability_ of an event is:
+
+$$p_{i} = \frac{N_{i}}{N}$$
+
+## Entropy Coding {data-auto-animate="true"}
+
+The _information_ in **bits** is:
+
+$$I_{i} = - \log_{2} p_{i}$$
+
+## Entropy Coding {data-auto-animate="true"}
+
+The _entropy_, the smallest possible **mean** symbol length, is:
+
+$$H = - \sum_{i} p_{i} \log_{2} p_{i}$$
+
+## Entropy Coding {data-auto-animate="true"}
+
+We can use these properties to develop a better coding for an image.
+
+Remember: the goal is to develop a variable length code.
+
+- The stream must be decoded _unambiguously_.
+- One code cannot be the **prefix** of another.
+
+## Huffman Coding {data-auto-animate="true"}
+
+Step 1:
+
+- Arrange values in order of decreasing probability.
+- Each forms a _leaf_ in the **Huffman tree**.
+
+## Huffman Coding {data-auto-animate="true"}
+
+Step 2:
+
+- Merge the two leaves with the smallest probability,
+  - and _add_ the probabilities,
+  - insert the node into the sorted list.
+- Assign a 1/0 to each branch being merged.
+
+## Huffman Coding {data-auto-animate="true"}
+
+Step 3:
+
+- Repeat until only the root node remains.
+- Read codewords from the root to the leaves.
+
+## Huffman Coding {data-auto-animate="true"}
+
+::: columns
+::::: column
+![](assets/plots4/entropy_example.png)
+:::::
+::::: column
+What is the Huffman code for this image?
+
+And, what is the current bit rate?
+:::::
+:::
+
+::: notes
+The current bit rate is 3
+:::
+
+## {data-auto-animate="true"}
+
+::: columns
+::::: {.column style="font-size:0.6em"}
+
+| Frequency | Symbol |
+| :-------: | :----: |
+|     4     |   0    |
+|    23     |   1    |
+|    15     |   2    |
+|     8     |   3    |
+|    10     |   4    |
+|    29     |   5    |
+|     2     |   6    |
+|     9     |   7    |
+
+:::::
+::::: column
+Count the frequencies of each symbol.
+:::::
+:::
+
+## {data-auto-animate="true"}
+
+::: columns
+::::: {.column style="font-size:0.6em"}
+
+| $p(s)$ | $-\log p(s)$ | $\times$  |
+| :----: | :----------: | :-------: |
+|  0.29  |    1.786     |   0.518   |
+|  0.23  |    2.120     |   0.488   |
+|  0.15  |    2.737     |   0.411   |
+|  0.10  |    3.322     |   0.332   |
+|  0.09  |    3.474     |   0.313   |
+|  0.08  |    3.644     |   0.292   |
+|  0.04  |    4.644     |   0.186   |
+|  0.02  |    5.644     |   0.113   |
+|        |     $+$      | **2.651** |
+
+:::::
+::::: column
+What is the **entropy** of this image?
+:::::
+:::
+
+## {data-auto-animate="true"}
+
+::: columns
+::::: {.column style="font-size:0.6em"}
+
+| Frequency | Symbol |
+| :-------: | :----: |
+|    29     |   5    |
+|    23     |   1    |
+|    15     |   2    |
+|    10     |   4    |
+|     9     |   7    |
+|     8     |   3    |
+|     4     |   0    |
+|     2     |   6    |
+
+:::::
+::::: column
+Sort by the most frequent symbol.
+:::::
+:::
+
+## {data-auto-animate="true"}
+
+::: columns
+::::: {.column width=60%}
+![](assets/img4/huff1.png)
+:::::
+::::: column
+Start with the lowest frequency symbols.
+
+- Merge the two leaves with the lowest frequency...
+
+:::::
+:::
+
+## {data-auto-animate="true"}
+
+::: columns
+::::: {.column style="font-size:0.6em"}
+
+| Frequency | Symbol |
+| :-------: | :----: |
+|    29     |   5    |
+|    23     |   1    |
+|    15     |   2    |
+|    10     |   4    |
+|     9     |   7    |
+|     8     |   3    |
+|     6     |   \*   |
+
+:::::
+::::: column
+Insert the node into the sorted list.
+:::::
+:::
+
+## {data-auto-animate="true"}
+
+::: columns
+::::: {.column width=60%}
+![](assets/img4/huff2.png)
+:::::
+::::: column
+Repeat with the next two lowest frequencies.
+:::::
+:::
+
+## {data-auto-animate="true"}
+
+::: columns
+::::: {.column style="font-size:0.6em"}
+
+| Frequency | Symbol |
+| :-------: | :----: |
+|    29     |   5    |
+|    23     |   1    |
+|    15     |   2    |
+|    14     |   \*   |
+|    10     |   4    |
+|     9     |   7    |
+
+:::::
+::::: column
+Insert the node into the sorted list.
+:::::
+:::
+
+## {data-auto-animate="true"}
+
+::: columns
+::::: {.column width=60%}
+![](assets/img4/huff3.png)
+:::::
+::::: column
+Repeat with the next two lowest frequencies.
+:::::
+:::
+
+## {data-auto-animate="true"}
+
+::: columns
+::::: {.column width=60%}
+![](assets/img4/huff4.png)
+:::::
+::::: column
+Continue until the tree is complete.
+:::::
+:::
+
+## {data-auto-animate="true"}
+
+::: columns
+::::: {.column width=60%}
+![](assets/img4/huff5.png)
+:::::
+::::: column
+Label left branches with **0**, right branches with **1**.
+:::::
+:::
+
+## {data-auto-animate="true"}
+
+::: columns
+::::: {.column style="font-size:0.6em"}
+
+| Code  | Symbol |
+| :---: | :----: |
+| 11001 |   0    |
+|  01   |   1    |
+|  111  |   2    |
+| 1101  |   3    |
+|  001  |   4    |
+|  10   |   5    |
+| 11000 |   6    |
+|  000  |   7    |
+
+:::::
+::::: column
+Read from the root to compute the new codes.
+:::::
+:::
+
+## {data-auto-animate="true"}
+
+::: columns
+::::: {.column style="font-size:0.6em"}
+
+| Value | p(x) | code length | $\times$ |
+| :---: | :--: | :---------: | :------: |
+|   5   | 0.29 |      2      |   0.58   |
+|   1   | 0.23 |      2      |   0.46   |
+|   2   | 0.15 |      3      |   0.45   |
+|   4   | 0.10 |      3      |   0.30   |
+|   7   | 0.09 |      3      |   0.27   |
+|   3   | 0.08 |      4      |   0.32   |
+|   0   | 0.04 |      5      |   0.20   |
+|   6   | 0.02 |      5      |   0.10   |
+|       |      |      +      | **2.68** |
+
+:::::
+::::: column
+We can calculate the bit rate we achieved.
+
+::: incremental
+
+- Not optimal.
+- optimal bit rate is $2.65$
+- our bit rate is $2.68$
+- The compression ratio is $2.68/3.0 = 0.8933$.
+
+:::
+
+:::::
+:::
