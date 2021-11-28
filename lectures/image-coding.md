@@ -66,8 +66,6 @@ Pycho-visual redundancy:
 
 # JPEG Compression {data-auto-animate="true"}
 
-## JPEG Compression {data-auto-animate="true"}
-
 ::: incremental
 
 - A framework for compressing images.
@@ -85,32 +83,42 @@ JPEG is one of most common compression standards
 
 ![$Y C_b C_r$](assets/img4/jpeg1.png)
 
+::: notes
+The first step is to convert the colour space from RGB to YCbCr.
+:::
+
 # $Y C_b C_r$
 
 $$
 \begin{aligned}
     Y &= 0.299R + 0.587G + 0.114B \\
-    C_b &= 128(B-Y) \\
-    C_r &= 128(R-Y)
+    C_b &= B-Y \\
+    C_r &= R-Y
 \end{aligned}
 $$
+
+::: notes
+weighted sum of RGB components
+blue relative to luminance
+red relative to luminance
+:::
 
 ## Luminance {data-auto-animate="true"}
 
 $$Y = 0.299R + 0.587G + 0.114B$$
 
-Humans are more sensitive to luminance...
+Humans are _more_ sensitive to luminance...
 
 ## Chrominance {data-auto-animate="true"}
 
 $$
 \begin{aligned}
-    C_b &= 128(B-Y) \text{ : red relative to luminance}\\
-    C_r &= 128(R-Y) \text{ : blue relative to luminance}
+    C_b &= B-Y \\
+    C_r &= R-Y
 \end{aligned}
 $$
 
-Humans are less sensitive to chrominance...
+Humans are _less_ sensitive to chrominance...
 
 ::: notes
 100 million rods for luminance
