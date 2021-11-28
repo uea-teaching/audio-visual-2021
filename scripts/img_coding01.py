@@ -56,11 +56,12 @@ def plot_grey(ax, img):
 
 
 def plot_vals(ax, img, fs=16):
+    n = img.shape[0]
     white = np.ones_like(img)
     ax.imshow(white, vmin=0, vmax=1, cmap='gray')
 
     # Set the major ticks at the centers and minor tick at the edges
-    locs = np.arange(0, 8, 1)
+    locs = np.arange(0, n, 1)
     for axis in [ax.xaxis, ax.yaxis]:
         axis.set_ticks(locs + 0.5, minor=True)
         axis.set(ticks=locs, ticklabels=[])
@@ -73,8 +74,8 @@ def plot_vals(ax, img, fs=16):
     ax.grid(True, which='minor', linestyle='-', linewidth=2, color='0')
     ax.grid(False, which='major')
 
-    for i in range(8):
-        for j in range(8):
+    for i in range(n):
+        for j in range(n):
             v = int(img[i, j])
             ax.text(j, i, v, ha='center', va='center', fontsize=fs)
 
@@ -145,5 +146,23 @@ fig.savefig(root + 'jpg_zigzag.png', **savekw)
 # %%
 
 print([int(i) for i in DQ.flat[Z]])
+
+# %%
+
+E = np.array([[0, 0, 1, 2, 5, 5, 7, 4, 5, 5],
+              [5, 1, 1, 2, 1, 4, 1, 4, 3, 1],
+              [5, 2, 1, 2, 1, 2, 2, 5, 3, 1],
+              [3, 7, 2, 6, 5, 3, 5, 5, 1, 1],
+              [2, 7, 5, 4, 5, 5, 5, 3, 1, 1],
+              [7, 4, 5, 5, 5, 5, 5, 3, 3, 5],
+              [1, 5, 5, 5, 5, 1, 1, 2, 2, 5],
+              [6, 5, 7, 4, 2, 1, 4, 1, 2, 5],
+              [1, 1, 7, 2, 1, 2, 4, 1, 3, 5],
+              [1, 2, 0, 0, 7, 4, 7, 7, 4, 5]])
+
+fig, ax = plt.subplots(1, figsize=(5, 5))
+plot_vals(ax, E)
+fig.tight_layout()
+fig.savefig(root + 'entropy_example.png', **savekw)
 
 # %%
