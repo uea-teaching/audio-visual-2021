@@ -166,3 +166,37 @@ fig.tight_layout()
 fig.savefig(root + 'entropy_example.png', **savekw)
 
 # %%
+
+
+def plot_img(ax, img, title=None, cmap='gray'):
+    ax.imshow(img, cmap=cmap, vmin=0, vmax=255)
+    ax.grid(False)
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.set_title(title)
+
+
+def diff_img(a, b):
+    d = a.astype(np.float32) - b.astype(np.float32)
+    return np.abs(d).astype(np.uint8)
+
+
+cam_jpg50 = plt.imread(root + 'cameraman_50.jpg')
+cam_jpg05 = plt.imread(root + 'cameraman_05.jpg')
+
+d50 = diff_img(cam_jpg50, cameraman)
+d05 = diff_img(cam_jpg05, cameraman)
+
+fig, ax = plt.subplots(1, 3, figsize=(14, 6), sharey=True)
+plot_img(ax[0], cameraman, 'original 48kB size')
+plot_img(ax[1], cam_jpg50, '50% - 10kB size')
+plot_img(ax[2], d50, 'error image', 'viridis')
+fig.tight_layout()
+fig.savefig(root + 'jpg_cameraman_50.png', **savekw)
+
+fig, ax = plt.subplots(1, 3, figsize=(14, 6), sharey=True)
+plot_img(ax[0], cameraman, 'original 48kB size')
+plot_img(ax[1], cam_jpg05, '5% - 5kB size')
+plot_img(ax[2], d05, 'error image', 'viridis')
+fig.tight_layout()
+fig.savefig(root + 'jpg_cameraman_05.png', **savekw)
