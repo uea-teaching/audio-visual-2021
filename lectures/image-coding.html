@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Dr. David Greenwood">
+  <title>Image Coding</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reset.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/theme/black.css" id="theme">
+  <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.2.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Image Coding</h1>
+  <p class="subtitle">Audiovisual Processing CMP-6026A</p>
+  <p class="author">Dr. David Greenwood</p>
+  <p class="date">December 01 2021</p>
+</section>
+
+<section id="content" class="title-slide slide level1">
+<h1>Content</h1>
+<p>Lossy and lossless image compression.</p>
+<ul>
+<li>Changing colour spaces and subsampling</li>
+<li>DCT and quantisation</li>
+<li>Run-length encoding</li>
+<li>Entropy coding</li>
+</ul>
+<aside class="notes">
+<p>JPEG compression</p>
+</aside>
+</section>
+
+<section>
+<section id="image-coding" class="title-slide slide level1">
+<h1>Image Coding</h1>
+<p>How can we compress an image without <em>destroying</em> the image?</p>
+<div>
+<ul>
+<li class="fragment">Data and information are not the same thing.</li>
+<li class="fragment">Goal is to identify and remove <strong>redundancy</strong>.</li>
+</ul>
+</div>
+</section>
+<section id="lossless" class="slide level2">
+<h2>Lossless</h2>
+<ul>
+<li>Image can be reconstructed <strong>exactly</strong>.</li>
+</ul>
+</section>
+<section id="lossy" class="slide level2">
+<h2>Lossy</h2>
+<ul>
+<li>Inflated image is an <strong>approximation</strong> of the original.</li>
+<li>How much loss is <em>acceptable</em>?</li>
+</ul>
+<aside class="notes">
+<p>how do we decide on acceptable?</p>
+</aside>
+</section>
+<section id="image-redundancy" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Image Redundancy</h2>
+<p>Inter-pixel redundancy:</p>
+<ul>
+<li>Neighbouring pixels are related to one another</li>
+</ul>
+</section>
+<section id="image-redundancy-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Image Redundancy</h2>
+<p>Coding redundancy:</p>
+<ul>
+<li>Not all pixel intensities are equally likely</li>
+</ul>
+</section>
+<section id="image-redundancy-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Image Redundancy</h2>
+<p>Pycho-visual redundancy:</p>
+<ul>
+<li>We are not visually <em>sensitive</em> to everything in the image</li>
+</ul>
+</section></section>
+<section>
+<section id="jpeg-compression" class="title-slide slide level1" data-auto-animate="true">
+<h1 data-auto-animate="true">JPEG Compression</h1>
+<div>
+<ul>
+<li class="fragment">A framework for compressing images.</li>
+<li class="fragment">Many algorithms can be used in the framework.</li>
+<li class="fragment">Developed by <a href="https://jpeg.org">Joint Photographic Expert Group</a>.</li>
+<li class="fragment">JPEG exploits the three forms of redundancy outlined.</li>
+</ul>
+</div>
+<aside class="notes">
+<p>JPEG is one of most common compression standards</p>
+</aside>
+</section>
+<section id="jpeg-compression-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">JPEG Compression</h2>
+<figure>
+<img data-src="assets/img4/jpeg1.png" alt="Y C_b C_r" /><figcaption aria-hidden="true"><span class="math inline">\(Y C_b C_r\)</span></figcaption>
+</figure>
+<aside class="notes">
+<p>The first step is to convert the colour space from RGB to YCbCr.</p>
+</aside>
+</section></section>
+<section>
+<section id="y-c_b-c_r" class="title-slide slide level1">
+<h1><span class="math inline">\(Y C_b C_r\)</span></h1>
+<p><span class="math display">\[
+\begin{aligned}
+    Y &amp;= 0.299R + 0.587G + 0.114B \\
+    C_b &amp;= B-Y \\
+    C_r &amp;= R-Y
+\end{aligned}
+\]</span></p>
+<aside class="notes">
+<p>weighted sum of RGB components blue relative to luminance red relative to luminance</p>
+</aside>
+</section>
+<section id="luminance" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Luminance</h2>
+<p><span class="math display">\[Y = 0.299R + 0.587G + 0.114B\]</span></p>
+<p>Humans are <em>more</em> sensitive to luminance…</p>
+</section>
+<section id="chrominance" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Chrominance</h2>
+<p><span class="math display">\[
+\begin{aligned}
+    C_b &amp;= B-Y \\
+    C_r &amp;= R-Y
+\end{aligned}
+\]</span></p>
+<p>Humans are <em>less</em> sensitive to chrominance…</p>
+<aside class="notes">
+<p>100 million rods for luminance 6 million cones for colour</p>
+</aside>
+</section>
+<section id="y-c_b-c_r-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true"><span class="math inline">\(Y C_b C_r\)</span></h2>
+<p>We can downsample the chrominance channels without affecting the image in a <em>perceptible</em> way.</p>
+<ul>
+<li>Exploits <strong>psycho-visual</strong> redundancy.</li>
+</ul>
+</section>
+<section id="jpeg-compression-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">JPEG Compression</h2>
+<figure>
+<img data-src="assets/img4/jpeg2.png" alt="Chroma Subsampling" /><figcaption aria-hidden="true">Chroma Subsampling</figcaption>
+</figure>
+</section></section>
+<section>
+<section id="chroma-subsampling" class="title-slide slide level1" data-auto-animate="true">
+<h1 data-auto-animate="true">Chroma Subsampling</h1>
+<p>Subsampling scheme is expressed as a ratio <strong>J:a:b</strong></p>
+<ul>
+<li>represents a conceptual window on the <em>chrominance</em> channels.</li>
+</ul>
+</section>
+<section id="chroma-subsampling-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Chroma Subsampling</h2>
+<ul>
+<li><strong>J</strong>: horizontal sampling reference. Usually, 4.</li>
+<li><strong>a</strong>: number of pixels in the top row that will have chroma information.</li>
+<li><strong>b</strong>: number of <em>changes</em> of samples (Cr, Cb) between first and second row of J pixels.</li>
+</ul>
+</section>
+<section id="chroma-subsampling-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Chroma Subsampling</h2>
+<div class="image">
+<figure>
+<img data-src="assets/img4/chroma1.svg" style="width:80.0%" alt="Chroma Subsampling" /><figcaption aria-hidden="true">Chroma Subsampling</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Consider a sample window where J=4, and we have two rows a and b.</p>
+</aside>
+</section>
+<section id="chroma-subsampling-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Chroma Subsampling</h2>
+<div class="image">
+<figure>
+<img data-src="assets/img4/chroma2.svg" style="width:100.0%" alt="4:4:4" /><figcaption aria-hidden="true">4:4:4</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Four samples from top row “a”, 4 different sample locations from “b”, therefore NO compression.</p>
+</aside>
+</section>
+<section id="chroma-subsampling-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Chroma Subsampling</h2>
+<div class="image">
+<figure>
+<img data-src="assets/img4/chroma3.svg" style="width:100.0%" alt="4:2:2" /><figcaption aria-hidden="true">4:2:2</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Two samples from top row “a”, 2 different sample locations from “b”…</p>
+</aside>
+</section>
+<section id="chroma-subsampling-5" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Chroma Subsampling</h2>
+<div class="image">
+<figure>
+<img data-src="assets/img4/chroma4.svg" style="width:100.0%" alt="4:2:0" /><figcaption aria-hidden="true">4:2:0</figcaption>
+</figure>
+</div>
+<aside class="notes">
+<p>Two samples from top row “a”, ZERO different sample locations from “b”…</p>
+</aside>
+</section>
+<section id="jpeg-compression-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">JPEG Compression</h2>
+<figure>
+<img data-src="assets/img4/jpeg3.png" alt="8x8 Blocks" /><figcaption aria-hidden="true">8x8 Blocks</figcaption>
+</figure>
+</section>
+<section id="jpeg-compression-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">JPEG Compression</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/img4/image-grid.png" alt="image matrix" /><figcaption aria-hidden="true">image matrix</figcaption>
+</figure>
+</div><div class="column">
+<figure>
+<img data-src="assets/img4/image-blocks.png" alt="8x8 blocks" /><figcaption aria-hidden="true">8x8 blocks</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="jpeg-compression-5" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">JPEG Compression</h2>
+<figure>
+<img data-src="assets/img4/jpeg4.png" alt="DCT" /><figcaption aria-hidden="true">DCT</figcaption>
+</figure>
+</section></section>
+<section>
+<section id="dct" class="title-slide slide level1" data-auto-animate="true">
+<h1 data-auto-animate="true">DCT</h1>
+<p>Transforms the image into the <em>frequency domain</em>.</p>
+</section>
+<section id="dct-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">DCT</h2>
+<figure>
+<img data-src="assets/plots4/jpg_block_values.png" alt="image values" /><figcaption aria-hidden="true">image values</figcaption>
+</figure>
+<aside class="notes">
+<p>lets just follow what happens to some image values in the DCT</p>
+</aside>
+</section>
+<section id="dct-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">DCT</h2>
+<figure>
+<img data-src="assets/plots4/jpg_block_dct.png" alt="coefficients" /><figcaption aria-hidden="true">coefficients</figcaption>
+</figure>
+<aside class="notes">
+<p>2D DCT coefficients - as we have already discussed in lectures and labs.</p>
+</aside>
+</section>
+<section id="jpeg-compression-6" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">JPEG Compression</h2>
+<figure>
+<img data-src="assets/img4/jpeg5.png" alt="DCT Quantisation" /><figcaption aria-hidden="true">DCT Quantisation</figcaption>
+</figure>
+<aside class="notes">
+<p>This part is new to us. Quantising the coefficients.</p>
+</aside>
+</section></section>
+<section>
+<section id="dct-quantisation" class="title-slide slide level1" data-auto-animate="true">
+<h1 data-auto-animate="true">DCT Quantisation</h1>
+<p>Reduce the number of bits needed to store a value by reducing precision.</p>
+<ul>
+<li>Decrease precision as we move away from the top left corner.</li>
+<li>High frequency details usually contribute less to the image.</li>
+</ul>
+</section>
+<section id="dct-quantisation-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">DCT Quantisation</h2>
+<p>Quantisation is performed as follows:</p>
+<p><span class="math display">\[DCT_{q}(i, j) = round \left( \frac{DCT(i, j)}{Q(i, j)} \right)\]</span></p>
+<p>where <span class="math inline">\(Q\)</span> is the quantisation matrix.</p>
+</section>
+<section id="dct-quantisation-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">DCT Quantisation</h2>
+<figure>
+<img data-src="assets/plots4/jpg_quant_matrix.png" style="width:50.0%" alt="quantisation matrix" /><figcaption aria-hidden="true">quantisation matrix</figcaption>
+</figure>
+<aside class="notes">
+<p>Quantisation matrix is a 2D array of values. The values are decided empirically or by subjective judgement, although there are now well defined examples.</p>
+</aside>
+</section>
+<section id="dct-quantisation-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">DCT Quantisation</h2>
+<figure>
+<img data-src="assets/plots4/jpg_block_dct_quant.png" alt="quantisation" /><figcaption aria-hidden="true">quantisation</figcaption>
+</figure>
+</section>
+<section id="dct-quantisation-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">DCT Quantisation</h2>
+<figure>
+<img data-src="assets/plots4/jpg_block_quantised.png" style="width:50.0%" alt="DCT_{q}" /><figcaption aria-hidden="true"><span class="math inline">\(DCT_{q}\)</span></figcaption>
+</figure>
+</section>
+<section id="jpeg-compression-7" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">JPEG Compression</h2>
+<figure>
+<img data-src="assets/img4/jpeg6.png" alt="DCT Quantisation" /><figcaption aria-hidden="true">DCT Quantisation</figcaption>
+</figure>
+<aside class="notes">
+<p>zig zag scan - recall the location of the most significant coefficients.</p>
+</aside>
+</section>
+<section id="zigzag-scan" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">ZigZag Scan</h2>
+<figure>
+<img data-src="assets/img4/zig-zag.png" style="width:50.0%" alt="ZigZag Scan" /><figcaption aria-hidden="true">ZigZag Scan</figcaption>
+</figure>
+</section>
+<section id="zigzag-scan-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">ZigZag Scan</h2>
+<figure>
+<img data-src="assets/plots4/jpg_block_quantised.png" style="width:50.0%" alt="quantised block" /><figcaption aria-hidden="true">quantised block</figcaption>
+</figure>
+</section>
+<section id="zigzag-scan-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">ZigZag Scan</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/plots4/jpg_zigzag.png" alt="ZigZag Scan" /><figcaption aria-hidden="true">ZigZag Scan</figcaption>
+</figure>
+</div><div class="column">
+<p><span class="math inline">\(65, -27, -2, 17, -3,\)</span> <span class="math inline">\(19, 0, -3, 8, 0, ...\)</span></p>
+</div>
+</div>
+</section>
+<section id="zigzag-scan-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">ZigZag Scan</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/plots4/jpg_zigzag.png" alt="ZigZag Scan" /><figcaption aria-hidden="true">ZigZag Scan</figcaption>
+</figure>
+</div><div class="column">
+<p>Reads from low frequency coefficients to high frequency coefficients…</p>
+</div>
+</div>
+</section>
+<section id="zigzag-scan-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">ZigZag Scan</h2>
+<div class="columns">
+<div class="column">
+<figure>
+<img data-src="assets/plots4/jpg_zigzag.png" alt="ZigZag Scan" /><figcaption aria-hidden="true">ZigZag Scan</figcaption>
+</figure>
+</div><div class="column">
+<p>More likely to encode all non-zeros and all zeros together…</p>
+<ul>
+<li>beneficial for the next step…</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="jpeg-compression-8" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">JPEG Compression</h2>
+<figure>
+<img data-src="assets/img4/jpeg7.png" alt="run-length encoding" /><figcaption aria-hidden="true">run-length encoding</figcaption>
+</figure>
+</section></section>
+<section>
+<section id="run-length-encoding" class="title-slide slide level1" data-auto-animate="true">
+<h1 data-auto-animate="true">Run Length Encoding</h1>
+<p>Extracts series of value and length of runs from sequence of values.</p>
+<p>Exploits <strong>inter-pixel</strong> redundancy.</p>
+</section>
+<section id="run-length-encoding-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Run Length Encoding</h2>
+<p>65 -27 -2 17 -3 -3 1 1 1 -2 1 1 0 -1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</p>
+</section>
+<section id="run-length-encoding-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Run Length Encoding</h2>
+<p>65 -27 -2 17 -3 -3 1 1 1 -2 1 1 0 -1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</p>
+<p>65 1 -27 1 -2 1 17 1 -3 2 1 3 -2 1 1 2 0 1 -1 1 1 1 0 19</p>
+<aside class="notes">
+<p>reducing the number of bits needed to store a value by exploiting inter pixel redundancy.</p>
+</aside>
+</section>
+<section id="run-length-encoding-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Run Length Encoding</h2>
+<p><strong>65</strong> -27 -2 17 -3 -3 1 1 1 -2 1 1 0 -1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</p>
+<p><strong>65 1</strong> -27 1 -2 1 17 1 -3 2 1 3 -2 1 1 2 0 1 -1 1 1 1 0 19</p>
+<aside class="notes">
+<p>reducing the number of bits needed to store a value by exploiting inter pixel redundancy.</p>
+</aside>
+</section>
+<section id="run-length-encoding-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Run Length Encoding</h2>
+<p>65 -27 -2 17 <strong>-3 -3</strong> 1 1 1 -2 1 1 0 -1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</p>
+<p>65 1 -27 1 -2 1 17 1 <strong>-3 2</strong> 1 3 -2 1 1 2 0 1 -1 1 1 1 0 19</p>
+</section>
+<section id="run-length-encoding-5" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Run Length Encoding</h2>
+<p>65 -27 -2 17 -3 -3 1 1 1 -2 1 1 0 -1 1 <strong>0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</strong></p>
+<p>65 1 -27 1 -2 1 17 1 -3 2 1 3 -2 1 1 2 0 1 -1 1 1 1 <strong>0 19</strong></p>
+</section>
+<section id="run-length-encoding-6" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Run Length Encoding</h2>
+<p>Exploits inter-pixel redundancy</p>
+<ul>
+<li>the relationship between neighbouring “pixels” in the zigzag scan of the DCT coefficient matrix</li>
+</ul>
+</section>
+<section id="jpeg-compression-9" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">JPEG Compression</h2>
+<figure>
+<img data-src="assets/img4/jpeg8.png" alt="entropy encoding" /><figcaption aria-hidden="true">entropy encoding</figcaption>
+</figure>
+</section></section>
+<section>
+<section id="entropy-coding" class="title-slide slide level1">
+<h1>Entropy Coding</h1>
+<p>Information and data are not the same thing.</p>
+<ul>
+<li>Claude Shannon, (1948). A Mathematical Theory of Communication.</li>
+</ul>
+<aside class="notes">
+<p>Claude Shannon (1948) A Mathematical Theory of Communication. You might have heard of entropy in discussions about thermodynamic systems.</p>
+</aside>
+</section>
+<section id="section" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true"></h2>
+<p>Entropy Coding exploits <strong>coding redundancy</strong></p>
+<ul>
+<li>not every value is equally likely.</li>
+</ul>
+<aside class="notes">
+<p>JPEG uses <em>Huffman</em> coding for entropy coding Huffman, David, A. (1952). A Method for the Construction of Minimum-Redundancy Codes.</p>
+</aside>
+</section>
+<section id="section-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true"></h2>
+<p>Entropy Coding encodes a sequence with <em>variable</em> length code so that:</p>
+<ul>
+<li>More probable values have fewer bits, and</li>
+<li>less probable values have more bits.</li>
+</ul>
+</section>
+<section id="section-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true"></h2>
+<p>The new alphabet requires fewer bits per pixel.</p>
+<ul>
+<li>How many bits do we need?</li>
+</ul>
+<aside class="notes">
+<p>on average</p>
+</aside>
+</section>
+<section id="section-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true"></h2>
+<p><strong>Recall</strong>: the <em>probability</em> of an event is:</p>
+<p><span class="math display">\[p_{i} = \frac{N_{i}}{N}\]</span></p>
+</section>
+<section id="section-4" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true"></h2>
+<p>The <em>information</em> in <strong>bits</strong> is:</p>
+<p><span class="math display">\[I_{i} = - \log_{2} p_{i}\]</span></p>
+<aside class="notes">
+<p>It is measured in bits with log base 2, logs of other bases do have definitions, but we wont cover them.</p>
+</aside>
+</section>
+<section id="section-5" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true"></h2>
+<p>The <em>entropy</em>, the smallest possible <strong>mean</strong> symbol length, is:</p>
+<p><span class="math display">\[H = - \sum_{i} p_{i} \log_{2} p_{i}\]</span></p>
+</section>
+<section id="section-6" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true"></h2>
+<p>We can use these properties to develop a better coding for an image.</p>
+<ul>
+<li>The stream must be decoded <em>unambiguously</em>.</li>
+<li>One code cannot be the <strong>prefix</strong> of another.</li>
+</ul>
+<aside class="notes">
+<p>Remember: the goal is to develop a variable length code. In JPEG we use <strong>Huffman</strong> coding for entropy coding.</p>
+</aside>
+</section>
+<section id="huffman-coding" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Huffman Coding</h2>
+<p>Step 1:</p>
+<ul>
+<li>Arrange values in order of decreasing probability.</li>
+<li>Each forms a <em>leaf</em> in the <strong>Huffman tree</strong>.</li>
+</ul>
+</section>
+<section id="huffman-coding-1" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Huffman Coding</h2>
+<p>Step 2:</p>
+<ul>
+<li>Merge the two leaves with the smallest probability,
+<ul>
+<li><em>add</em> the probabilities,</li>
+<li>insert the node into the sorted list.</li>
+</ul></li>
+<li>Assign a 1/0 to each branch being merged.</li>
+</ul>
+</section>
+<section id="huffman-coding-2" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Huffman Coding</h2>
+<p>Step 3:</p>
+<ul>
+<li>Repeat until only the root node remains.</li>
+<li>Read codewords from the root to the leaves.</li>
+</ul>
+</section></section>
+<section>
+<section id="case-study" class="title-slide slide level1" data-auto-animate="true">
+<h1 data-auto-animate="true">Case Study</h1>
+
+</section>
+<section id="huffman-coding-3" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">Huffman Coding</h2>
+<div class="columns">
+<div class="column">
+<p><img data-src="assets/plots4/entropy_example.png" /></p>
+</div><div class="column">
+<p>What is the Huffman code for this image?</p>
+<p>And, what is the current bit rate?</p>
+</div>
+</div>
+<aside class="notes">
+<p>The current bit rate is 3</p>
+</aside>
+</section>
+<section id="section-7" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true"></h2>
+<p>Count the frequencies of each symbol.</p>
+<div style="font-size: 0.7em;">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Frequency</th>
+<th style="text-align: center;">Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">23</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">15</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">29</td>
+<td style="text-align: center;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">7</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="section-8" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true"></h2>
+<p>What is the <strong>entropy</strong> of this image?</p>
+<div style="font-size: 0.7em;">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(p(s)\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(-\log p(s)\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(\times\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0.29</td>
+<td style="text-align: center;">1.786</td>
+<td style="text-align: center;">0.518</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">0.23</td>
+<td style="text-align: center;">2.120</td>
+<td style="text-align: center;">0.488</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">0.15</td>
+<td style="text-align: center;">2.737</td>
+<td style="text-align: center;">0.411</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">0.10</td>
+<td style="text-align: center;">3.322</td>
+<td style="text-align: center;">0.332</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">0.09</td>
+<td style="text-align: center;">3.474</td>
+<td style="text-align: center;">0.313</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">0.08</td>
+<td style="text-align: center;">3.644</td>
+<td style="text-align: center;">0.292</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">0.04</td>
+<td style="text-align: center;">4.644</td>
+<td style="text-align: center;">0.186</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">0.02</td>
+<td style="text-align: center;">5.644</td>
+<td style="text-align: center;">0.113</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span class="math inline">\(+\)</span></td>
+<td style="text-align: center;"><strong>2.651</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="section-9" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true"></h2>
+<p>Sort by the most frequent symbol.</p>
+<div style="font-size: 0.7em;">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Frequency</th>
+<th style="text-align: center;">Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">29</td>
+<td style="text-align: center;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">23</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">15</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">7</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">6</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="section-10" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true"></h2>
+<p>Merge the two leaves with the lowest frequency…</p>
+<p><img data-src="assets/img4/huff1.png" style="width:65.0%" /></p>
+</section>
+<section id="section-11" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true"></h2>
+<p>Insert the node into the sorted list.</p>
+<div style="font-size: 0.7em;">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Frequency</th>
+<th style="text-align: center;">Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">29</td>
+<td style="text-align: center;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">23</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">15</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">7</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">*</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="section-12" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true"></h2>
+<p>Repeat with the next two lowest frequencies.</p>
+<p><img data-src="assets/img4/huff2.png" style="width:65.0%" /></p>
+</section>
+<section id="section-13" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true"></h2>
+<p>Insert the node into the sorted list.</p>
+<div style="font-size: 0.7em;">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Frequency</th>
+<th style="text-align: center;">Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">29</td>
+<td style="text-align: center;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">23</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">15</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">*</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">7</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="section-14" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true"></h2>
+<p>Repeat with the next two lowest frequencies.</p>
+<p><img data-src="assets/img4/huff3.png" style="width:65.0%" /></p>
+</section>
+<section id="section-15" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true"></h2>
+<p>Continue until the tree is complete.</p>
+<p><img data-src="assets/img4/huff4.png" style="width:65.0%" /></p>
+</section>
+<section id="section-16" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true"></h2>
+<p>Label left branches with <strong>0</strong>, right branches with <strong>1</strong>.</p>
+<p><img data-src="assets/img4/huff5.png" style="width:65.0%" /></p>
+</section>
+<section id="section-17" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true"></h2>
+<p>Read from the <strong>root</strong> to compute the new codes.</p>
+<div style="font-size: 0.7em;">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Code</th>
+<th style="text-align: center;">Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">11001</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">01</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">111</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1101</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">001</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">11000</td>
+<td style="text-align: center;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">000</td>
+<td style="text-align: center;">7</td>
+</tr>
+</tbody>
+</table>
+</div>
+<aside class="notes">
+<p>no code is a prefix of another</p>
+</aside>
+</section>
+<section id="section-18" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true"></h2>
+<div class="columns">
+<div class="column" style="font-size:0.6em">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Value</th>
+<th style="text-align: center;">p(x)</th>
+<th style="text-align: center;">code length</th>
+<th style="text-align: center;"><span class="math inline">\(\times\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">0.29</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">0.58</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0.23</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">0.46</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">0.15</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">0.45</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">0.10</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">0.30</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.09</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">0.27</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">0.08</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">0.32</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0.04</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">0.20</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">0.02</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">0.10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">+</td>
+<td style="text-align: center;"><strong>2.68</strong></td>
+</tr>
+</tbody>
+</table>
+</div><div class="column">
+<p>We can calculate the bit rate we achieved.</p>
+<div>
+<ul>
+<li class="fragment">Not optimal.</li>
+<li class="fragment">optimal bit rate is <span class="math inline">\(2.65\)</span></li>
+<li class="fragment">our bit rate is <span class="math inline">\(2.68\)</span></li>
+<li class="fragment">The compression ratio is <span class="math inline">\(2.68/3.0 = 0.8933\)</span>.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="jpeg-compression-10" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">JPEG Compression</h2>
+<figure>
+<img data-src="assets/img4/jpeg9.png" alt="data packing" /><figcaption aria-hidden="true">data packing</figcaption>
+</figure>
+</section></section>
+<section>
+<section id="lossy-compression" class="title-slide slide level1">
+<h1>Lossy Compression</h1>
+
+</section>
+<section id="jpeg-compression-11" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">JPEG Compression</h2>
+<figure>
+<img data-src="assets/img4/jpeg10.png" alt="lossy components" /><figcaption aria-hidden="true">lossy components</figcaption>
+</figure>
+</section>
+<section id="jpeg-compression-12" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">JPEG Compression</h2>
+<figure>
+<img data-src="assets/plots4/jpg_cameraman_50.png" alt="50% quality" /><figcaption aria-hidden="true">50% quality</figcaption>
+</figure>
+</section>
+<section id="jpeg-compression-13" class="slide level2" data-auto-animate="true">
+<h2 data-auto-animate="true">JPEG Compression</h2>
+<figure>
+<img data-src="assets/plots4/jpg_cameraman_05.png" alt="5% quality" /><figcaption aria-hidden="true">5% quality</figcaption>
+</figure>
+</section></section>
+<section id="summary" class="title-slide slide level1">
+<h1>Summary</h1>
+<p>Three types of redundancy are exploited in image compression.</p>
+<div>
+<ul>
+<li class="fragment">psycho-visual redundancy</li>
+<li class="fragment">inter-pixel redundancy</li>
+<li class="fragment">coding redundancy</li>
+<li class="fragment"><strong>JPEG</strong> uses them all.</li>
+</ul>
+</div>
+<aside class="notes">
+<p>JPEG uses them all.</p>
+</aside>
+</section>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/reveal.js@^4/dist/reveal.js"></script>
+
+  // reveal.js plugins
+  <script src="https://unpkg.com/reveal.js@^4/plugin/notes/notes.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/search/search.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/zoom/zoom.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/math/math.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/highlight/highlight.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+        // Display a presentation progress bar
+        progress: true,
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+        // Push each slide change to the browser history
+        history: true,
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+        // Enable the slide overview mode
+        overview: true,
+        // Vertical centering of slides
+        center: true,
+        // Enables touch navigation on devices with touch input
+        touch: true,
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+        // Turns fragments on and off globally
+        fragments: true,
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+        // Global override for autoplaying embedded media (video/audio/iframe)
+        // - null: Media will only autoplay if data-autoplay is present
+        // - true: All media will autoplay, regardless of individual setting
+        // - false: No media will autoplay, regardless of individual setting
+        autoPlayMedia: null,
+        // Global override for preloading lazy-loaded iframes
+        // - null: Iframes with data-src AND data-preload will be loaded when within
+        //   the viewDistance, iframes with only data-src will be loaded when visible
+        // - true: All iframes with data-src will be loaded when within the viewDistance
+        // - false: All iframes with data-src will be loaded only when visible
+        preloadIframes: null,
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+        // Transition style
+        transition: 'none', // none/fade/slide/convex/concave/zoom
+        // Transition speed
+        transitionSpeed: 'default', // default/fast/slow
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'fade', // none/fade/slide/convex/concave/zoom
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+        // Factor of the display size that should remain empty around the content
+        margin: 0.2,
+        // The display mode that will be used to show slides
+        display: 'block',
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [
+          RevealMath,
+          RevealHighlight,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>
