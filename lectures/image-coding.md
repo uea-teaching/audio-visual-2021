@@ -2,7 +2,7 @@
 title: Image Coding
 subtitle: Audiovisual Processing CMP-6026A
 author: Dr. David Greenwood
-date: December 01, 2021
+date: December 01 2021
 ---
 
 # Content
