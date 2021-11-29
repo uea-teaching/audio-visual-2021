@@ -38,6 +38,9 @@ Lectures are available as online html or printable pdf.
 - Edge Detection: [online](lectures/edge-detection.html)
   or printable [pdf](lectures/edge-detection.bmr.pdf).
 
+- Image Coding: [online](lectures/imiage-coding.html)
+  or printable [pdf](lectures/imiage-coding.bmr.pdf).
+
 ## Labs
 
 Labs are usually a pdf file, or a zip file if additional resources are provided.
