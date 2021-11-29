@@ -25,21 +25,17 @@ How can we compress an image without _destroying_ the image?
 ::: incremental
 
 - Data and information are not the same thing.
-- Goal is to identify and remove redundancy.
+- Goal is to identify and remove **redundancy**.
 
 :::
 
-## Lossy or Lossless {data-auto-animate="true"}
-
-Lossless:
+## Lossless
 
 - Image can be reconstructed **exactly**.
 
-## Lossy or Lossless {data-auto-animate="true"}
+## Lossy
 
-Lossy:
-
-- Inflated image is an _approximation_ of the original.
+- Inflated image is an **approximation** of the original.
 - How much loss is _acceptable_?
 
 ::: notes
