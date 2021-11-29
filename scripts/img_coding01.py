@@ -181,8 +181,8 @@ def diff_img(a, b):
     return np.abs(d).astype(np.uint8)
 
 
-cam_jpg50 = plt.imread(root + 'cameraman_50.jpg')
-cam_jpg05 = plt.imread(root + 'cameraman_05.jpg')
+cam_jpg50 = plt.imread('../lectures/assets/plots4/cameraman_50.jpg')
+cam_jpg05 = plt.imread('../lectures/assets/plots4/cameraman_05.jpg')
 
 d50 = diff_img(cam_jpg50, cameraman)
 d05 = diff_img(cam_jpg05, cameraman)
